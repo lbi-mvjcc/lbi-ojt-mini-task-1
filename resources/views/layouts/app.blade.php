@@ -6,7 +6,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Task Management System</title>
+        <title>TaskFlow - Task Management System</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="{{ asset('assets/favicon.ico') }}" />
         <!-- Bootstrap icons-->
@@ -14,40 +14,379 @@
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="{{ asset('css/styles.css') }}" rel="stylesheet" />
         <style>
+            :root {
+                --primary-purple: #667eea;
+                --primary-purple-dark: #5568d3;
+                --secondary-purple: #764ba2;
+                --bg-color: #ffffff;
+                --text-color: #1f2937;
+                --card-bg: #ffffff;
+                --border-color: #e5e7eb;
+                --muted-text: #6b7280;
+            }
+            
+            [data-theme="dark"] {
+                --primary-purple: #8b9cf5;
+                --primary-purple-dark: #667eea;
+                --secondary-purple: #9d6ec9;
+                --bg-color: #0f172a;
+                --text-color: #f1f5f9;
+                --card-bg: #1e293b;
+                --border-color: #334155;
+                --muted-text: #94a3b8;
+            }
+            
+            * {
+                transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+            }
+            
+            body {
+                background-color: var(--bg-color) !important;
+                color: var(--text-color) !important;
+                min-height: 100vh;
+            }
+            
+            html {
+                background-color: var(--bg-color);
+            }
+            
+            main {
+                background-color: var(--bg-color);
+            }
+            
+            .navbar-purple {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+            }
+            
+            .theme-toggle {
+                background: rgba(255, 255, 255, 0.2);
+                border: none;
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                color: white;
+            }
+            
+            .theme-toggle:hover {
+                background: rgba(255, 255, 255, 0.3);
+                transform: scale(1.1);
+            }
+            
             .notification-dropdown {
                 box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+                background-color: var(--card-bg);
+            }
+            
+            .dropdown-menu {
+                background-color: var(--card-bg);
+                border-color: var(--border-color);
+            }
+            
+            .dropdown-item {
+                color: var(--text-color);
+            }
+            
+            .dropdown-item:hover {
+                background-color: var(--bg-color);
+            }
+            
+            .dropdown-header {
+                color: var(--text-color);
+                background-color: var(--card-bg);
+            }
+            
+            .btn-user {
+                background: rgba(255, 255, 255, 0.2);
+                border: none;
+                border-radius: 25px;
+                padding: 0.5rem 1rem;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                color: white;
+                font-weight: 500;
+                transition: all 0.3s ease;
+            }
+            
+            .btn-user:hover {
+                background: rgba(255, 255, 255, 0.3);
+                color: white;
+            }
+            
+            .btn-user:focus {
+                box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
+                color: white;
+            }
+            
+            .user-avatar {
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                background: white;
+                color: var(--primary-purple-dark);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.25rem;
+                overflow: hidden;
+            }
+            
+            .user-avatar img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+            
+            .user-name {
+                max-width: 150px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            
+            .user-dropdown {
+                min-width: 250px;
+                border-radius: 12px;
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+                border: 1px solid var(--border-color);
+                background-color: var(--card-bg);
+            }
+            
+            .user-dropdown .dropdown-item {
+                padding: 0.75rem 1.25rem;
+                color: var(--text-color);
+                transition: all 0.2s ease;
+            }
+            
+            .user-dropdown .dropdown-item:hover {
+                background-color: rgba(102, 126, 234, 0.1);
+                color: var(--primary-purple);
+            }
+            
+            .user-dropdown .dropdown-item i {
+                width: 20px;
+                margin-right: 0.5rem;
+            }
+            
+            .user-dropdown .dropdown-item.text-danger:hover {
+                background-color: rgba(239, 68, 68, 0.1);
+                color: #dc2626;
+            }
+            
+            .user-info {
+                padding: 0.5rem 0;
+            }
+            
+            .user-info strong {
+                font-size: 1rem;
+                color: var(--text-color);
+            }
+            
+            .user-info small {
+                font-size: 0.8rem;
+                color: var(--muted-text);
+            }
+            
+            .alert {
+                border-color: var(--border-color);
+            }
+            
+            [data-theme="dark"] .alert-success {
+                background-color: rgba(16, 185, 129, 0.1);
+                border-color: rgba(16, 185, 129, 0.3);
+                color: #34d399;
+            }
+            
+            [data-theme="dark"] .alert-danger {
+                background-color: rgba(239, 68, 68, 0.1);
+                border-color: rgba(239, 68, 68, 0.3);
+                color: #f87171;
+            }
+            
+            [data-theme="dark"] .alert-info {
+                background-color: rgba(59, 130, 246, 0.1);
+                border-color: rgba(59, 130, 246, 0.3);
+                color: #60a5fa;
+            }
+            
+            [data-theme="dark"] .alert-warning {
+                background-color: rgba(245, 158, 11, 0.1);
+                border-color: rgba(245, 158, 11, 0.3);
+                color: #fbbf24;
+            }
+            
+            [data-theme="dark"] .card {
+                background-color: var(--card-bg);
+                border-color: var(--border-color);
+                color: var(--text-color);
+            }
+            
+            [data-theme="dark"] .text-muted {
+                color: var(--muted-text) !important;
+            }
+            
+            [data-theme="dark"] .text-dark {
+                color: var(--text-color) !important;
+            }
+            
+            [data-theme="dark"] .bg-light {
+                background-color: var(--card-bg) !important;
+            }
+            
+            /* Dark mode specific fixes */
+            [data-theme="dark"] .user-avatar {
+                background: rgba(139, 156, 245, 0.2);
+                color: var(--primary-purple-light);
+            }
+            
+            [data-theme="dark"] .btn-close {
+                filter: invert(1) grayscale(100%) brightness(200%);
+            }
+            
+            [data-theme="dark"] h1, 
+            [data-theme="dark"] h2, 
+            [data-theme="dark"] h3, 
+            [data-theme="dark"] h4, 
+            [data-theme="dark"] h5, 
+            [data-theme="dark"] h6 {
+                color: var(--text-color);
+            }
+            
+            [data-theme="dark"] .page-title,
+            [data-theme="dark"] .page-subtitle {
+                color: var(--text-color);
+            }
+            
+            [data-theme="dark"] .display-6 {
+                color: var(--text-color);
+            }
+            
+            [data-theme="dark"] .fw-bold,
+            [data-theme="dark"] .fw-semibold {
+                color: var(--text-color);
+            }
+            
+            [data-theme="dark"] .list-group-item {
+                background-color: var(--card-bg);
+                border-color: var(--border-color);
+                color: var(--text-color);
+            }
+            
+            [data-theme="dark"] .border-bottom {
+                border-color: var(--border-color) !important;
+            }
+            
+            [data-theme="dark"] .dropdown-divider {
+                border-color: var(--border-color);
+            }
+            
+            [data-theme="dark"] .btn-outline-secondary {
+                color: var(--muted-text);
+                border-color: var(--border-color);
+            }
+            
+            [data-theme="dark"] .btn-outline-secondary:hover {
+                background-color: var(--border-color);
+                color: var(--text-color);
+            }
+            
+            /* Comprehensive dark mode fixes */
+            [data-theme="dark"] .container,
+            [data-theme="dark"] main {
+                background-color: var(--bg-color);
+                color: var(--text-color);
+            }
+            
+            [data-theme="dark"] .flex-grow-1 {
+                background-color: var(--bg-color);
+            }
+            
+            [data-theme="dark"] p,
+            [data-theme="dark"] span,
+            [data-theme="dark"] div {
+                color: var(--text-color);
+            }
+            
+            [data-theme="dark"] .small {
+                color: var(--muted-text);
+            }
+            
+            [data-theme="dark"] .badge {
+                background-color: var(--card-bg);
+                color: var(--text-color);
+                border: 1px solid var(--border-color);
+            }
+            
+            [data-theme="dark"] .shadow,
+            [data-theme="dark"] .shadow-sm {
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+            }
+            
+            [data-theme="dark"] input::placeholder,
+            [data-theme="dark"] textarea::placeholder {
+                color: var(--muted-text);
+            }
+            
+            [data-theme="dark"] .modal-content {
+                background-color: var(--card-bg);
+                color: var(--text-color);
+            }
+            
+            [data-theme="dark"] .modal-header,
+            [data-theme="dark"] .modal-footer {
+                border-color: var(--border-color);
+            }
+            
+            [data-theme="dark"] hr {
+                border-color: var(--border-color);
+                opacity: 1;
+            }
+            
+            [data-theme="dark"] .table {
+                color: var(--text-color);
+                border-color: var(--border-color);
+            }
+            
+            [data-theme="dark"] .table th,
+            [data-theme="dark"] .table td {
+                border-color: var(--border-color);
             }
             .notification-item {
                 padding: 12px 16px;
                 border-left: 3px solid transparent;
-                background-color: white;
+                background-color: var(--card-bg);
                 transition: all 0.2s ease;
             }
             .notification-item:hover {
-                background-color: #f8f9fa;
+                background-color: var(--bg-color);
             }
             .notification-item.unread {
-                background-color: #f0f8ff;
-                border-left-color: #007bff;
+                background-color: rgba(102, 126, 234, 0.1);
+                border-left-color: var(--primary-purple);
             }
             .notification-item.unread:hover {
-                background-color: #e3f2fd;
+                background-color: rgba(102, 126, 234, 0.15);
             }
             .notification-title {
                 font-weight: 600;
                 font-size: 0.9rem;
                 margin-bottom: 4px;
-                color: #333;
+                color: var(--text-color);
             }
             .notification-message {
                 font-size: 0.8rem;
-                color: #666;
+                color: var(--muted-text);
                 margin-bottom: 4px;
                 line-height: 1.3;
             }
             .notification-time {
                 font-size: 0.7rem;
-                color: #999;
+                color: var(--muted-text);
             }
             .notification-actions {
                 display: flex;
@@ -72,11 +411,13 @@
             }
         </style>
     </head>
-    <body class="d-flex flex-column min-vh-100">
+    <body class="d-flex flex-column min-vh-100" style="background-color: var(--bg-color);">
         <!-- Responsive navbar-->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-purple">
             <div class="container px-5">
-                <a class="navbar-brand" href="#!">TaskEase</a>
+                <a class="navbar-brand fw-bold" href="{{ route('dashboard') }}">
+                    <i class="bi bi-check2-square"></i> TaskFlow
+                </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
@@ -110,6 +451,11 @@
                             <i class="bi bi-search"></i>
                         </button>
                     </form>
+
+                    <!-- Theme Toggle -->
+                    <button class="theme-toggle me-3" id="themeToggle" title="Toggle theme">
+                        <i class="bi bi-moon-stars" id="themeIcon"></i>
+                    </button>
 
                     <!-- Notifications -->
                     <div class="dropdown me-3">
@@ -146,13 +492,46 @@
                     @endauth
                     
                     @auth
-                    <div class="d-flex">
-                        <form method="POST" action="{{ route('logout') }}" style="display: inline;">
-                            @csrf
-                            <button type="submit" class="nav-link btn" style="border: none; padding: 0; cursor: pointer; background: none; color: rgba(255,255,255,.55);" title="Logout">
-                                <i class="bi bi-box-arrow-right" style="font-size: 1.5rem;"></i>
-                            </button>
-                        </form>
+                    <!-- User Profile & Logout -->
+                    <div class="dropdown">
+                        <button class="btn btn-user dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <div class="user-avatar">
+                                @if(auth()->user()->profile_picture)
+                                    <img src="{{ asset('storage/' . auth()->user()->profile_picture) }}" alt="{{ auth()->user()->name }}">
+                                @else
+                                    <i class="bi bi-person-circle"></i>
+                                @endif
+                            </div>
+                            <span class="user-name">{{ auth()->user()->name }}</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end user-dropdown" aria-labelledby="userDropdown">
+                            <li class="dropdown-header">
+                                <div class="user-info">
+                                    <strong>{{ auth()->user()->name }}</strong>
+                                    <small class="text-muted d-block">{{ auth()->user()->getRoleLabel() }}</small>
+                                </div>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item" href="{{ route('profile.edit') }}">
+                                    <i class="bi bi-person"></i> My Profile
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ route('dashboard') }}">
+                                    <i class="bi bi-speedometer2"></i> Dashboard
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item text-danger">
+                                        <i class="bi bi-box-arrow-right"></i> Logout
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
                     </div>
                     @endauth
             </div>
@@ -185,8 +564,8 @@
             @yield('content')
         </main>
         <!-- Footer-->
-        <footer class="py-4 bg-dark mt-auto">
-            <div class="container px-5"><p class="m-0 text-center text-white">Copyright &copy; Task Management System 2026</p></div>
+        <footer class="py-4 navbar-purple mt-auto">
+            <div class="container px-5"><p class="m-0 text-center text-white">Copyright &copy; TaskFlow 2026</p></div>
         </footer>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -195,6 +574,34 @@
         
         <!-- Notification JavaScript -->
         <script>
+            // Theme Toggle Functionality
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = document.getElementById('themeIcon');
+            const htmlElement = document.documentElement;
+            
+            // Check for saved theme preference or default to 'light'
+            const currentTheme = localStorage.getItem('theme') || 'light';
+            htmlElement.setAttribute('data-theme', currentTheme);
+            updateThemeIcon(currentTheme);
+            
+            themeToggle.addEventListener('click', function() {
+                const currentTheme = htmlElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                
+                htmlElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                updateThemeIcon(newTheme);
+            });
+            
+            function updateThemeIcon(theme) {
+                if (theme === 'dark') {
+                    themeIcon.className = 'bi bi-sun-fill';
+                } else {
+                    themeIcon.className = 'bi bi-moon-stars';
+                }
+            }
+            
+            // Notification functionality
             let notificationUpdateInterval;
             
             document.addEventListener('DOMContentLoaded', function() {

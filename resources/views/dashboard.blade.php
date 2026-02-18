@@ -1,181 +1,673 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container py-5">
-    <!-- Header Section -->
-    <div class="row mb-5">
-        <div class="col-md-8">
-            <h1 class="display-6 fw-bold text-dark">Dashboard</h1>
-            <p class="lead text-muted">Welcome to Task Management System</p>
-        </div>
-        <div class="col-md-4 text-end">
-            @if(auth()->user()->isCustomer())
-                <a href="{{ route('tasks.create') }}" class="btn btn-primary btn-lg">
-                    <i class="bi bi-plus-circle"></i> Create New Task
-                </a>
-            @endif
-        </div>
-    </div>
+<style>
+    :root {
+        --primary-purple: #667eea;
+        --primary-purple-dark: #5568d3;
+        --primary-purple-light: #8b9cf5;
+        --secondary-purple: #764ba2;
+        --purple-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --purple-light-bg: #f5f3ff;
+        --purple-border: #e0d9ff;
+    }
+    
+    [data-theme="dark"] {
+        --primary-purple: #8b9cf5;
+        --primary-purple-dark: #667eea;
+        --primary-purple-light: #a5b4f7;
+        --secondary-purple: #9d6ec9;
+        --purple-gradient: linear-gradient(135deg, #8b9cf5 0%, #9d6ec9 100%);
+        --purple-light-bg: #2d2d44;
+        --purple-border: #3d3d5c;
+    }
+    
+    .dashboard-card {
+        border-radius: 12px;
+        border: none;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .dashboard-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(102, 126, 234, 0.2) !important;
+    }
+    .stat-card {
+        background: var(--card-bg);
+        border-radius: 12px;
+        padding: 1.5rem;
+        border: 1px solid var(--purple-border);
+        transition: all 0.3s ease;
+    }
+    .stat-card:hover {
+        border-color: var(--primary-purple-light);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+    }
+    .stat-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        background: var(--purple-light-bg);
+        color: var(--primary-purple);
+    }
+    .percentage-badge {
+        font-size: 0.75rem;
+        padding: 0.25rem 0.5rem;
+        border-radius: 6px;
+        font-weight: 600;
+    }
+    .percentage-badge.positive {
+        background-color: rgba(102, 126, 234, 0.1);
+        color: var(--primary-purple);
+    }
+    .percentage-badge.negative {
+        background-color: rgba(220, 38, 38, 0.1);
+        color: #dc2626;
+    }
+    .action-card {
+        border-radius: 12px;
+        padding: 2rem;
+        cursor: pointer;
+        text-decoration: none;
+        display: block;
+        transition: all 0.3s;
+        position: relative;
+        overflow: hidden;
+        border: 2px solid transparent;
+    }
+    .action-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 24px rgba(102, 126, 234, 0.25) !important;
+    }
+    .action-card .arrow-icon {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        font-size: 1.5rem;
+        opacity: 0.7;
+    }
+    .gradient-primary {
+        background: var(--purple-gradient);
+    }
+    .gradient-secondary {
+        background: var(--card-bg);
+        border: 2px solid var(--primary-purple);
+    }
+    .gradient-secondary:hover {
+        background: var(--purple-light-bg);
+    }
+    .activity-item {
+        padding: 1rem;
+        border-left: 3px solid transparent;
+        transition: all 0.2s;
+        border-radius: 8px;
+    }
+    .activity-item:hover {
+        background-color: var(--purple-light-bg);
+        border-left-color: var(--primary-purple);
+    }
+    .status-badge {
+        font-size: 0.75rem;
+        padding: 0.35rem 0.75rem;
+        border-radius: 20px;
+        font-weight: 600;
+    }
+    .status-badge.pending {
+        background-color: #fef3c7;
+        color: #92400e;
+    }
+    .status-badge.in-progress {
+        background-color: rgba(102, 126, 234, 0.15);
+        color: var(--primary-purple-dark);
+    }
+    .status-badge.in-review {
+        background-color: rgba(118, 75, 162, 0.15);
+        color: var(--secondary-purple);
+    }
+    .status-badge.completed {
+        background-color: #d1fae5;
+        color: #065f46;
+    }
+    .btn-outline-primary {
+        color: var(--primary-purple);
+        border-color: var(--primary-purple);
+    }
+    .btn-outline-primary:hover {
+        background-color: var(--primary-purple);
+        border-color: var(--primary-purple);
+        color: white;
+    }
+    
+    [data-theme="dark"] .status-badge.pending {
+        background-color: rgba(254, 243, 199, 0.2);
+        color: #fbbf24;
+    }
+    
+    [data-theme="dark"] .status-badge.completed {
+        background-color: rgba(209, 250, 229, 0.2);
+        color: #34d399;
+    }
+    
+    [data-theme="dark"] .card {
+        background-color: var(--card-bg);
+        border-color: var(--border-color);
+    }
+    
+    [data-theme="dark"] .text-muted {
+        color: var(--muted-text) !important;
+    }
+    
+    /* Additional dark mode support */
+    [data-theme="dark"] .dashboard-card {
+        background-color: var(--card-bg);
+        color: var(--text-color);
+    }
+    
+    [data-theme="dark"] .stat-card {
+        background-color: var(--card-bg);
+        color: var(--text-color);
+    }
+    
+    [data-theme="dark"] .action-card {
+        background-color: var(--card-bg);
+        color: var(--text-color);
+    }
+    
+    [data-theme="dark"] .action-card.gradient-secondary {
+        background-color: var(--card-bg);
+        border-color: var(--primary-purple);
+    }
+    
+    [data-theme="dark"] .action-card.gradient-secondary h4 {
+        color: var(--primary-purple);
+    }
+    
+    [data-theme="dark"] .action-card.gradient-secondary p {
+        color: var(--muted-text);
+    }
+    
+    [data-theme="dark"] .activity-item {
+        color: var(--text-color);
+    }
+    
+    [data-theme="dark"] .activity-item h6 {
+        color: var(--text-color);
+    }
+    
+    [data-theme="dark"] .list-group-flush {
+        border-color: var(--border-color);
+    }
+    
+    [data-theme="dark"] .deadline-item {
+        background-color: var(--purple-light-bg) !important;
+        color: var(--text-color);
+    }
+    
+    [data-theme="dark"] .deadline-item .fw-semibold {
+        color: var(--text-color);
+    }
+    
+    [data-theme="dark"] .page-title,
+    [data-theme="dark"] .page-subtitle {
+        color: var(--text-color) !important;
+    }
+    
+    [data-theme="dark"] h1, 
+    [data-theme="dark"] h2, 
+    [data-theme="dark"] h3, 
+    [data-theme="dark"] h4, 
+    [data-theme="dark"] h5, 
+    [data-theme="dark"] h6 {
+        color: var(--text-color) !important;
+    }
+    
+    [data-theme="dark"] .display-6 {
+        color: var(--text-color) !important;
+    }
+</style>
 
-    <!-- Check if customer has projects -->
+<div class="container py-4">
     @if(auth()->user()->isCustomer())
         @php
-            $projects = auth()->user()->projects;
+            $user = auth()->user();
+            $allTasks = $user->tasksCreated;
+            $totalTasks = $allTasks->count();
+            $inProgressTasks = $allTasks->where('status', 'in_progress')->count();
+            $completedTasks = $allTasks->where('status', 'done')->count();
+            $pendingTasks = $allTasks->where('status', 'pending')->count();
+            
+            // Calculate percentage changes (mock data for demo - you can implement real calculation)
+            $totalChange = $totalTasks > 0 ? 12 : 0;
+            $inProgressChange = $inProgressTasks > 0 ? 5 : 0;
+            $completedChange = $completedTasks > 0 ? 8 : 0;
+            $pendingChange = $pendingTasks > 0 ? -3 : 0;
+            
+            // Get recent tasks
+            $recentTasks = $user->tasksCreated()->with('project', 'assignedTo')->latest()->take(4)->get();
         @endphp
 
-        @if($projects->isEmpty())
-            <!-- No Projects Alert -->
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                <i class="bi bi-exclamation-triangle"></i>
-                <strong>No Projects Found!</strong> 
-                <p class="mb-0 mt-2">You need to have projects assigned to you before you can create tasks. Please contact your administrator to assign a project to you.</p>
-            </div>
-
-            <div class="card border-0 shadow-sm">
-                <div class="card-body text-center py-5">
-                    <i class="bi bi-folder-x" style="font-size: 4rem; color: #ccc;"></i>
-                    <h4 class="mt-4">No Projects Yet</h4>
-                    <p class="text-muted">Once an administrator assigns you a project, you'll be able to start creating and managing tasks.</p>
+        <!-- Welcome Header -->
+        <div class="mb-4">
+            <div class="d-flex align-items-center gap-3">
+                <div class="profile-avatar" style="width: 60px; height: 60px; border-radius: 50%; overflow: hidden; border: 3px solid var(--primary-purple); background: var(--purple-gradient); display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem;">
+                    @if($user->profile_picture)
+                        <img src="{{ asset('storage/' . $user->profile_picture) }}" alt="{{ $user->name }}" style="width: 100%; height: 100%; object-fit: cover;">
+                    @else
+                        <i class="bi bi-person-circle"></i>
+                    @endif
+                </div>
+                <div>
+                    <h1 class="display-6 fw-bold mb-1">Welcome back, {{ $user->name }}! 👋</h1>
+                    <p class="text-muted mb-0">Here's an overview of your tasks and progress</p>
                 </div>
             </div>
-        @else
-            <!-- Projects and Tasks Summary -->
-            <div class="row mb-4">
-                <!-- Projects Summary -->
-                <div class="col-md-6 mb-3">
-                    <div class="card border-0 shadow-sm h-100">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h6 class="text-muted mb-2">My Projects</h6>
-                                    <h3 class="mb-0">{{ auth()->user()->projects()->has('tasks')->count() }}</h3>
-                                </div>
-                                <i class="bi bi-folder" style="font-size: 2rem; color: #0d6efd;"></i>
-                            </div>
-                            <div class="mt-3">
-                                <a href="{{ route('projects.index') }}" class="btn btn-sm btn-outline-primary">
-                                    View All Projects <i class="bi bi-arrow-right"></i>
-                                </a>
-                            </div>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="row g-3 mb-4">
+            <!-- Total Tasks -->
+            <div class="col-md-6 col-lg-3">
+                <div class="stat-card shadow-sm">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div class="stat-icon">
+                            <i class="bi bi-list-check"></i>
                         </div>
+                        @if($totalChange != 0)
+                            <span class="percentage-badge {{ $totalChange > 0 ? 'positive' : 'negative' }}">
+                                {{ $totalChange > 0 ? '+' : '' }}{{ $totalChange }}%
+                            </span>
+                        @endif
                     </div>
-                </div>
-
-                <!-- Tasks Summary -->
-                <div class="col-md-6 mb-3">
-                    <div class="card border-0 shadow-sm h-100">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h6 class="text-muted mb-2">Developer Tasks</h6>
-                                    <h3 class="mb-0">{{ auth()->user()->tasksCreated()->count() }}</h3>
-                                </div>
-                                <i class="bi bi-list-check" style="font-size: 2rem; color: #198754;"></i>
-                            </div>
-                            <div class="mt-3">
-                                <a href="{{ route('tasks.index') }}" class="btn btn-sm btn-outline-primary">
-                                    View All Tasks <i class="bi bi-arrow-right"></i>
-                                </a>
-                            </div>
-                        </div>
+                    <div>
+                        <p class="text-muted mb-1 small">Total Tasks</p>
+                        <h2 class="mb-0 fw-bold" style="color: var(--primary-purple);">{{ $totalTasks }}</h2>
                     </div>
                 </div>
             </div>
-        @endif
+
+            <!-- In Progress -->
+            <div class="col-md-6 col-lg-3">
+                <div class="stat-card shadow-sm">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div class="stat-icon">
+                            <i class="bi bi-arrow-repeat"></i>
+                        </div>
+                        @if($inProgressChange != 0)
+                            <span class="percentage-badge {{ $inProgressChange > 0 ? 'positive' : 'negative' }}">
+                                {{ $inProgressChange > 0 ? '+' : '' }}{{ $inProgressChange }}%
+                            </span>
+                        @endif
+                    </div>
+                    <div>
+                        <p class="text-muted mb-1 small">In Progress</p>
+                        <h2 class="mb-0 fw-bold" style="color: var(--primary-purple);">{{ $inProgressTasks }}</h2>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Completed -->
+            <div class="col-md-6 col-lg-3">
+                <div class="stat-card shadow-sm">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div class="stat-icon">
+                            <i class="bi bi-check-circle"></i>
+                        </div>
+                        @if($completedChange != 0)
+                            <span class="percentage-badge {{ $completedChange > 0 ? 'positive' : 'negative' }}">
+                                {{ $completedChange > 0 ? '+' : '' }}{{ $completedChange }}%
+                            </span>
+                        @endif
+                    </div>
+                    <div>
+                        <p class="text-muted mb-1 small">Completed</p>
+                        <h2 class="mb-0 fw-bold" style="color: var(--primary-purple);">{{ $completedTasks }}</h2>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pending -->
+            <div class="col-md-6 col-lg-3">
+                <div class="stat-card shadow-sm">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div class="stat-icon">
+                            <i class="bi bi-clock"></i>
+                        </div>
+                        @if($pendingChange != 0)
+                            <span class="percentage-badge {{ $pendingChange > 0 ? 'positive' : 'negative' }}">
+                                {{ $pendingChange > 0 ? '+' : '' }}{{ $pendingChange }}%
+                            </span>
+                        @endif
+                    </div>
+                    <div>
+                        <p class="text-muted mb-1 small">Pending</p>
+                        <h2 class="mb-0 fw-bold" style="color: var(--primary-purple);">{{ $pendingTasks }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Cards -->
+        <div class="row g-3 mb-4">
+            <!-- Create New Task -->
+            <div class="col-md-6">
+                <a href="{{ route('tasks.create') }}" class="action-card gradient-primary text-white shadow">
+                    <i class="bi bi-arrow-up-right arrow-icon"></i>
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="stat-icon bg-white bg-opacity-25 me-3" style="color: white;">
+                            <i class="bi bi-plus-circle"></i>
+                        </div>
+                    </div>
+                    <h4 class="fw-bold mb-2">Create New Task</h4>
+                    <p class="mb-0 opacity-75">Start tracking a new task and manage it efficiently</p>
+                </a>
+            </div>
+
+            <!-- View All Tasks -->
+            <div class="col-md-6">
+                <a href="{{ route('tasks.index') }}" class="action-card gradient-secondary shadow">
+                    <i class="bi bi-arrow-up-right arrow-icon" style="color: var(--primary-purple);"></i>
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="stat-icon me-3">
+                            <i class="bi bi-list-ul"></i>
+                        </div>
+                    </div>
+                    <h4 class="fw-bold mb-2" style="color: var(--primary-purple);">View All Tasks</h4>
+                    <p class="mb-0 text-muted">Access and manage all your tasks in one place</p>
+                </a>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="card dashboard-card shadow-sm">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h5 class="fw-bold mb-1">Recent Activity</h5>
+                        <p class="text-muted small mb-0">Your latest task updates</p>
+                    </div>
+                    <a href="{{ route('tasks.index') }}" class="btn btn-sm btn-outline-primary">
+                        View All <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
+                </div>
+
+                @if($recentTasks->isEmpty())
+                    <div class="text-center py-5">
+                        <i class="bi bi-inbox" style="font-size: 3rem; color: #dee2e6;"></i>
+                        <p class="text-muted mt-3 mb-0">No tasks yet. Create your first task to get started!</p>
+                    </div>
+                @else
+                    <div class="list-group list-group-flush">
+                        @foreach($recentTasks as $task)
+                            <div class="activity-item border-bottom">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-1 fw-semibold">{{ $task->title }}</h6>
+                                        <p class="text-muted small mb-2">{{ $task->category }}</p>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span class="text-muted small">
+                                                <i class="bi bi-calendar3"></i> {{ $task->created_at->format('Y-m-d') }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="text-end">
+                                        @php
+                                            $statusConfig = [
+                                                'pending' => ['class' => 'pending', 'text' => 'Pending'],
+                                                'in_progress' => ['class' => 'in-progress', 'text' => 'In Progress'],
+                                                'in_review' => ['class' => 'in-review', 'text' => 'In Review'],
+                                                'done' => ['class' => 'completed', 'text' => 'Completed']
+                                            ];
+                                            $config = $statusConfig[$task->status] ?? $statusConfig['pending'];
+                                        @endphp
+                                        <span class="status-badge {{ $config['class'] }}">
+                                            {{ $config['text'] }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
+            </div>
+        </div>
+
     @elseif(auth()->user()->isDeveloper())
         <!-- Developer view - Show Assigned Tasks -->
         @php
             $assignedTasks = auth()->user()->tasksAssigned()->latest()->get();
             $roleName = auth()->user()->getRoleLabel();
+            
+            // Calculate completion rate
+            $totalTasks = $assignedTasks->count();
+            $completedTasks = $assignedTasks->where('status', 'done')->count();
+            $completionRate = $totalTasks > 0 ? round(($completedTasks / $totalTasks) * 100) : 0;
+            
+            // Get tasks with deadlines
+            $upcomingDeadlines = $assignedTasks->filter(function($task) {
+                return $task->deadline && $task->deadline->isFuture() && $task->status !== 'done';
+            })->sortBy('deadline')->take(5);
+            
+            $overdueTasksCount = $assignedTasks->filter(function($task) {
+                return $task->deadline && $task->deadline->isPast() && $task->status !== 'done';
+            })->count();
         @endphp
 
         <!-- Welcome Message -->
-        <div class="alert alert-info alert-dismissible fade show" role="alert">
-            <i class="bi bi-info-circle"></i>
-            <strong>Welcome, {{ auth()->user()->name }}!</strong>
-            <p class="mb-0 mt-2">You are logged in as <strong>{{ $roleName }}</strong></p>
+        <div class="page-header mb-4">
+            <div class="d-flex align-items-center gap-3">
+                <div class="profile-avatar" style="width: 60px; height: 60px; border-radius: 50%; overflow: hidden; border: 3px solid var(--primary-purple); background: var(--purple-gradient); display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem;">
+                    @if(auth()->user()->profile_picture)
+                        <img src="{{ asset('storage/' . auth()->user()->profile_picture) }}" alt="{{ auth()->user()->name }}" style="width: 100%; height: 100%; object-fit: cover;">
+                    @else
+                        <i class="bi bi-person-circle"></i>
+                    @endif
+                </div>
+                <div>
+                    <h1 class="page-title mb-1">Welcome back, {{ auth()->user()->name }}! 👋</h1>
+                    <p class="page-subtitle mb-0">{{ $roleName }} - Here's your task overview</p>
+                </div>
+            </div>
         </div>
 
-        <!-- Assigned Tasks Summary -->
-        <div class="row mb-4">
-            <div class="col-md-3 mb-3">
-                <div class="card border-0 shadow-sm">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="text-muted mb-2">Total Tasks</h6>
-                                <h3 class="mb-0">{{ $assignedTasks->count() }}</h3>
-                            </div>
-                            <i class="bi bi-list-check" style="font-size: 2rem; color: #0d6efd;"></i>
+        <!-- Stats Cards -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="stat-card shadow-sm">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div class="stat-icon">
+                            <i class="bi bi-list-check"></i>
                         </div>
+                    </div>
+                    <div>
+                        <p class="text-muted mb-1 small">Total Tasks</p>
+                        <h2 class="mb-0 fw-bold" style="color: var(--primary-purple);">{{ $assignedTasks->count() }}</h2>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3 mb-3">
-                <div class="card border-0 shadow-sm">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="text-muted mb-2">Pending</h6>
-                                <h3 class="mb-0">{{ $assignedTasks->where('status', 'pending')->count() }}</h3>
-                            </div>
-                            <i class="bi bi-clock" style="font-size: 2rem; color: #6c757d;"></i>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="stat-card shadow-sm">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div class="stat-icon">
+                            <i class="bi bi-arrow-repeat"></i>
                         </div>
+                    </div>
+                    <div>
+                        <p class="text-muted mb-1 small">In Progress</p>
+                        <h2 class="mb-0 fw-bold" style="color: var(--primary-purple);">{{ $assignedTasks->where('status', 'in_progress')->count() }}</h2>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3 mb-3">
-                <div class="card border-0 shadow-sm">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="text-muted mb-2">In Progress</h6>
-                                <h3 class="mb-0">{{ $assignedTasks->where('status', 'in_progress')->count() }}</h3>
-                            </div>
-                            <i class="bi bi-arrow-repeat" style="font-size: 2rem; color: #ffc107;"></i>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="stat-card shadow-sm">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div class="stat-icon">
+                            <i class="bi bi-check-circle"></i>
                         </div>
+                    </div>
+                    <div>
+                        <p class="text-muted mb-1 small">Completed</p>
+                        <h2 class="mb-0 fw-bold" style="color: var(--primary-purple);">{{ $assignedTasks->where('status', 'done')->count() }}</h2>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3 mb-3">
-                <div class="card border-0 shadow-sm">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="text-muted mb-2">In Review</h6>
-                                <h3 class="mb-0">{{ $assignedTasks->where('status', 'in_review')->count() }}</h3>
-                            </div>
-                            <i class="bi bi-search" style="font-size: 2rem; color: #0dcaf0;"></i>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="stat-card shadow-sm">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div class="stat-icon">
+                            <i class="bi bi-exclamation-triangle"></i>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Second row for completed -->
-        <div class="row mb-4">
-            <div class="col-md-3 mb-3">
-                <div class="card border-0 shadow-sm">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="text-muted mb-2">Completed</h6>
-                                <h3 class="mb-0">{{ $assignedTasks->where('status', 'done')->count() }}</h3>
-                            </div>
-                            <i class="bi bi-check-circle" style="font-size: 2rem; color: #198754;"></i>
-                        </div>
+                    <div>
+                        <p class="text-muted mb-1 small">Overdue</p>
+                        <h2 class="mb-0 fw-bold" style="color: var(--primary-purple);">{{ $overdueTasksCount }}</h2>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- View Full Task Details -->
-        <div class="row mt-4">
-            <div class="col-12">
-                <a href="{{ route('tasks.index') }}" class="btn btn-primary btn-lg">
-                    <i class="bi bi-arrow-right"></i> View All Assigned Tasks
-                </a>
+        <!-- Main Content Grid -->
+        <div class="row g-3 mb-4">
+            <!-- Progress Chart -->
+            <div class="col-lg-6">
+                <div class="dashboard-card shadow-sm">
+                    <div class="card-body p-4">
+                        <h5 class="fw-bold mb-4">
+                            <i class="bi bi-graph-up text-purple me-2"></i>
+                            Task Progress
+                        </h5>
+                        
+                        <!-- Completion Rate -->
+                        <div class="text-center mb-4">
+                            <div class="progress-circle mx-auto" style="width: 150px; height: 150px; position: relative;">
+                                <svg width="150" height="150" style="transform: rotate(-90deg);">
+                                    <circle cx="75" cy="75" r="65" fill="none" stroke="var(--purple-border)" stroke-width="12"/>
+                                    <circle cx="75" cy="75" r="65" fill="none" stroke="var(--primary-purple)" stroke-width="12"
+                                            stroke-dasharray="{{ 2 * 3.14159 * 65 }}"
+                                            stroke-dashoffset="{{ 2 * 3.14159 * 65 * (1 - $completionRate / 100) }}"
+                                            stroke-linecap="round"
+                                            style="transition: stroke-dashoffset 1s ease;"/>
+                                </svg>
+                                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                                    <div style="font-size: 2rem; font-weight: 700; color: var(--primary-purple);">{{ $completionRate }}%</div>
+                                    <div style="font-size: 0.85rem; color: var(--muted-text);">Complete</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Status Breakdown -->
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <div class="p-2 rounded" style="background: var(--purple-light-bg);">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div style="width: 8px; height: 8px; border-radius: 50%; background: #fbbf24;"></div>
+                                        <small class="text-muted">Pending</small>
+                                    </div>
+                                    <div class="fw-bold" style="color: var(--primary-purple);">{{ $assignedTasks->where('status', 'pending')->count() }}</div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="p-2 rounded" style="background: var(--purple-light-bg);">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--primary-purple);"></div>
+                                        <small class="text-muted">In Progress</small>
+                                    </div>
+                                    <div class="fw-bold" style="color: var(--primary-purple);">{{ $assignedTasks->where('status', 'in_progress')->count() }}</div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="p-2 rounded" style="background: var(--purple-light-bg);">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div style="width: 8px; height: 8px; border-radius: 50%; background: #a855f7;"></div>
+                                        <small class="text-muted">In Review</small>
+                                    </div>
+                                    <div class="fw-bold" style="color: var(--primary-purple);">{{ $assignedTasks->where('status', 'in_review')->count() }}</div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="p-2 rounded" style="background: var(--purple-light-bg);">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div style="width: 8px; height: 8px; border-radius: 50%; background: #10b981;"></div>
+                                        <small class="text-muted">Completed</small>
+                                    </div>
+                                    <div class="fw-bold" style="color: var(--primary-purple);">{{ $assignedTasks->where('status', 'done')->count() }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            <!-- Upcoming Deadlines Calendar -->
+            <div class="col-lg-6">
+                <div class="dashboard-card shadow-sm">
+                    <div class="card-body p-4">
+                        <h5 class="fw-bold mb-4">
+                            <i class="bi bi-calendar-event text-purple me-2"></i>
+                            Upcoming Deadlines
+                        </h5>
+                        
+                        @if($upcomingDeadlines->count() > 0)
+                            <div class="deadline-list">
+                                @foreach($upcomingDeadlines as $task)
+                                    @php
+                                        $daysUntil = now()->diffInDays($task->deadline, false);
+                                        $isUrgent = $daysUntil <= 3;
+                                    @endphp
+                                    <div class="deadline-item" style="padding: 0.75rem; border-left: 3px solid {{ $isUrgent ? '#ef4444' : 'var(--primary-purple)' }}; background: var(--purple-light-bg); border-radius: 8px; margin-bottom: 0.75rem;">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div class="flex-grow-1">
+                                                <div class="fw-semibold" style="color: var(--text-color);">{{ Str::limit($task->title, 30) }}</div>
+                                                <small class="text-muted">
+                                                    <i class="bi bi-tag"></i> {{ ucfirst($task->category) }}
+                                                </small>
+                                            </div>
+                                            <div class="text-end">
+                                                <div class="fw-bold" style="color: {{ $isUrgent ? '#ef4444' : 'var(--primary-purple)' }}; font-size: 0.9rem;">
+                                                    {{ $task->deadline->format('M d') }}
+                                                </div>
+                                                <small style="color: {{ $isUrgent ? '#ef4444' : 'var(--muted-text)' }};">
+                                                    @if($daysUntil == 0)
+                                                        Today!
+                                                    @elseif($daysUntil == 1)
+                                                        Tomorrow
+                                                    @else
+                                                        {{ $daysUntil }} days
+                                                    @endif
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @else
+                            <div class="text-center py-4">
+                                <i class="bi bi-calendar-check" style="font-size: 3rem; color: var(--muted-text); opacity: 0.5;"></i>
+                                <p class="text-muted mt-3 mb-0">No upcoming deadlines</p>
+                            </div>
+                        @endif
+
+                        @if($overdueTasksCount > 0)
+                            <div class="alert alert-danger mt-3 mb-0" style="border-radius: 10px;">
+                                <i class="bi bi-exclamation-triangle-fill"></i>
+                                <strong>{{ $overdueTasksCount }}</strong> task{{ $overdueTasksCount > 1 ? 's are' : ' is' }} overdue!
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- View All Tasks Button -->
+        <div class="text-center">
+            <a href="{{ route('tasks.index') }}" class="btn btn-outline-primary" style="border-radius: 10px; padding: 0.75rem 2rem; font-weight: 600;">
+                <i class="bi bi-list-ul me-2"></i> View All Assigned Tasks
+            </a>
         </div>
     @else
             <!-- Generic Non-developer view -->

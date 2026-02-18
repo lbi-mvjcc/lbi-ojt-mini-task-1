@@ -28,6 +28,9 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'profile_picture',
+        'bio',
+        'phone',
     ];
 
     /**
@@ -135,5 +138,30 @@ class User extends Authenticatable
         ];
 
         return $labels[$this->role] ?? ucfirst(str_replace('_', ' ', $this->role));
+    }
+
+    /**
+     * Get profile picture URL or default avatar
+     */
+    public function getProfilePictureUrl(): string
+    {
+        if ($this->profile_picture && file_exists(public_path('storage/' . $this->profile_picture))) {
+            return asset('storage/' . $this->profile_picture);
+        }
+        
+        // Return default avatar URL or placeholder
+        return asset('assets/default-avatar.png');
+    }
+
+    /**
+     * Get profile picture HTML
+     */
+    public function getProfilePictureHtml(int $size = 32): string
+    {
+        if ($this->profile_picture && file_exists(public_path('storage/' . $this->profile_picture))) {
+            return '<img src="' . asset('storage/' . $this->profile_picture) . '" alt="' . $this->name . '" style="width: ' . $size . 'px; height: ' . $size . 'px; border-radius: 50%; object-fit: cover;">';
+        }
+        
+        return '<i class="bi bi-person-circle" style="font-size: ' . ($size * 0.8) . 'px;"></i>';
     }
 }
