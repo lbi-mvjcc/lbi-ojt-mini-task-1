@@ -1,0 +1,42 @@
+<?php
+
+namespace App\Console;
+
+use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+
+class Kernel extends ConsoleKernel
+{
+    /**
+     * Define the application's command schedule.
+     *
+     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
+     * @return void
+     */
+    protected function schedule(Schedule $schedule)
+    {
+        // Check task deadlines every day at 8:00 AM
+        $schedule->command('tasks:check-deadlines')
+                ->dailyAt('08:00')
+                ->withoutOverlapping()
+                ->runInBackground();
+
+        // Also check again at 5:00 PM for same-day tasks
+        $schedule->command('tasks:check-deadlines')
+                ->dailyAt('17:00')
+                ->withoutOverlapping()
+                ->runInBackground();
+    }
+
+    /**
+     * Register the commands for the application.
+     *
+     * @return void
+     */
+    protected function commands()
+    {
+        $this->load(__DIR__.'/Commands');
+
+        require base_path('routes/console.php');
+    }
+}
