@@ -13,8 +13,19 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!auth()->check() || !auth()->user()->isAdmin()) {
-            abort(403, 'Unauthorized - Admin access only');
+        // Check if user is logged in
+        if (!auth()->check()) {
+            abort(403, 'Unauthorized - You must be logged in');
+        }
+        
+        $user = auth()->user();
+        
+        // Check if user is admin
+        if (!$user->isAdmin()) {
+            // Provide detailed error message for debugging
+            $message = "Unauthorized - Admin access only. Your role is '{$user->role}' but it should be 'admin'. ";
+            $message .= "Please update your role in the database and log out/in again.";
+            abort(403, $message);
         }
 
         return $next($request);
