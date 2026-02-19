@@ -20,6 +20,12 @@ class TaskController extends Controller
     {
         $user = Auth::user();
         
+        // Admin can see all tasks
+        if ($user->isAdmin()) {
+            $tasks = Task::with('createdBy', 'assignedTo', 'project')->latest()->get();
+            return view('tasks.index', compact('tasks'));
+        }
+        
         if ($user->isCustomer()) {
             // Get all tasks created by the customer, grouped by unique task (title + project + category)
             $rawTasks = $user->tasksCreated()->with('project', 'assignedTo')->latest()->get();

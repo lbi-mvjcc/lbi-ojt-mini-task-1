@@ -314,7 +314,61 @@
 </style>
 
 <div class="container py-4">
-    @if(auth()->user()->isCustomer())
+    @if(auth()->user()->isAdmin())
+        <!-- ADMIN VIEW - See all tasks -->
+        <div class="page-header">
+            <h1 class="page-title">All Tasks (Admin View)</h1>
+            <p class="page-subtitle">View all tasks in the system</p>
+        </div>
+
+        @if($tasks->count() > 0)
+            <div class="task-grid">
+                @foreach($tasks as $task)
+                    <div class="task-card">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div class="flex-grow-1">
+                                <h5 class="task-title">{{ $task->title }}</h5>
+                                <p class="task-description">{{ Str::limit($task->description, 100) }}</p>
+                                
+                                <div class="task-meta">
+                                    <span class="badge bg-info">{{ ucfirst(str_replace('_', ' ', $task->category)) }}</span>
+                                    <span class="badge bg-secondary">{{ $task->project->name ?? 'No Project' }}</span>
+                                    @if($task->status === 'pending')
+                                        <span class="badge bg-warning">Pending</span>
+                                    @elseif($task->status === 'in_progress')
+                                        <span class="badge bg-info">In Progress</span>
+                                    @elseif($task->status === 'in_review')
+                                        <span class="badge bg-primary">In Review</span>
+                                    @elseif($task->status === 'done')
+                                        <span class="badge bg-success">Done</span>
+                                    @endif
+                                </div>
+                                
+                                <div class="mt-2">
+                                    <small class="text-muted">
+                                        Created by: {{ $task->createdBy->name ?? 'Unknown' }} | 
+                                        Assigned to: {{ $task->assignedTo->name ?? 'Unassigned' }}
+                                    </small>
+                                </div>
+                            </div>
+                            
+                            <div class="task-actions">
+                                <a href="{{ route('tasks.show', $task) }}" class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-eye"></i> View
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        @else
+            <div class="empty-state">
+                <i class="bi bi-inbox"></i>
+                <p>No tasks found in the system</p>
+            </div>
+        @endif
+
+    @elseif(auth()->user()->isCustomer())
         <!-- CUSTOMER VIEW -->
         <div class="page-header">
             <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
