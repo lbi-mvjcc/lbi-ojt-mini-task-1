@@ -40,6 +40,10 @@
                 transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
             }
             
+            html[data-theme="dark"] {
+                background-color: #0f172a !important;
+            }
+            
             body {
                 background-color: var(--bg-color) !important;
                 color: var(--text-color) !important;
@@ -52,6 +56,14 @@
             
             main {
                 background-color: var(--bg-color);
+            }
+            
+            /* Force dark mode backgrounds */
+            [data-theme="dark"] body,
+            [data-theme="dark"] html,
+            [data-theme="dark"] main,
+            [data-theme="dark"] .flex-grow-1 {
+                background-color: #0f172a !important;
             }
             
             .navbar-purple {
@@ -308,8 +320,29 @@
             
             [data-theme="dark"] p,
             [data-theme="dark"] span,
-            [data-theme="dark"] div {
+            [data-theme="dark"] div,
+            [data-theme="dark"] label {
                 color: var(--text-color);
+            }
+            
+            [data-theme="dark"] .text-white {
+                color: #ffffff !important;
+            }
+            
+            /* Ensure action card text is visible */
+            [data-theme="dark"] .action-card p,
+            [data-theme="dark"] .action-card h4,
+            [data-theme="dark"] .action-card h5 {
+                color: var(--text-color) !important;
+            }
+            
+            /* Fix gradient cards in dark mode */
+            [data-theme="dark"] .gradient-primary {
+                background: linear-gradient(135deg, #8b9cf5 0%, #9d6ec9 100%) !important;
+            }
+            
+            [data-theme="dark"] .gradient-primary * {
+                color: white !important;
             }
             
             [data-theme="dark"] .small {
@@ -421,18 +454,18 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ route('tasks.index') }}">Task</a></li>
+                        <li class="nav-item me-2"><a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a></li>
+                        <li class="nav-item me-2"><a class="nav-link" href="{{ route('tasks.index') }}">Task</a></li>
                         @auth
                             @if(auth()->user()->isCustomer())
-                                <li class="nav-item"><a class="nav-link" href="{{ route('projects.index') }}">Project</a></li>
+                                <li class="nav-item me-2"><a class="nav-link" href="{{ route('projects.index') }}">Project</a></li>
                             @endif
                         @endauth
                     </ul>
                     
                     @auth
                     <!-- Search Bar -->
-                    <form class="d-flex me-3" method="GET" action="{{ route('search') }}" role="search">
+                    <form class="d-flex me-4" method="GET" action="{{ route('search') }}" role="search">
                         <input type="search" name="search" placeholder="Search..." 
                                aria-label="Search" value="{{ request('search') }}" 
                                style="
@@ -453,12 +486,12 @@
                     </form>
 
                     <!-- Theme Toggle -->
-                    <button class="theme-toggle me-3" id="themeToggle" title="Toggle theme">
+                    <button class="theme-toggle me-4" id="themeToggle" title="Toggle theme">
                         <i class="bi bi-moon-stars" id="themeIcon"></i>
                     </button>
 
                     <!-- Notifications -->
-                    <div class="dropdown me-3">
+                    <div class="dropdown me-4">
                         <button class="btn btn-outline-light position-relative" type="button" id="notificationDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="border: none; background: transparent;">
                             <i class="bi bi-bell" style="font-size: 1.2rem;"></i>
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="notification-badge" style="display: none; font-size: 0.7rem;">

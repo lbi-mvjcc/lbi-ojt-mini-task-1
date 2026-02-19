@@ -189,6 +189,16 @@
         color: var(--muted-text);
     }
     
+    /* Fix gradient primary card text in dark mode */
+    [data-theme="dark"] .action-card.gradient-primary {
+        background: linear-gradient(135deg, #8b9cf5 0%, #9d6ec9 100%);
+    }
+    
+    [data-theme="dark"] .action-card.gradient-primary h4,
+    [data-theme="dark"] .action-card.gradient-primary p {
+        color: white !important;
+    }
+    
     [data-theme="dark"] .activity-item {
         color: var(--text-color);
     }
@@ -226,6 +236,22 @@
     
     [data-theme="dark"] .display-6 {
         color: var(--text-color) !important;
+    }
+    
+    /* Ensure stat numbers are visible */
+    [data-theme="dark"] .stat-card h2 {
+        color: var(--primary-purple) !important;
+    }
+    
+    /* Fix empty state visibility */
+    [data-theme="dark"] .text-center i {
+        color: var(--muted-text);
+    }
+    
+    /* Fix Recent Activity section */
+    [data-theme="dark"] .card-body {
+        background-color: var(--card-bg);
+        color: var(--text-color);
     }
 </style>
 
