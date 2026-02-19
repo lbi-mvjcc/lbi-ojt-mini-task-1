@@ -343,24 +343,6 @@
             </div>
         </div>
 
-        <!-- Admin Panel Quick Access -->
-        <div class="row g-3 mb-4">
-            <div class="col-12">
-                <a href="{{ route('admin.dashboard') }}" class="action-card shadow-sm text-decoration-none" style="background: var(--purple-gradient); color: white; border: none;">
-                    <i class="bi bi-arrow-right-circle arrow-icon"></i>
-                    <div class="d-flex align-items-center gap-3">
-                        <div style="font-size: 3rem;">
-                            <i class="bi bi-speedometer2"></i>
-                        </div>
-                        <div>
-                            <h3 class="mb-1">Go to Admin Dashboard</h3>
-                            <p class="mb-0 opacity-75">Access full admin panel with detailed statistics and management tools</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div>
-
         <!-- Statistics Cards -->
         <div class="row g-3 mb-4">
             <div class="col-md-4">

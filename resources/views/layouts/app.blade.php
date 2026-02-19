@@ -497,9 +497,6 @@
                             @if(auth()->user()->isCustomer())
                                 <li class="nav-item"><a class="nav-link" href="{{ route('projects.index') }}">Project</a></li>
                             @endif
-                            @if(auth()->user()->isAdmin())
-                                <li class="nav-item"><a class="nav-link" href="{{ route('admin.dashboard') }}"><i class="bi bi-shield-check me-1"></i>Admin</a></li>
-                            @endif
                         @endauth
                     </ul>
                     

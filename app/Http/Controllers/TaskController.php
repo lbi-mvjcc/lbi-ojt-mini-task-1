@@ -272,6 +272,20 @@ class TaskController extends Controller
     {
         $user = Auth::user();
         
+        // Admin can view any task
+        if ($user->isAdmin()) {
+            $task->load('submissions.user', 'project', 'createdBy', 'assignedTo');
+            
+            // Get all instances of this task (all developers)
+            $allTaskInstances = Task::where('title', $task->title)
+                ->where('category', $task->category)
+                ->where('project_id', $task->project_id)
+                ->with('assignedTo')
+                ->get();
+                
+            return view('tasks.show', compact('task', 'allTaskInstances'));
+        }
+        
         // Check authorization - allow if customer who created it or developer assigned to it
         if ($user->isCustomer()) {
             if ($task->project->customer_id !== $user->id) {
@@ -311,6 +325,17 @@ class TaskController extends Controller
     {
         $user = Auth::user();
         
+        // Admin can edit any task
+        if ($user->isAdmin()) {
+            // Get count of developers assigned to this task group
+            $developerCount = Task::where('title', $task->title)
+                ->where('category', $task->category)
+                ->where('project_id', $task->project_id)
+                ->count();
+
+            return view('tasks.edit', compact('task', 'developerCount'));
+        }
+        
         // Only customers can edit tasks they created
         if (!$user->isCustomer() || $task->created_by !== $user->id) {
             abort(403, 'Unauthorized');
@@ -333,8 +358,8 @@ class TaskController extends Controller
     {
         $user = Auth::user();
         
-        // Only customers can update their tasks
-        if (!$user->isCustomer() || $task->created_by !== $user->id) {
+        // Admin or customers can update tasks
+        if (!$user->isAdmin() && (!$user->isCustomer() || $task->created_by !== $user->id)) {
             abort(403, 'Unauthorized');
         }
 
@@ -418,8 +443,8 @@ class TaskController extends Controller
     {
         $user = Auth::user();
         
-        // Only customers can delete their tasks
-        if (!$user->isCustomer() || $task->created_by !== $user->id) {
+        // Admin or customers can delete tasks
+        if (!$user->isAdmin() && (!$user->isCustomer() || $task->created_by !== $user->id)) {
             abort(403, 'Unauthorized');
         }
 
@@ -486,8 +511,8 @@ class TaskController extends Controller
     {
         $user = Auth::user();
         
-        // Only allow authorized users to view this
-        if (!$user->isCustomer()) {
+        // Allow admins and customers to view this
+        if (!$user->isAdmin() && !$user->isCustomer()) {
             abort(403, 'Unauthorized');
         }
 
@@ -529,6 +554,12 @@ class TaskController extends Controller
     public function projects()
     {
         $user = Auth::user();
+        
+        // Admin can view all projects, customers can view their own
+        if ($user->isAdmin()) {
+            $projects = Project::has('tasks')->with('tasks')->get();
+            return view('projects.index', compact('projects'));
+        }
         
         // Only customers can view their projects
         if (!$user->isCustomer()) {
