@@ -40,18 +40,33 @@
                 transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
             }
             
-            body {
+            html, body {
                 background-color: var(--bg-color) !important;
                 color: var(--text-color) !important;
                 min-height: 100vh;
             }
             
-            html {
-                background-color: var(--bg-color);
+            body.d-flex {
+                background-color: var(--bg-color) !important;
             }
             
             main {
-                background-color: var(--bg-color);
+                background-color: var(--bg-color) !important;
+                flex: 1;
+            }
+            
+            .flex-grow-1 {
+                background-color: var(--bg-color) !important;
+            }
+            
+            /* Override Bootstrap defaults */
+            .container, .container-fluid {
+                background-color: transparent !important;
+            }
+            
+            /* Ensure sections inherit background */
+            section {
+                background-color: transparent;
             }
             
             .navbar-purple {
@@ -298,12 +313,23 @@
             /* Comprehensive dark mode fixes */
             [data-theme="dark"] .container,
             [data-theme="dark"] main {
-                background-color: var(--bg-color);
+                background-color: var(--bg-color) !important;
                 color: var(--text-color);
             }
             
             [data-theme="dark"] .flex-grow-1 {
-                background-color: var(--bg-color);
+                background-color: var(--bg-color) !important;
+            }
+            
+            [data-theme="dark"] .py-4,
+            [data-theme="dark"] .py-5 {
+                background-color: var(--bg-color) !important;
+            }
+            
+            /* Force background on all major containers */
+            [data-theme="dark"] section,
+            [data-theme="dark"] .container-fluid {
+                background-color: var(--bg-color) !important;
             }
             
             [data-theme="dark"] p,
@@ -441,7 +467,15 @@
             }
         </style>
     </head>
-    <body class="d-flex flex-column min-vh-100" style="background-color: var(--bg-color);">
+    <body class="d-flex flex-column min-vh-100" style="background-color: var(--bg-color) !important;">
+        <script>
+            // Apply theme immediately to prevent flash
+            (function() {
+                const theme = localStorage.getItem('theme') || 'light';
+                document.documentElement.setAttribute('data-theme', theme);
+                document.body.style.backgroundColor = theme === 'dark' ? '#0f172a' : '#ffffff';
+            })();
+        </script>
         <!-- Responsive navbar-->
         <nav class="navbar navbar-expand-lg navbar-dark navbar-purple">
             <div class="container px-5">
@@ -621,6 +655,9 @@
                 htmlElement.setAttribute('data-theme', newTheme);
                 localStorage.setItem('theme', newTheme);
                 updateThemeIcon(newTheme);
+                
+                // Immediately update body background
+                document.body.style.backgroundColor = newTheme === 'dark' ? '#0f172a' : '#ffffff';
             });
             
             function updateThemeIcon(theme) {
