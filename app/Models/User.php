@@ -13,6 +13,7 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     // Role constants
+    const ROLE_ADMIN = 'admin';
     const ROLE_CUSTOMER = 'customer';
     const ROLE_FRONTEND_DEV = 'frontend_dev';
     const ROLE_BACKEND_DEV = 'backend_dev';
@@ -82,6 +83,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Check if user is an admin
+     */
+    public function isAdmin(): bool
+    {
+        return $this->role === self::ROLE_ADMIN;
+    }
+
+    /**
      * Check if user is a customer
      */
     public function isCustomer(): bool
@@ -131,6 +140,7 @@ class User extends Authenticatable
     public function getRoleLabel(): string
     {
         $labels = [
+            self::ROLE_ADMIN => 'Administrator',
             self::ROLE_CUSTOMER => 'Customer',
             self::ROLE_FRONTEND_DEV => 'Frontend Developer',
             self::ROLE_BACKEND_DEV => 'Backend Developer',

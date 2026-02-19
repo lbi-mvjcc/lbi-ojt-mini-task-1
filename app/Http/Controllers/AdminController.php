@@ -1,0 +1,211 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\User;
+use App\Models\Task;
+use App\Models\Project;
+use App\Models\Notification;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules;
+
+class AdminController extends Controller
+{
+    /**
+     * Display admin dashboard
+     */
+    public function index()
+    {
+        // Check if user is admin
+        if (!auth()->user()->isAdmin()) {
+            abort(403, 'Unauthorized - Admin access only');
+        }
+
+        // Get statistics
+        $stats = [
+            'total_users' => User::count(),
+            'total_customers' => User::where('role', 'customer')->count(),
+            'total_developers' => User::whereIn('role', ['frontend_dev', 'backend_dev', 'server_admin'])->count(),
+            'total_tasks' => Task::count(),
+            'pending_tasks' => Task::where('status', 'pending')->count(),
+            'in_progress_tasks' => Task::where('status', 'in_progress')->count(),
+            'completed_tasks' => Task::where('status', 'done')->count(),
+            'total_projects' => Project::count(),
+            'total_notifications' => Notification::count(),
+            'unread_notifications' => Notification::where('is_read', false)->count(),
+        ];
+
+        // Get recent activities
+        $recent_users = User::latest()->take(5)->get();
+        $recent_tasks = Task::with('createdBy', 'assignedTo', 'project')->latest()->take(10)->get();
+        $recent_projects = Project::with('customer')->latest()->take(5)->get();
+
+        return view('admin.dashboard', compact('stats', 'recent_users', 'recent_tasks', 'recent_projects'));
+    }
+
+    /**
+     * Display all users
+     */
+    public function users()
+    {
+        if (!auth()->user()->isAdmin()) {
+            abort(403, 'Unauthorized');
+        }
+
+        $users = User::withCount(['tasksCreated', 'tasksAssigned'])->latest()->paginate(20);
+        return view('admin.users', compact('users'));
+    }
+
+    /**
+     * Show form to create new user
+     */
+    public function createUser()
+    {
+        if (!auth()->user()->isAdmin()) {
+            abort(403, 'Unauthorized');
+        }
+
+        return view('admin.create-user');
+    }
+
+    /**
+     * Store new user
+     */
+    public function storeUser(Request $request)
+    {
+        if (!auth()->user()->isAdmin()) {
+            abort(403, 'Unauthorized');
+        }
+
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'role' => ['required', 'in:admin,customer,frontend_dev,backend_dev,server_admin'],
+        ]);
+
+        User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
+            'role' => $validated['role'],
+        ]);
+
+        return redirect()->route('admin.users')->with('success', 'User created successfully!');
+    }
+
+    /**
+     * Show form to edit user
+     */
+    public function editUser(User $user)
+    {
+        if (!auth()->user()->isAdmin()) {
+            abort(403, 'Unauthorized');
+        }
+
+        return view('admin.edit-user', compact('user'));
+    }
+
+    /**
+     * Update user
+     */
+    public function updateUser(Request $request, User $user)
+    {
+        if (!auth()->user()->isAdmin()) {
+            abort(403, 'Unauthorized');
+        }
+
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $user->id],
+            'role' => ['required', 'in:admin,customer,frontend_dev,backend_dev,server_admin'],
+            'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
+        ]);
+
+        $user->name = $validated['name'];
+        $user->email = $validated['email'];
+        $user->role = $validated['role'];
+
+        if (!empty($validated['password'])) {
+            $user->password = Hash::make($validated['password']);
+        }
+
+        $user->save();
+
+        return redirect()->route('admin.users')->with('success', 'User updated successfully!');
+    }
+
+    /**
+     * Delete user
+     */
+    public function deleteUser(User $user)
+    {
+        if (!auth()->user()->isAdmin()) {
+            abort(403, 'Unauthorized');
+        }
+
+        // Prevent deleting yourself
+        if ($user->id === auth()->id()) {
+            return redirect()->back()->with('error', 'You cannot delete your own account!');
+        }
+
+        $user->delete();
+
+        return redirect()->route('admin.users')->with('success', 'User deleted successfully!');
+    }
+
+    /**
+     * Display all tasks
+     */
+    public function tasks()
+    {
+        if (!auth()->user()->isAdmin()) {
+            abort(403, 'Unauthorized');
+        }
+
+        $tasks = Task::with('createdBy', 'assignedTo', 'project')->latest()->paginate(20);
+        return view('admin.tasks', compact('tasks'));
+    }
+
+    /**
+     * Display all projects
+     */
+    public function projects()
+    {
+        if (!auth()->user()->isAdmin()) {
+            abort(403, 'Unauthorized');
+        }
+
+        $projects = Project::with('customer')->withCount('tasks')->latest()->paginate(20);
+        return view('admin.projects', compact('projects'));
+    }
+
+    /**
+     * Delete task
+     */
+    public function deleteTask(Task $task)
+    {
+        if (!auth()->user()->isAdmin()) {
+            abort(403, 'Unauthorized');
+        }
+
+        $task->delete();
+
+        return redirect()->back()->with('success', 'Task deleted successfully!');
+    }
+
+    /**
+     * Delete project
+     */
+    public function deleteProject(Project $project)
+    {
+        if (!auth()->user()->isAdmin()) {
+            abort(403, 'Unauthorized');
+        }
+
+        $project->delete();
+
+        return redirect()->back()->with('success', 'Project deleted successfully!');
+    }
+}

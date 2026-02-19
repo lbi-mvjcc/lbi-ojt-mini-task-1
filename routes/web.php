@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\TaskSubmissionController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 
@@ -55,6 +56,27 @@ Route::middleware('auth')->group(function () {
         Artisan::call('tasks:check-deadlines');
         return redirect()->back()->with('success', 'Task deadline check completed successfully! Notifications have been sent to developers with approaching or overdue tasks.');
     })->name('tasks.check-deadlines')->middleware('auth');
+});
+
+// Admin routes
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
+    
+    // User management
+    Route::get('/users', [AdminController::class, 'users'])->name('users');
+    Route::get('/users/create', [AdminController::class, 'createUser'])->name('users.create');
+    Route::post('/users', [AdminController::class, 'storeUser'])->name('users.store');
+    Route::get('/users/{user}/edit', [AdminController::class, 'editUser'])->name('users.edit');
+    Route::patch('/users/{user}', [AdminController::class, 'updateUser'])->name('users.update');
+    Route::delete('/users/{user}', [AdminController::class, 'deleteUser'])->name('users.delete');
+    
+    // Task management
+    Route::get('/tasks', [AdminController::class, 'tasks'])->name('tasks');
+    Route::delete('/tasks/{task}', [AdminController::class, 'deleteTask'])->name('tasks.delete');
+    
+    // Project management
+    Route::get('/projects', [AdminController::class, 'projects'])->name('projects');
+    Route::delete('/projects/{project}', [AdminController::class, 'deleteProject'])->name('projects.delete');
 });
 
 require __DIR__.'/auth.php';
