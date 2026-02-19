@@ -315,7 +315,206 @@
 </style>
 
 <div class="container py-4" style="background-color: var(--bg-color);">
-    @if(auth()->user()->isCustomer())
+    @if(auth()->user()->isAdmin())
+        @php
+            $user = auth()->user();
+            $totalUsers = \App\Models\User::count();
+            $totalTasks = \App\Models\Task::count();
+            $totalProjects = \App\Models\Project::count();
+            $pendingTasks = \App\Models\Task::where('status', 'pending')->count();
+            $recentTasks = \App\Models\Task::with('createdBy', 'assignedTo', 'project')->latest()->take(5)->get();
+            $recentUsers = \App\Models\User::latest()->take(5)->get();
+        @endphp
+
+        <!-- Welcome Header -->
+        <div class="mb-4">
+            <div class="d-flex align-items-center gap-3">
+                <div class="profile-avatar" style="width: 60px; height: 60px; border-radius: 50%; overflow: hidden; border: 3px solid var(--primary-purple); background: var(--purple-gradient); display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem;">
+                    @if($user->profile_picture)
+                        <img src="{{ asset('storage/' . $user->profile_picture) }}" alt="{{ $user->name }}" style="width: 100%; height: 100%; object-fit: cover;">
+                    @else
+                        <i class="bi bi-shield-check"></i>
+                    @endif
+                </div>
+                <div>
+                    <h1 class="display-6 fw-bold mb-1">Welcome Admin, {{ $user->name }}! 🛡️</h1>
+                    <p class="text-muted mb-0">System overview and quick access to admin functions</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Panel Quick Access -->
+        <div class="row g-3 mb-4">
+            <div class="col-12">
+                <a href="{{ route('admin.dashboard') }}" class="action-card shadow-sm text-decoration-none" style="background: var(--purple-gradient); color: white; border: none;">
+                    <i class="bi bi-arrow-right-circle arrow-icon"></i>
+                    <div class="d-flex align-items-center gap-3">
+                        <div style="font-size: 3rem;">
+                            <i class="bi bi-speedometer2"></i>
+                        </div>
+                        <div>
+                            <h3 class="mb-1">Go to Admin Dashboard</h3>
+                            <p class="mb-0 opacity-75">Access full admin panel with detailed statistics and management tools</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-4">
+                <div class="stat-card shadow-sm">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div class="stat-icon">
+                            <i class="bi bi-people"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="text-muted mb-1 small">Total Users</p>
+                        <h2 class="mb-0 fw-bold" style="color: var(--primary-purple);">{{ $totalUsers }}</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="stat-card shadow-sm">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div class="stat-icon">
+                            <i class="bi bi-list-task"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="text-muted mb-1 small">Total Tasks</p>
+                        <h2 class="mb-0 fw-bold" style="color: var(--primary-purple);">{{ $totalTasks }}</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="stat-card shadow-sm">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div class="stat-icon">
+                            <i class="bi bi-folder"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="text-muted mb-1 small">Total Projects</p>
+                        <h2 class="mb-0 fw-bold" style="color: var(--primary-purple);">{{ $totalProjects }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-6 col-lg-3">
+                <a href="{{ route('admin.users') }}" class="action-card shadow-sm" style="background: var(--card-bg); color: var(--text-color);">
+                    <i class="bi bi-arrow-right-circle arrow-icon"></i>
+                    <div class="text-center">
+                        <div class="stat-icon mx-auto mb-3">
+                            <i class="bi bi-people"></i>
+                        </div>
+                        <h5 class="mb-2">Manage Users</h5>
+                        <p class="text-muted small mb-0">View, create, edit users</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <a href="{{ route('admin.tasks') }}" class="action-card shadow-sm" style="background: var(--card-bg); color: var(--text-color);">
+                    <i class="bi bi-arrow-right-circle arrow-icon"></i>
+                    <div class="text-center">
+                        <div class="stat-icon mx-auto mb-3">
+                            <i class="bi bi-list-task"></i>
+                        </div>
+                        <h5 class="mb-2">Manage Tasks</h5>
+                        <p class="text-muted small mb-0">View and delete tasks</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <a href="{{ route('admin.projects') }}" class="action-card shadow-sm" style="background: var(--card-bg); color: var(--text-color);">
+                    <i class="bi bi-arrow-right-circle arrow-icon"></i>
+                    <div class="text-center">
+                        <div class="stat-icon mx-auto mb-3">
+                            <i class="bi bi-folder"></i>
+                        </div>
+                        <h5 class="mb-2">Manage Projects</h5>
+                        <p class="text-muted small mb-0">View and delete projects</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <a href="{{ route('admin.users.create') }}" class="action-card shadow-sm" style="background: var(--card-bg); color: var(--text-color);">
+                    <i class="bi bi-arrow-right-circle arrow-icon"></i>
+                    <div class="text-center">
+                        <div class="stat-icon mx-auto mb-3">
+                            <i class="bi bi-person-plus"></i>
+                        </div>
+                        <h5 class="mb-2">Create User</h5>
+                        <p class="text-muted small mb-0">Add new user account</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="row g-3">
+            <div class="col-md-6">
+                <div class="card dashboard-card shadow-sm" style="background: var(--card-bg); border: 1px solid var(--border-color);">
+                    <div class="card-header" style="background: var(--card-bg); border-bottom: 1px solid var(--border-color);">
+                        <h5 class="mb-0"><i class="bi bi-clock-history me-2"></i>Recent Tasks</h5>
+                    </div>
+                    <div class="card-body">
+                        @forelse($recentTasks as $task)
+                            <div class="d-flex align-items-start mb-3 pb-3 border-bottom">
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-1">{{ $task->title }}</h6>
+                                    <small class="text-muted">
+                                        By: {{ $task->createdBy->name ?? 'Unknown' }} | 
+                                        Assigned: {{ $task->assignedTo->name ?? 'Unassigned' }}
+                                    </small>
+                                </div>
+                                <span class="badge bg-{{ $task->status === 'done' ? 'success' : ($task->status === 'in_progress' ? 'info' : 'warning') }}">
+                                    {{ ucfirst(str_replace('_', ' ', $task->status)) }}
+                                </span>
+                            </div>
+                        @empty
+                            <p class="text-muted mb-0">No recent tasks</p>
+                        @endforelse
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card dashboard-card shadow-sm" style="background: var(--card-bg); border: 1px solid var(--border-color);">
+                    <div class="card-header" style="background: var(--card-bg); border-bottom: 1px solid var(--border-color);">
+                        <h5 class="mb-0"><i class="bi bi-person-plus me-2"></i>Recent Users</h5>
+                    </div>
+                    <div class="card-body">
+                        @forelse($recentUsers as $recentUser)
+                            <div class="d-flex align-items-center mb-3 pb-3 border-bottom">
+                                <div class="me-3">
+                                    {!! $recentUser->getProfilePictureHtml(40) !!}
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-0">{{ $recentUser->name }}</h6>
+                                    <small class="text-muted">{{ $recentUser->getRoleLabel() }}</small>
+                                </div>
+                                <small class="text-muted">{{ $recentUser->created_at->diffForHumans() }}</small>
+                            </div>
+                        @empty
+                            <p class="text-muted mb-0">No recent users</p>
+                        @endforelse
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    @elseif(auth()->user()->isCustomer())
         @php
             $user = auth()->user();
             $allTasks = $user->tasksCreated;
