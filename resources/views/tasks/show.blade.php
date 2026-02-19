@@ -333,7 +333,7 @@
             <div class="task-meta">
                 <div class="task-meta-item">
                     <i class="bi bi-tag"></i>
-                    <span>{{ ucfirst($task->category) }}</span>
+                    <span>{{ $task->getCategoryLabel() }}</span>
                 </div>
                 <div class="task-meta-item">
                     <i class="bi bi-calendar3"></i>
@@ -382,7 +382,7 @@
                     
                     <div class="info-row">
                         <span class="info-label">Category</span>
-                        <span class="info-value">{{ ucfirst($task->category) }}</span>
+                        <span class="info-value">{{ $task->getCategoryLabel() }}</span>
                     </div>
                     
                     @if($task->deadline && $task->deadline->isPast() && $task->status !== 'done')

@@ -331,7 +331,7 @@
                                 <p class="task-description">{{ Str::limit($task->description, 100) }}</p>
                                 
                                 <div class="task-meta">
-                                    <span class="badge bg-info">{{ ucfirst(str_replace('_', ' ', $task->category)) }}</span>
+                                    <span class="badge bg-info">{{ $task->getCategoryLabel() }}</span>
                                     <span class="badge bg-secondary">{{ $task->project->name ?? 'No Project' }}</span>
                                     @if($task->status === 'pending')
                                         <span class="badge bg-warning">Pending</span>
@@ -406,7 +406,17 @@
                                 </div>
                                 <div class="task-meta-item">
                                     <i class="bi bi-tag"></i>
-                                    <span class="category-badge">{{ ucfirst($task->category) }}</span>
+                                    <span class="category-badge">
+                                        @if($task->category === 'frontend')
+                                            Frontend Developer
+                                        @elseif($task->category === 'backend')
+                                            Backend Developer
+                                        @elseif($task->category === 'server')
+                                            Server Administrator
+                                        @else
+                                            {{ ucfirst($task->category) }}
+                                        @endif
+                                    </span>
                                 </div>
                                 <div class="task-meta-item">
                                     <i class="bi bi-people"></i>
@@ -531,7 +541,7 @@
                                 </div>
                                 <div class="task-meta-item">
                                     <i class="bi bi-tag"></i>
-                                    <span class="category-badge">{{ ucfirst($task->category) }}</span>
+                                    <span class="category-badge">{{ $task->getCategoryLabel() }}</span>
                                 </div>
                                 <div class="task-meta-item">
                                     <i class="bi bi-person"></i>

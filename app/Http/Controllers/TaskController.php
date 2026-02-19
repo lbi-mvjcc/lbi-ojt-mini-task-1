@@ -501,7 +501,7 @@ class TaskController extends Controller
             Notification::createStatusUpdatedNotification($task, $user, $customer, $oldStatus, $newStatus);
         }
 
-        return redirect()->route('tasks.index')->with('success', 'Task status updated successfully!');
+        return redirect()->back()->with('success', 'Task status updated successfully!');
     }
 
     /**

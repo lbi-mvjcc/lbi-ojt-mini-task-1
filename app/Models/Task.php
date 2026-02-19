@@ -52,6 +52,22 @@ class Task extends Model
     }
 
     /**
+     * Get human-readable category label
+     */
+    public function getCategoryLabel(): string
+    {
+        $labels = [
+            'frontend' => 'Frontend Developer',
+            'backend' => 'Backend Developer',
+            'server' => 'Server Administrator',
+        ];
+
+        return $labels[$this->category] ?? ucfirst($this->category);
+    }
+        return $this->hasMany(TaskSubmission::class);
+    }
+
+    /**
      * Check if task requires any type of submission
      */
     public function requiresSubmissions(): bool

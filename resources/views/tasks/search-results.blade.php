@@ -30,9 +30,9 @@
             @php
                 $tasksByCategory = $tasks->groupBy('category');
                 $categoryLabels = [
-                    'frontend' => ['title' => 'Frontend Development', 'icon' => 'bi-code-slash', 'color' => 'black'],
-                    'backend' => ['title' => 'Backend Development', 'icon' => 'bi-server', 'color' => 'black'], 
-                    'server' => ['title' => 'Server Administration', 'icon' => 'bi-hdd-stack', 'color' => 'black'],
+                    'frontend' => ['title' => 'Frontend Developer', 'icon' => 'bi-code-slash', 'color' => 'black'],
+                    'backend' => ['title' => 'Backend Developer', 'icon' => 'bi-server', 'color' => 'black'], 
+                    'server' => ['title' => 'Server Administrator', 'icon' => 'bi-hdd-stack', 'color' => 'black'],
                 ];
             @endphp
 
