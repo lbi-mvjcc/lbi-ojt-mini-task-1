@@ -406,30 +406,16 @@
                                 </div>
                                 <div class="task-meta-item">
                                     <i class="bi bi-tag"></i>
-                                    <span class="category-badge">
-                                        @if($task->category === 'frontend')
-                                            Frontend Developer
-                                        @elseif($task->category === 'backend')
-                                            Backend Developer
-                                        @elseif($task->category === 'server')
-                                            Server Administrator
-                                        @else
-                                            {{ ucfirst($task->category) }}
-                                        @endif
-                                    </span>
-                                </div>
-                                <div class="task-meta-item">
-                                    <i class="bi bi-people"></i>
-                                    <span>{{ $task->developer_count }} developer(s)</span>
+                                    <span class="category-badge">{{ $task->getCategoryLabel() }}</span>
                                 </div>
                                 <div class="task-meta-item">
                                     <i class="bi bi-calendar3"></i>
                                     <span>{{ $task->created_at->format('M d, Y') }}</span>
                                 </div>
-                                @if($task->all_tasks->first()->deadline)
+                                @if($task->deadline)
                                     <div class="task-meta-item">
                                         <i class="bi bi-clock"></i>
-                                        <span>Due: {{ $task->all_tasks->first()->deadline->format('M d, Y') }}</span>
+                                        <span>Due: {{ $task->deadline->format('M d, Y') }}</span>
                                     </div>
                                 @endif
                             </div>
@@ -437,44 +423,29 @@
                                 <p class="text-muted mb-3">{{ Str::limit($task->description, 150) }}</p>
                             @endif
                             <div class="d-flex gap-2 flex-wrap">
-                                @if($task->primary_status === 'pending')
+                                @if($task->status === 'pending')
                                     <span class="status-badge pending">Pending</span>
-                                @elseif($task->primary_status === 'in_progress')
+                                @elseif($task->status === 'in_progress')
                                     <span class="status-badge in-progress">In Progress</span>
-                                @elseif($task->primary_status === 'in_review')
+                                @elseif($task->status === 'in_review')
                                     <span class="status-badge in-review">In Review</span>
-                                @else
+                                @elseif($task->status === 'done')
                                     <span class="status-badge completed">Completed</span>
-                                @endif
-                                
-                                @if($task->developer_count > 1)
-                                    @if($task->status_counts->get('pending', 0) > 0)
-                                        <small><span class="status-badge pending">{{ $task->status_counts->get('pending') }}P</span></small>
-                                    @endif
-                                    @if($task->status_counts->get('in_progress', 0) > 0)
-                                        <small><span class="status-badge in-progress">{{ $task->status_counts->get('in_progress') }}IP</span></small>
-                                    @endif
-                                    @if($task->status_counts->get('in_review', 0) > 0)
-                                        <small><span class="status-badge in-review">{{ $task->status_counts->get('in_review') }}IR</span></small>
-                                    @endif
-                                    @if($task->status_counts->get('done', 0) > 0)
-                                        <small><span class="status-badge completed">{{ $task->status_counts->get('done') }}D</span></small>
-                                    @endif
                                 @endif
                             </div>
                         </div>
                         <div class="task-actions">
-                            <a href="{{ route('tasks.show', $task->id) }}" class="btn-icon" title="View Details">
-                                <i class="bi bi-eye"></i>
+                            <a href="{{ route('tasks.show', $task) }}" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-eye"></i> View
                             </a>
-                            <a href="{{ route('tasks.edit', $task->id) }}" class="btn-icon btn-icon-edit" title="Edit Task">
-                                <i class="bi bi-pencil"></i>
+                            <a href="{{ route('tasks.edit', $task) }}" class="btn btn-sm" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none;">
+                                <i class="bi bi-pencil"></i> Edit
                             </a>
-                            <form method="POST" action="{{ route('tasks.destroy', $task->id) }}" style="display: inline;">
+                            <form action="{{ route('tasks.destroy', $task) }}" method="POST" style="display: inline;" onsubmit="return confirm('This action cannot be undone. Are you sure you want to delete this task?');">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn-icon delete" onclick="return confirm('This action cannot be undone. Are you sure you want to delete this task?')" title="Delete Task">
-                                    <i class="bi bi-trash"></i>
+                                <button type="submit" class="btn btn-sm btn-outline-danger">
+                                    <i class="bi bi-trash"></i> Delete
                                 </button>
                             </form>
                         </div>

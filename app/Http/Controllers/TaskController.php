@@ -27,38 +27,9 @@ class TaskController extends Controller
         }
         
         if ($user->isCustomer()) {
-            // Get all tasks created by the customer, grouped by unique task (title + project + category)
-            $rawTasks = $user->tasksCreated()->with('project', 'assignedTo')->latest()->get();
+            // Get all tasks created by the customer (no grouping needed since 1 task = 1 developer)
+            $tasks = $user->tasksCreated()->with('project')->latest()->get();
             
-            // Group tasks by unique keys (same task assigned to multiple developers)
-            $groupedTasks = $rawTasks->groupBy(function($task) {
-                return $task->title . '|' . $task->project_id . '|' . $task->category;
-            });
-            
-            // Transform grouped tasks into display format
-            $tasks = $groupedTasks->map(function($taskGroup) {
-                $firstTask = $taskGroup->first();
-                $developerCount = $taskGroup->count();
-                $assignedDevelopers = $taskGroup->pluck('assignedTo.name')->join(', ');
-                
-                // Calculate status distribution
-                $statusCounts = $taskGroup->groupBy('status')->map->count();
-                
-                return (object) [
-                    'id' => $firstTask->id,
-                    'title' => $firstTask->title,
-                    'description' => $firstTask->description,
-                    'category' => $firstTask->category,
-                    'project' => $firstTask->project,
-                    'created_at' => $firstTask->created_at,
-                    'developer_count' => $developerCount,
-                    'assigned_developers' => $assignedDevelopers,
-                    'status_counts' => $statusCounts,
-                    'primary_status' => $this->calculatePrimaryStatus($statusCounts),
-                    'all_tasks' => $taskGroup // Keep reference to all task instances
-                ];
-            });
-
             return view('tasks.index', compact('tasks'));
         } elseif ($user->isDeveloper()) {
             // Get assigned tasks for developer
@@ -140,36 +111,29 @@ class TaskController extends Controller
         );
 
         try {
-            // Automatically assign task to ALL developers in the selected category
-            $assignedDevelopers = $this->assignTaskToAllDevelopers($validated['category']);
+            // Automatically assign task to ONE developer with least workload
+            $assignedDeveloper = $this->assignTaskToDeveloper($validated['category']);
 
-            // Create individual task for each developer in the category
-            $createdTasks = [];
-            foreach ($assignedDevelopers as $developer) {
-                $task = Task::create([
-                    'title' => $validated['title'],
-                    'description' => $validated['description'],
-                    'category' => $validated['category'],
-                    'project_id' => $project->id,
-                    'created_by' => $user->id,
-                    'assigned_to' => $developer->id,
-                    'status' => 'pending',
-                    'deadline' => $validated['deadline'],
-                    'requires_file_submission' => $validated['requires_file_submission'] ?? false,
-                    'requires_image_submission' => $validated['requires_image_submission'] ?? false,
-                    'requires_link_submission' => $validated['requires_link_submission'] ?? false,
-                    'submission_instructions' => $validated['submission_instructions'],
-                ]);
-                $createdTasks[] = $task;
-                
-                // Create notification for the assigned developer
-                Notification::createTaskAssignedNotification($task, $user, [$developer]);
-            }
-
-            $developerCount = count($assignedDevelopers);
-            $developerNames = $assignedDevelopers->pluck('name')->join(', ', ' and ');
+            // Create task for the selected developer
+            $task = Task::create([
+                'title' => $validated['title'],
+                'description' => $validated['description'],
+                'category' => $validated['category'],
+                'project_id' => $project->id,
+                'created_by' => $user->id,
+                'assigned_to' => $assignedDeveloper->id,
+                'status' => 'pending',
+                'deadline' => $validated['deadline'],
+                'requires_file_submission' => $validated['requires_file_submission'] ?? false,
+                'requires_image_submission' => $validated['requires_image_submission'] ?? false,
+                'requires_link_submission' => $validated['requires_link_submission'] ?? false,
+                'submission_instructions' => $validated['submission_instructions'],
+            ]);
             
-            return redirect()->route('tasks.index')->with('success', "Task created successfully and assigned to {$developerCount} {$validated['category']} developer(s): {$developerNames}!");
+            // Create notification for the assigned developer
+            Notification::createTaskAssignedNotification($task, $user, [$assignedDeveloper]);
+            
+            return redirect()->route('tasks.index')->with('success', "Task created successfully and assigned to {$assignedDeveloper->name}!");
         } catch (\Exception $e) {
             return redirect()->back()->withInput()->with('error', $e->getMessage());
         }
@@ -292,18 +256,10 @@ class TaskController extends Controller
                 abort(403, 'Unauthorized');
             }
             
-            // For customers, get all instances of this task (all developers)
-            $allTaskInstances = Task::where('title', $task->title)
-                ->where('category', $task->category)
-                ->where('project_id', $task->project_id)
-                ->where('created_by', $user->id)
-                ->with('assignedTo')
-                ->get();
-            
-            // Load submissions for this task
-            $task->load('submissions.user');
+            // Load submissions for this task (but NOT assignedTo - hide developer info)
+            $task->load('submissions.user', 'project');
                 
-            return view('tasks.show', compact('task', 'allTaskInstances'));
+            return view('tasks.show', compact('task'));
         } elseif ($user->isDeveloper()) {
             if ($task->assigned_to !== $user->id) {
                 abort(403, 'Unauthorized');
@@ -327,13 +283,7 @@ class TaskController extends Controller
         
         // Admin can edit any task
         if ($user->isAdmin()) {
-            // Get count of developers assigned to this task group
-            $developerCount = Task::where('title', $task->title)
-                ->where('category', $task->category)
-                ->where('project_id', $task->project_id)
-                ->count();
-
-            return view('tasks.edit', compact('task', 'developerCount'));
+            return view('tasks.edit', compact('task'));
         }
         
         // Only customers can edit tasks they created
@@ -341,14 +291,7 @@ class TaskController extends Controller
             abort(403, 'Unauthorized');
         }
 
-        // Get count of developers assigned to this task group
-        $developerCount = Task::where('title', $task->title)
-            ->where('category', $task->category)
-            ->where('project_id', $task->project_id)
-            ->where('created_by', $user->id)
-            ->count();
-
-        return view('tasks.edit', compact('task', 'developerCount'));
+        return view('tasks.edit', compact('task'));
     }
 
     /**
@@ -371,65 +314,41 @@ class TaskController extends Controller
         ]);
 
         try {
-            // If category changed, we need to delete old tasks and create new ones
+            // If category changed, reassign to a new developer
             if ($task->category !== $validated['category']) {
-                // Delete all instances of the old task
-                Task::where('title', $task->title)
-                    ->where('category', $task->category)
-                    ->where('project_id', $task->project_id)
-                    ->where('created_by', $user->id)
-                    ->delete();
+                $oldDeveloper = $task->assignedTo;
                 
-                // Get all developers in the new category
-                $newDevelopers = $this->assignTaskToAllDevelopers($validated['category']);
+                // Get new developer for the new category
+                $newDeveloper = $this->assignTaskToDeveloper($validated['category']);
                 
-                // Create tasks for all developers in the new category
-                foreach ($newDevelopers as $developer) {
-                    $newTask = Task::create([
-                        'title' => $validated['title'],
-                        'description' => $validated['description'],
-                        'category' => $validated['category'],
-                        'project_id' => $task->project_id,
-                        'created_by' => $user->id,
-                        'assigned_to' => $developer->id,
-                        'status' => 'pending',
-                        'deadline' => $validated['deadline'],
-                    ]);
-                    
-                    // Create notification for the newly assigned developer
-                    Notification::createTaskAssignedNotification($newTask, $user, [$developer]);
-                }
+                // Update task
+                $task->update([
+                    'title' => $validated['title'],
+                    'description' => $validated['description'],
+                    'category' => $validated['category'],
+                    'assigned_to' => $newDeveloper->id,
+                    'status' => 'pending', // Reset status when reassigning
+                    'deadline' => $validated['deadline'],
+                ]);
                 
-                $developerCount = count($newDevelopers);
-                $developerNames = $newDevelopers->pluck('name')->join(', ', ' and ');
+                // Create notification for the newly assigned developer
+                Notification::createTaskAssignedNotification($task, $user, [$newDeveloper]);
                 
-                return redirect()->route('tasks.index')->with('success', "Task updated and reassigned to {$developerCount} {$validated['category']} developer(s): {$developerNames}!");
+                return redirect()->route('tasks.index')->with('success', "Task updated and reassigned to {$newDeveloper->name}!");
             } else {
-                // If category didn't change, update ALL instances of this task
-                $tasksToUpdate = Task::where('title', $task->title)
-                    ->where('category', $task->category)
-                    ->where('project_id', $task->project_id)
-                    ->where('created_by', $user->id)
-                    ->with('assignedTo')
-                    ->get();
+                // If category didn't change, just update the task
+                $task->update([
+                    'title' => $validated['title'],
+                    'description' => $validated['description'],
+                    'deadline' => $validated['deadline'],
+                ]);
                 
-                $updatedCount = $tasksToUpdate->count();
-                
-                // Update all task instances
-                foreach ($tasksToUpdate as $taskInstance) {
-                    $taskInstance->update([
-                        'title' => $validated['title'],
-                        'description' => $validated['description'],
-                        'deadline' => $validated['deadline'],
-                    ]);
-                    
-                    // Create notification for each assigned developer
-                    if ($taskInstance->assignedTo) {
-                        Notification::createTaskUpdatedNotification($taskInstance, $user, [$taskInstance->assignedTo]);
-                    }
+                // Create notification for the assigned developer
+                if ($task->assignedTo) {
+                    Notification::createTaskUpdatedNotification($task, $user, [$task->assignedTo]);
                 }
                 
-                return redirect()->route('tasks.index')->with('success', "Task updated successfully for {$updatedCount} developer(s)!");
+                return redirect()->route('tasks.index')->with('success', "Task updated successfully!");
             }
         } catch (\Exception $e) {
             return redirect()->back()->withInput()->with('error', $e->getMessage());
@@ -448,30 +367,15 @@ class TaskController extends Controller
             abort(403, 'Unauthorized');
         }
 
-        // Get all tasks that will be deleted to notify assigned developers
-        $tasksToDelete = Task::where('title', $task->title)
-            ->where('category', $task->category)  
-            ->where('project_id', $task->project_id)
-            ->where('created_by', $user->id)
-            ->with('assignedTo')
-            ->get();
-        
-        // Create notifications for assigned developers before deleting
-        foreach ($tasksToDelete as $taskInstance) {
-            if ($taskInstance->assignedTo) {
-                Notification::createTaskDeletedNotification($taskInstance, $user, [$taskInstance->assignedTo]);
-            }
+        // Create notification for assigned developer before deleting
+        if ($task->assignedTo) {
+            Notification::createTaskDeletedNotification($task, $user, [$task->assignedTo]);
         }
 
-        // Delete all tasks with the same title, category, and project (all developer instances)
-        $deletedCount = $tasksToDelete->count();
-        Task::where('title', $task->title)
-            ->where('category', $task->category)  
-            ->where('project_id', $task->project_id)
-            ->where('created_by', $user->id)
-            ->delete();
+        // Delete the task
+        $task->delete();
 
-        return redirect()->route('tasks.index')->with('success', "Task deleted successfully! Removed from {$deletedCount} developer(s).");
+        return redirect()->route('tasks.index')->with('success', "Task deleted successfully!");
     }
 
     /**

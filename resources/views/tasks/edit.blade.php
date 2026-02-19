@@ -186,8 +186,8 @@
                 <!-- Developer Assignment Info -->
                 <div class="form-section">
                     <div class="info-card">
-                        <i class="bi bi-people-fill"></i>
-                        <strong>Developer Assignment:</strong> This task is currently assigned to <strong>{{ $developerCount }} developer{{ $developerCount > 1 ? 's' : '' }}</strong>. Changes will be applied to all assigned developers.
+                        <i class="bi bi-info-circle-fill"></i>
+                        <strong>Note:</strong> This task is assigned to one developer. If you change the category, it will be reassigned to a developer in the new category.
                     </div>
                 </div>
 
@@ -205,9 +205,8 @@
 
                     <!-- Developer Assignment Info -->
                     <div class="alert alert-info">
-                        <i class="bi bi-people-fill"></i> <strong>Developer Assignment:</strong> 
-                        This task is currently assigned to <strong>{{ $developerCount }} developer{{ $developerCount > 1 ? 's' : '' }}</strong>. 
-                        Changes will be applied to all assigned developers.
+                        <i class="bi bi-info-circle-fill"></i> <strong>Note:</strong> 
+                        This task is assigned to one developer. If you change the category, it will be reassigned to a developer in the new category.
                     </div>
 
                     <form action="{{ route('tasks.update', $task) }}" method="POST">
