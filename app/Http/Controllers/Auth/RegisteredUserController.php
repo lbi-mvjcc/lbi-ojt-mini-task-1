@@ -36,6 +36,12 @@ class RegisteredUserController extends Controller
             'role' => ['required', 'string', 'in:customer,frontend_dev,backend_dev,server_admin'],
         ]);
 
+        // Security: Prevent admin role from being registered through public registration
+        // Admin accounts can only be created by existing admins or through database
+        if ($request->role === 'admin') {
+            abort(403, 'Unauthorized - Admin accounts cannot be created through registration');
+        }
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
