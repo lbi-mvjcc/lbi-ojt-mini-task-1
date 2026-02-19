@@ -10,16 +10,26 @@
         --purple-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         --purple-light-bg: #f5f3ff;
         --purple-border: #e0d9ff;
+        --bg-color: #f8f9fa;
+        --text-color: #1f2937;
+        --card-bg: #ffffff;
+        --border-color: #e5e7eb;
+        --muted-text: #6b7280;
     }
     
     [data-theme="dark"] {
         --primary-purple: #8b9cf5;
-        --primary-purple-dark: #667eea;
+        --primary-purple-dark: #7c8de8;
         --primary-purple-light: #a5b4f7;
         --secondary-purple: #9d6ec9;
         --purple-gradient: linear-gradient(135deg, #8b9cf5 0%, #9d6ec9 100%);
-        --purple-light-bg: #2d2d44;
-        --purple-border: #3d3d5c;
+        --purple-light-bg: #1e2a3a;
+        --purple-border: #2d3e50;
+        --bg-color: #0f172a;
+        --text-color: #f1f5f9;
+        --card-bg: #1e293b;
+        --border-color: #334155;
+        --muted-text: #94a3b8;
     }
     
     .dashboard-card {
@@ -189,16 +199,6 @@
         color: var(--muted-text);
     }
     
-    /* Fix gradient primary card text in dark mode */
-    [data-theme="dark"] .action-card.gradient-primary {
-        background: linear-gradient(135deg, #8b9cf5 0%, #9d6ec9 100%);
-    }
-    
-    [data-theme="dark"] .action-card.gradient-primary h4,
-    [data-theme="dark"] .action-card.gradient-primary p {
-        color: white !important;
-    }
-    
     [data-theme="dark"] .activity-item {
         color: var(--text-color);
     }
@@ -238,20 +238,68 @@
         color: var(--text-color) !important;
     }
     
-    /* Ensure stat numbers are visible */
-    [data-theme="dark"] .stat-card h2 {
-        color: var(--primary-purple) !important;
+    /* Fix light mode eyesore issues */
+    body {
+        background-color: var(--bg-color);
     }
     
-    /* Fix empty state visibility */
-    [data-theme="dark"] .text-center i {
+    .container {
+        background-color: transparent;
+    }
+    
+    /* Ensure proper contrast in light mode */
+    .stat-card {
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    
+    [data-theme="dark"] .stat-card {
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
+    
+    /* Fix action card visibility */
+    .action-card.gradient-secondary {
+        background-color: var(--card-bg);
+        border: 2px solid var(--primary-purple);
+    }
+    
+    .action-card.gradient-secondary h4,
+    .action-card.gradient-secondary p {
+        color: var(--text-color);
+    }
+    
+    [data-theme="dark"] .action-card.gradient-secondary h4 {
+        color: var(--primary-purple-light);
+    }
+    
+    [data-theme="dark"] .action-card.gradient-secondary p {
         color: var(--muted-text);
     }
     
-    /* Fix Recent Activity section */
-    [data-theme="dark"] .card-body {
-        background-color: var(--card-bg);
-        color: var(--text-color);
+    /* Fix profile avatar in dark mode */
+    .profile-avatar {
+        background: var(--purple-gradient);
+    }
+    
+    [data-theme="dark"] .profile-avatar {
+        border-color: var(--primary-purple-light);
+    }
+    
+    /* Fix deadline items in dark mode */
+    [data-theme="dark"] .deadline-item {
+        background-color: var(--purple-light-bg) !important;
+        border-left-color: var(--primary-purple-light);
+    }
+    
+    [data-theme="dark"] .deadline-item .fw-semibold,
+    [data-theme="dark"] .deadline-item .fw-bold {
+        color: var(--text-color) !important;
+    }
+    
+    /* Fix alert colors in dark mode */
+    [data-theme="dark"] .alert-danger {
+        background-color: rgba(239, 68, 68, 0.15);
+        border-color: rgba(239, 68, 68, 0.3);
+        color: #fca5a5;
     }
 </style>
 

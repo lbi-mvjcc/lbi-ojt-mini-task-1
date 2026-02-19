@@ -332,13 +332,13 @@
                                     required>
                                 <option value="">Select Category</option>
                                 <option value="frontend" @selected(old('category') == 'frontend')>
-                                    Frontend Developer
+                                    Frontend Development
                                 </option>
                                 <option value="backend" @selected(old('category') == 'backend')>
-                                    Backend Developer
+                                    Backend Development
                                 </option>
                                 <option value="server" @selected(old('category') == 'server')>
-                                    Server Administrator
+                                    Server Administration
                                 </option>
                             </select>
                             @error('category')

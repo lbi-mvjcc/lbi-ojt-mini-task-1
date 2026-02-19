@@ -260,9 +260,9 @@
                                     name="category" 
                                     required>
                                 <option value="">Select Category</option>
-                                <option value="frontend" @selected(old('category', $task->category) == 'frontend')>Frontend Developer</option>
-                                <option value="backend" @selected(old('category', $task->category) == 'backend')>Backend Developer</option>
-                                <option value="server" @selected(old('category', $task->category) == 'server')>Server Administrator</option>
+                                <option value="frontend" @selected(old('category', $task->category) == 'frontend')>Frontend Development</option>
+                                <option value="backend" @selected(old('category', $task->category) == 'backend')>Backend Development</option>
+                                <option value="server" @selected(old('category', $task->category) == 'server')>Server Administration</option>
                             </select>
                             @error('category')
                                 <div class="invalid-feedback">{{ $message }}</div>

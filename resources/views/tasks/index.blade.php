@@ -188,12 +188,24 @@
         color: var(--text-color);
         transition: all 0.2s ease;
         cursor: pointer;
+        text-decoration: none;
     }
     
     .btn-icon:hover {
         border-color: var(--primary-purple);
         color: var(--primary-purple);
         transform: translateY(-2px);
+    }
+    
+    .btn-icon-edit {
+        border-color: var(--primary-purple);
+        color: var(--primary-purple);
+        background: rgba(102, 126, 234, 0.1);
+    }
+    
+    .btn-icon-edit:hover {
+        background: var(--primary-purple);
+        color: white;
     }
     
     .btn-icon.delete:hover {
@@ -376,16 +388,16 @@
                             </div>
                         </div>
                         <div class="task-actions">
-                            <a href="{{ route('tasks.show', $task->id) }}" class="btn-icon" title="View">
+                            <a href="{{ route('tasks.show', $task->id) }}" class="btn-icon" title="View Details">
                                 <i class="bi bi-eye"></i>
                             </a>
-                            <a href="{{ route('tasks.edit', $task->id) }}" class="btn-icon" title="Edit">
+                            <a href="{{ route('tasks.edit', $task->id) }}" class="btn-icon btn-icon-edit" title="Edit Task">
                                 <i class="bi bi-pencil"></i>
                             </a>
                             <form method="POST" action="{{ route('tasks.destroy', $task->id) }}" style="display: inline;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn-icon delete" onclick="return confirm('Are you sure?')" title="Delete">
+                                <button type="submit" class="btn-icon delete" onclick="return confirm('This action cannot be undone. Are you sure you want to delete this task?')" title="Delete Task">
                                     <i class="bi bi-trash"></i>
                                 </button>
                             </form>
