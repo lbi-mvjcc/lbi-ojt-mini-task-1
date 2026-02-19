@@ -56,6 +56,20 @@ Route::middleware('auth')->group(function () {
         Artisan::call('tasks:check-deadlines');
         return redirect()->back()->with('success', 'Task deadline check completed successfully! Notifications have been sent to developers with approaching or overdue tasks.');
     })->name('tasks.check-deadlines')->middleware('auth');
+    
+    // Debug route to check admin status (remove this after testing)
+    Route::get('/check-admin', function () {
+        $user = auth()->user();
+        return response()->json([
+            'logged_in' => auth()->check(),
+            'user_id' => $user->id ?? null,
+            'user_name' => $user->name ?? null,
+            'user_email' => $user->email ?? null,
+            'user_role' => $user->role ?? null,
+            'is_admin' => $user ? $user->isAdmin() : false,
+            'role_constant' => \App\Models\User::ROLE_ADMIN,
+        ]);
+    })->middleware('auth')->name('check.admin');
 });
 
 // Admin routes
