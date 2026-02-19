@@ -2,6 +2,18 @@
 
 @section('content')
 <style>
+    /* Force page background */
+    body {
+        background-color: var(--bg-color) !important;
+    }
+    
+    [data-theme="dark"] body,
+    [data-theme="dark"] html,
+    [data-theme="dark"] main,
+    [data-theme="dark"] .container {
+        background-color: #0f172a !important;
+    }
+    
     :root {
         --primary-purple: #667eea;
         --primary-purple-dark: #5568d3;

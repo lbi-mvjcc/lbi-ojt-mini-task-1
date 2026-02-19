@@ -247,6 +247,17 @@
         background-color: transparent;
     }
     
+    /* Force dark mode on this page */
+    [data-theme="dark"] {
+        background-color: var(--bg-color) !important;
+    }
+    
+    [data-theme="dark"] body,
+    [data-theme="dark"] .container,
+    [data-theme="dark"] main {
+        background-color: var(--bg-color) !important;
+    }
+    
     /* Ensure proper contrast in light mode */
     .stat-card {
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -303,7 +314,7 @@
     }
 </style>
 
-<div class="container py-4">
+<div class="container py-4" style="background-color: var(--bg-color);">
     @if(auth()->user()->isCustomer())
         @php
             $user = auth()->user();

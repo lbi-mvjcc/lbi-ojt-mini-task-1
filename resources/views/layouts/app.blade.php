@@ -465,6 +465,12 @@
                     left: -250px !important;
                 }
             }
+            
+            /* CRITICAL: Override Bootstrap's CSS variables for dark mode */
+            [data-theme="dark"] body {
+                --bs-body-bg: #0f172a !important;
+                --bs-body-color: #f1f5f9 !important;
+            }
         </style>
     </head>
     <body class="d-flex flex-column min-vh-100" style="background-color: var(--bg-color) !important;">
