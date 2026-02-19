@@ -1,4 +1,6 @@
-<x-app-layout>
+@extends('layouts.app')
+
+@section('content')
     <div class="container-fluid py-4">
         <!-- Header -->
         <div class="row mb-4">
@@ -220,4 +222,4 @@
             color: #667eea !important;
         }
     </style>
-</x-app-layout>
+@endsection
