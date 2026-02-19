@@ -33,7 +33,7 @@ class AdminController extends Controller
             'completed_tasks' => Task::where('status', 'done')->count(),
             'total_projects' => Project::count(),
             'total_notifications' => Notification::count(),
-            'unread_notifications' => Notification::where('is_read', false)->count(),
+            'unread_notifications' => Notification::whereNull('read_at')->count(),
         ];
 
         // Get recent activities
