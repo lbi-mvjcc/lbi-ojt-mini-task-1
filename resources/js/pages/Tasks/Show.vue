@@ -23,9 +23,16 @@ const breadcrumbs: BreadcrumbItem[] = [
 const showUploadModal = ref(false);
 const uploadType = ref('file');
 const commentTextarea = ref<HTMLTextAreaElement | null>(null);
+const showEditModal = ref(false);
 
 const commentForm = useForm({
     comment: '',
+});
+
+const editForm = useForm({
+    title: props.task.title,
+    description: props.task.description || '',
+    deadline: props.task.deadline || '',
 });
 
 const attachmentForm = useForm({
@@ -52,6 +59,15 @@ const submitComment = () => {
     });
 };
 
+const submitEdit = () => {
+    editForm.put(`/tasks/${props.task.id}`, {
+        preserveScroll: true,
+        onSuccess: () => {
+            showEditModal.value = false;
+        },
+    });
+};
+
 // Scroll to comment if hash is present
 onMounted(() => {
     const hash = window.location.hash;
@@ -73,7 +89,17 @@ onMounted(() => {
 const handleFileSelect = (event: Event) => {
     const target = event.target as HTMLInputElement;
     if (target.files && target.files[0]) {
-        attachmentForm.file = target.files[0];
+        const file = target.files[0];
+        const maxSize = 50 * 1024 * 1024; // 50MB in bytes
+        
+        if (file.size > maxSize) {
+            alert(`File size (${(file.size / 1024 / 1024).toFixed(2)} MB) exceeds the maximum allowed size of 50 MB. Please choose a smaller file.`);
+            target.value = ''; // Clear the file input
+            attachmentForm.file = null;
+            return;
+        }
+        
+        attachmentForm.file = file;
     }
 };
 
@@ -196,9 +222,21 @@ const categoryColor = computed(() => {
                         {{ task.category }}
                     </span>
                 </div>
-                <span :class="statusColor" class="px-4 py-2 rounded-full text-sm font-semibold capitalize">
-                    {{ task.status.replace('_', ' ') }}
-                </span>
+                <div class="flex items-center gap-3">
+                    <span :class="statusColor" class="px-4 py-2 rounded-full text-sm font-semibold capitalize">
+                        {{ task.status.replace('_', ' ') }}
+                    </span>
+                    <button
+                        v-if="isCustomer"
+                        @click="showEditModal = true"
+                        class="px-4 py-2 bg-[#5B21B6] text-white rounded-lg hover:bg-[#6D28D9] transition-colors font-semibold text-sm flex items-center gap-2"
+                    >
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                        </svg>
+                        Edit Task
+                    </button>
+                </div>
             </div>
 
             <div class="space-y-6">
@@ -478,7 +516,15 @@ const categoryColor = computed(() => {
                                     required
                                     class="w-full px-4 py-3 border border-[#CBD5E1] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#5B21B6] focus:border-transparent text-[#1E293B] bg-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#5B21B6] file:text-white hover:file:bg-[#6D28D9]"
                                 />
-                                <p class="text-xs text-[#64748B] mt-2">Maximum file size: 50MB</p>
+                                <div class="flex items-start gap-2 mt-2 p-3 bg-[#FEF3C7] border border-[#F59E0B] rounded-lg">
+                                    <svg class="w-5 h-5 text-[#F59E0B] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                                    </svg>
+                                    <div>
+                                        <p class="text-sm font-semibold text-[#92400E]">File Size Limit</p>
+                                        <p class="text-xs text-[#92400E] mt-1">Maximum file size: 50 MB. Files larger than this will be rejected.</p>
+                                    </div>
+                                </div>
                             </div>
 
                             <!-- Submit Buttons -->
@@ -511,6 +557,82 @@ const categoryColor = computed(() => {
                 <button v-if="isCustomer" @click="deleteTask" class="px-8 py-3 bg-[#EF4444] text-white rounded-lg hover:bg-[#DC2626] transition-colors font-semibold">
                     Delete Task
                 </button>
+            </div>
+        </div>
+
+        <!-- Edit Task Modal -->
+        <div v-if="showEditModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" @click.self="showEditModal = false">
+            <div class="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                <div class="p-6 border-b border-[#CBD5E1]">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-xl font-bold text-[#1E293B]">Edit Task</h3>
+                        <button @click="showEditModal = false" class="text-[#64748B] hover:text-[#1E293B]">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <form @submit.prevent="submitEdit" class="p-6 space-y-4">
+                    <!-- Task Title -->
+                    <div>
+                        <label class="block text-sm font-semibold text-[#1E293B] mb-2">
+                            Task Title <span class="text-[#EF4444]">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            v-model="editForm.title"
+                            required
+                            class="w-full px-4 py-3 border border-[#CBD5E1] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#5B21B6] focus:border-transparent text-[#1E293B] bg-white placeholder:text-[#94A3B8]"
+                            placeholder="Enter task title"
+                        />
+                    </div>
+
+                    <!-- Description -->
+                    <div>
+                        <label class="block text-sm font-semibold text-[#1E293B] mb-2">
+                            Description (Optional)
+                        </label>
+                        <textarea
+                            v-model="editForm.description"
+                            rows="4"
+                            placeholder="Enter task description"
+                            class="w-full px-4 py-3 border border-[#CBD5E1] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#5B21B6] focus:border-transparent resize-none text-[#1E293B] bg-white placeholder:text-[#94A3B8]"
+                        ></textarea>
+                    </div>
+
+                    <!-- Deadline -->
+                    <div>
+                        <label class="block text-sm font-semibold text-[#1E293B] mb-2">
+                            Deadline (Optional)
+                        </label>
+                        <input
+                            type="date"
+                            v-model="editForm.deadline"
+                            :min="new Date().toISOString().split('T')[0]"
+                            class="w-full px-4 py-3 border border-[#CBD5E1] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#5B21B6] focus:border-transparent text-[#1E293B] bg-white"
+                        />
+                    </div>
+
+                    <!-- Submit Buttons -->
+                    <div class="flex gap-3 pt-4">
+                        <button
+                            type="button"
+                            @click="showEditModal = false"
+                            class="flex-1 px-6 py-3 border border-[#CBD5E1] text-[#1E293B] rounded-lg hover:bg-[#F9FAFB] transition-colors font-semibold"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            type="submit"
+                            :disabled="editForm.processing"
+                            class="flex-1 px-6 py-3 bg-[#5B21B6] text-white rounded-lg hover:bg-[#6D28D9] transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            {{ editForm.processing ? 'Saving...' : 'Save Changes' }}
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </AppLayout>

@@ -22,6 +22,7 @@ interface Task {
     title: string;
     description: string;
     category: string;
+    deadline?: string;
 }
 
 const addedTasks = ref<Task[]>([]);
@@ -32,6 +33,7 @@ const form = useForm({
     title: '',
     description: '',
     category: '',
+    deadline: '',
 });
 
 // Load tasks from sessionStorage on mount
@@ -70,6 +72,7 @@ const addTask = () => {
         title: form.title,
         description: form.description,
         category: form.category,
+        deadline: form.deadline,
     });
 
     // Save to sessionStorage
@@ -82,6 +85,7 @@ const addTask = () => {
     form.title = '';
     form.description = '';
     form.category = '';
+    form.deadline = '';
 };
 
 const removeTask = (id: number) => {
@@ -301,6 +305,19 @@ onUnmounted(() => {
                                 ></textarea>
                             </div>
 
+                            <!-- Deadline -->
+                            <div>
+                                <label class="block text-sm font-semibold text-[#1E293B] mb-2">
+                                    Deadline (Optional)
+                                </label>
+                                <input
+                                    type="date"
+                                    v-model="form.deadline"
+                                    :min="new Date().toISOString().split('T')[0]"
+                                    class="w-full px-4 py-3 border border-[#CBD5E1] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#5B21B6] focus:border-transparent text-[#1E293B] bg-white"
+                                />
+                            </div>
+
                             <!-- Category Selection -->
                             <div>
                                 <label class="block text-sm font-semibold text-[#1E293B] mb-3">
@@ -413,14 +430,19 @@ onUnmounted(() => {
                                 class="flex items-start justify-between p-3 bg-[#F9FAFB] rounded-lg border border-[#E2E8F0] hover:border-[#5B21B6]/30 transition-colors">
                                 <div class="flex-1 min-w-0">
                                     <p class="text-sm font-semibold text-[#1E293B] truncate">{{ task.title }}</p>
-                                    <span class="inline-block mt-1 px-2 py-0.5 text-xs rounded-full"
-                                        :class="{
-                                            'bg-[#5B21B6]/10 text-[#5B21B6]': task.category === 'frontend',
-                                            'bg-[#06B6D4]/10 text-[#06B6D4]': task.category === 'backend',
-                                            'bg-[#F97316]/10 text-[#F97316]': task.category === 'server'
-                                        }">
-                                        {{ task.category }}
-                                    </span>
+                                    <div class="flex items-center gap-2 mt-1">
+                                        <span class="inline-block px-2 py-0.5 text-xs rounded-full"
+                                            :class="{
+                                                'bg-[#5B21B6]/10 text-[#5B21B6]': task.category === 'frontend',
+                                                'bg-[#06B6D4]/10 text-[#06B6D4]': task.category === 'backend',
+                                                'bg-[#F97316]/10 text-[#F97316]': task.category === 'server'
+                                            }">
+                                            {{ task.category }}
+                                        </span>
+                                        <span v-if="task.deadline" class="text-xs text-[#64748B]">
+                                            📅 {{ new Date(task.deadline).toLocaleDateString() }}
+                                        </span>
+                                    </div>
                                 </div>
                                 <div class="flex items-center gap-2 ml-2">
                                     <button

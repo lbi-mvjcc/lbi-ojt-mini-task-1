@@ -229,6 +229,7 @@ const clearFilters = () => {
                                 <th class="px-6 py-3 text-left text-xs font-semibold text-[#1E293B] uppercase tracking-wider">Project</th>
                                 <th class="px-6 py-3 text-left text-xs font-semibold text-[#1E293B] uppercase tracking-wider">Category</th>
                                 <th class="px-6 py-3 text-left text-xs font-semibold text-[#1E293B] uppercase tracking-wider">Status</th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-[#1E293B] uppercase tracking-wider">Deadline</th>
                                 <th class="px-6 py-3 text-left text-xs font-semibold text-[#1E293B] uppercase tracking-wider">Created</th>
                                 <th v-if="props.isCustomer" class="px-6 py-3 text-left text-xs font-semibold text-[#1E293B] uppercase tracking-wider">Actions</th>
                             </tr>
@@ -280,6 +281,12 @@ const clearFilters = () => {
                                     >
                                         {{ task.status.replace('_', ' ') }}
                                     </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-[#1E293B]">
+                                    <span v-if="task.deadline" class="flex items-center gap-1">
+                                        📅 {{ new Date(task.deadline).toLocaleDateString() }}
+                                    </span>
+                                    <span v-else class="text-[#94A3B8]">No deadline</span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-[#1E293B]">{{ new Date(task.created_at).toLocaleDateString() }}</td>
                                 <td v-if="props.isCustomer" class="px-6 py-4 whitespace-nowrap" @click.stop>

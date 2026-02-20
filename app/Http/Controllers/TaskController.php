@@ -77,6 +77,7 @@ class TaskController extends Controller
             'tasks.*.title' => 'required|string|max:255',
             'tasks.*.description' => 'nullable|string',
             'tasks.*.category' => 'required|in:frontend,backend,server',
+            'tasks.*.deadline' => 'nullable|date|after_or_equal:today',
         ]);
 
         $createdCount = 0;
@@ -87,6 +88,7 @@ class TaskController extends Controller
                 'title' => $taskData['title'],
                 'description' => $taskData['description'] ?? null,
                 'category' => $taskData['category'],
+                'deadline' => $taskData['deadline'] ?? null,
             ]);
             $createdCount++;
         }
@@ -122,18 +124,31 @@ class TaskController extends Controller
 
     public function update(Request $request, Task $task)
     {
-        // Only assigned developer can update task status
-        if (auth()->id() !== $task->assigned_to) {
-            abort(403, 'Only the assigned developer can update this task');
+        $user = auth()->user();
+        
+        // Developers can only update status
+        if ($user->isDeveloper() && $task->assigned_to === $user->id) {
+            $validated = $request->validate([
+                'status' => 'required|in:pending,in_progress,completed',
+            ]);
+            
+            $task->update($validated);
+            return back()->with('success', 'Task status updated!');
         }
-
-        $validated = $request->validate([
-            'status' => 'required|in:pending,in_progress,completed',
-        ]);
-
-        $task->update($validated);
-
-        return back()->with('success', 'Task status updated!');
+        
+        // Customers can update title, description, and deadline
+        if ($user->isCustomer() && $task->customer_id === $user->id) {
+            $validated = $request->validate([
+                'title' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'deadline' => 'nullable|date|after_or_equal:today',
+            ]);
+            
+            $task->update($validated);
+            return back()->with('success', 'Task updated successfully!');
+        }
+        
+        abort(403, 'Unauthorized');
     }
 
     public function destroy(Task $task)

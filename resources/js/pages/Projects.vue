@@ -61,7 +61,7 @@ const deleteProject = (projectId: number) => {
                     <p class="text-3xl font-bold text-[#F97316] mt-2">
                         {{ isCustomer 
                             ? props.projects.reduce((sum, p) => sum + (p.customer_tasks_count || 0), 0)
-                            : props.projects.reduce((sum, p) => sum + (p.tasks?.length || 0), 0) 
+                            : props.projects.reduce((sum, p) => sum + (p.assigned_tasks_count || 0), 0) 
                         }}
                     </p>
                 </div>
@@ -118,10 +118,9 @@ const deleteProject = (projectId: number) => {
                         <thead class="bg-[#F9FAFB] border-b border-[#CBD5E1]">
                             <tr>
                                 <th class="px-6 py-3 text-left text-xs font-semibold text-[#1E293B] uppercase tracking-wider">Project Name</th>
-                                <th class="px-6 py-3 text-left text-xs font-semibold text-[#1E293B] uppercase tracking-wider">Frontend Dev</th>
-                                <th class="px-6 py-3 text-left text-xs font-semibold text-[#1E293B] uppercase tracking-wider">Backend Dev</th>
-                                <th class="px-6 py-3 text-left text-xs font-semibold text-[#1E293B] uppercase tracking-wider">Server Admin</th>
-                                <th class="px-6 py-3 text-left text-xs font-semibold text-[#1E293B] uppercase tracking-wider">Tasks</th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-[#1E293B] uppercase tracking-wider">Description</th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-[#1E293B] uppercase tracking-wider">Customer</th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-[#1E293B] uppercase tracking-wider">Your Tasks</th>
                                 <th class="px-6 py-3 text-left text-xs font-semibold text-[#1E293B] uppercase tracking-wider">Created</th>
                             </tr>
                         </thead>
@@ -129,20 +128,16 @@ const deleteProject = (projectId: number) => {
                             <tr v-for="project in props.projects" :key="project.id" @click="router.visit(`/projects/${project.id}`)" class="hover:bg-[#F9FAFB] transition-colors cursor-pointer">
                                 <td class="px-6 py-4">
                                     <div class="font-semibold text-[#5B21B6]">{{ project.name }}</div>
-                                    <div v-if="project.description" class="text-sm text-[#1E293B]/60 mt-1">{{ project.description }}</div>
+                                </td>
+                                <td class="px-6 py-4 text-[#1E293B]">
+                                    {{ project.description || 'No description' }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-[#1E293B]">
-                                    {{ project.members?.find(m => m.role === 'frontend_developer')?.user?.name || 'Not assigned' }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-[#1E293B]">
-                                    {{ project.members?.find(m => m.role === 'backend_developer')?.user?.name || 'Not assigned' }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-[#1E293B]">
-                                    {{ project.members?.find(m => m.role === 'server_administrator')?.user?.name || 'Not assigned' }}
+                                    {{ project.customer?.name || 'Unknown' }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <span class="px-3 py-1 rounded-full text-sm font-semibold bg-[#5B21B6]/10 text-[#5B21B6]">
-                                        {{ project.tasks?.length || 0 }} tasks
+                                        {{ project.assigned_tasks_count || 0 }} tasks
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-[#1E293B]">{{ new Date(project.created_at).toLocaleDateString() }}</td>

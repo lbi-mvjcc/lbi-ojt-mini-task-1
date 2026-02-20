@@ -42,10 +42,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 ->take(5)
                 ->get();
             
-            $projects = \App\Models\ProjectMember::where('user_id', $user->id)
-                ->with('project')
-                ->get()
-                ->pluck('project');
+            // Get projects where developer has assigned tasks
+            $projects = \App\Models\Project::whereHas('tasks', function($query) use ($user) {
+                $query->where('assigned_to', $user->id);
+            })
+            ->with('customer')
+            ->get();
             
             return Inertia::render('Dashboard', [
                 'assignedTasks' => $tasks,

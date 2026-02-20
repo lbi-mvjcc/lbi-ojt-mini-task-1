@@ -21,12 +21,14 @@ class ProjectController extends Controller
                 }])
                 ->get();
         } else {
-            // Developers only see projects they're assigned to
-            $projects = Project::whereHas('members', function ($query) use ($user) {
-                $query->where('user_id', $user->id);
+            // Developers see projects where they have assigned tasks
+            $projects = Project::whereHas('tasks', function ($query) use ($user) {
+                $query->where('assigned_to', $user->id);
             })
-            ->with(['members.user', 'tasks'])
-            ->withCount('tasks')
+            ->with(['customer'])
+            ->withCount(['tasks as assigned_tasks_count' => function ($query) use ($user) {
+                $query->where('assigned_to', $user->id);
+            }])
             ->get();
         }
 
@@ -52,15 +54,18 @@ class ProjectController extends Controller
                     ->latest();
             }]);
         } else {
-            // Developers see all tasks in projects they're assigned to
-            // First check if they're assigned to this project
-            $isMember = $project->members()->where('user_id', $user->id)->exists();
+            // Developers see only their assigned tasks in this project
+            $hasTasksInProject = $project->tasks()->where('assigned_to', $user->id)->exists();
             
-            if (!$isMember) {
+            if (!$hasTasksInProject) {
                 abort(403, 'You are not assigned to this project');
             }
             
-            $project->load(['tasks', 'members.user']);
+            // Load only tasks assigned to this developer
+            $project->load(['tasks' => function ($query) use ($user) {
+                $query->where('assigned_to', $user->id)
+                    ->latest();
+            }, 'customer']);
         }
 
         return Inertia::render('Projects/Show', [
