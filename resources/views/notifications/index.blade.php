@@ -24,41 +24,41 @@
             <!-- Notifications List -->
             @if($notifications->count() > 0)
                 @foreach($notifications as $notification)
-                    <div class="mb-3">
+                    <div class="mb-2">
                         <div class="card border-0 shadow-sm notification-card {{ $notification->isRead() ? '' : 'unread-notification' }}">
-                            <div class="card-body">
-                                <div class="d-flex align-items-start gap-3">
+                            <div class="card-body py-2 px-3">
+                                <div class="d-flex align-items-center gap-2">
                                         <div class="flex-shrink-0">
                                             @if($notification->type === 'task_assigned')
-                                                <div class="notification-icon bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                <div class="notification-icon bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
                                                     <i class="bi bi-plus-circle"></i>
                                                 </div>
                                             @elseif($notification->type === 'status_updated')
-                                                <div class="notification-icon bg-success text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                <div class="notification-icon bg-success text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
                                                     <i class="bi bi-arrow-repeat"></i>
                                                 </div>
                                             @elseif($notification->type === 'task_updated')
-                                                <div class="notification-icon bg-warning text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                <div class="notification-icon bg-warning text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
                                                     <i class="bi bi-pencil-square"></i>
                                                 </div>
                                             @elseif($notification->type === 'task_deleted')
-                                                <div class="notification-icon bg-danger text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                <div class="notification-icon bg-danger text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
                                                     <i class="bi bi-trash"></i>
                                                 </div>
                                             @elseif($notification->type === 'task_due_soon')
-                                                <div class="notification-icon bg-warning text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                <div class="notification-icon bg-warning text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
                                                     <i class="bi bi-clock-history"></i>
                                                 </div>
                                             @elseif($notification->type === 'task_overdue')
-                                                <div class="notification-icon bg-danger text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                <div class="notification-icon bg-danger text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
                                                     <i class="bi bi-exclamation-triangle"></i>
                                                 </div>
                                             @elseif($notification->type === 'submission_uploaded')
-                                                <div class="notification-icon bg-info text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                <div class="notification-icon bg-info text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
                                                     <i class="bi bi-file-earmark-arrow-up"></i>
                                                 </div>
                                             @else
-                                                <div class="notification-icon bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                <div class="notification-icon bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
                                                     <i class="bi bi-bell"></i>
                                                 </div>
                                             @endif
@@ -140,7 +140,7 @@
 
 <style>
 .unread-notification {
-    border-left: 4px solid #007bff !important;
+    border-left: 3px solid #007bff !important;
     background-color: #f8f9ff;
 }
 
@@ -149,7 +149,7 @@
 }
 
 .notification-card .card-body {
-    padding: 1.25rem !important;
+    padding: 0.75rem 1rem !important;
 }
 
 .notification-card:hover {
@@ -158,11 +158,30 @@
 }
 
 .notification-icon {
-    font-size: 1.1rem;
-    width: 40px !important;
-    height: 40px !important;
-    min-width: 40px;
-    min-height: 40px;
+    font-size: 0.9rem;
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px;
+    min-height: 32px;
+}
+
+.notification-card h6 {
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem !important;
+}
+
+.notification-card p {
+    font-size: 0.85rem;
+    margin-bottom: 0.25rem !important;
+}
+
+.notification-card .small {
+    font-size: 0.75rem !important;
+}
+
+.notification-card .btn-sm {
+    padding: 0.2rem 0.4rem;
+    font-size: 0.75rem;
 }
 
 .flex-shrink-0 {
