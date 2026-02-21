@@ -91,11 +91,12 @@
         transition: all 0.3s;
         position: relative;
         overflow: hidden;
-        border: 2px solid transparent;
+        border: 2px solid rgba(167, 139, 250, 0.3);
     }
     .action-card:hover {
         transform: translateY(-4px);
         box-shadow: 0 12px 24px rgba(102, 126, 234, 0.25) !important;
+        border-color: rgba(167, 139, 250, 0.6);
     }
     .action-card .arrow-icon {
         position: absolute;
