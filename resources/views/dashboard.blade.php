@@ -181,6 +181,14 @@
         background-color: transparent !important;
     }
     
+    [data-theme="dark"] .card.dashboard-card {
+        background-color: #1e293b !important;
+    }
+    
+    [data-theme="dark"] .card.dashboard-card .card-body {
+        background-color: #1e293b !important;
+    }
+    
     [data-theme="dark"] .stat-card {
         background-color: var(--card-bg);
         color: var(--text-color);
