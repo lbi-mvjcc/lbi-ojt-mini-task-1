@@ -402,29 +402,139 @@
             </div>
         </section>
 
-        <!-- CTA Section -->
+        <!-- About Section -->
         <section class="cta-section" id="about">
             <div class="container px-5">
+                <div class="row justify-content-center mb-5">
+                    <div class="col-lg-10 text-center">
+                        <h2 class="display-4 fw-bold mb-4" style="color: var(--text-color);">About TaskFlow</h2>
+                        <p class="lead mb-5" style="color: #ffffff; font-weight: 400;">
+                            Your complete task management solution for modern teams
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="row g-4 mb-5">
+                    <div class="col-md-6">
+                        <div class="card h-100" style="background: rgba(255, 255, 255, 0.15); border-radius: 16px; border: 2px solid rgba(255, 255, 255, 0.3); transition: all 0.3s ease; backdrop-filter: blur(10px);">
+                            <div class="card-body p-4 text-center">
+                                <div class="d-flex flex-column align-items-center mb-3">
+                                    <div class="feature-icon text-white rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 56px; height: 56px; background: rgba(255, 255, 255, 0.25); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);">
+                                        <i class="bi bi-bullseye" style="font-size: 1.5rem; color: #ffffff;"></i>
+                                    </div>
+                                    <h4 class="mb-0" style="color: #ffffff; font-weight: 600;">Our Mission</h4>
+                                </div>
+                                <p class="mb-0" style="line-height: 1.8; color: #ffffff; font-size: 0.95rem; text-align: justify;">
+                                    TaskFlow is designed to simplify project management and enhance team collaboration. We believe that managing tasks shouldn't be complicated. Our platform provides an intuitive interface that helps teams stay organized, meet deadlines, and achieve their goals efficiently.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="card h-100" style="background: rgba(255, 255, 255, 0.15); border-radius: 16px; border: 2px solid rgba(255, 255, 255, 0.3); transition: all 0.3s ease; backdrop-filter: blur(10px);">
+                            <div class="card-body p-4 text-center">
+                                <div class="d-flex flex-column align-items-center mb-3">
+                                    <div class="feature-icon text-white rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 56px; height: 56px; background: rgba(255, 255, 255, 0.25); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);">
+                                        <i class="bi bi-people" style="font-size: 1.5rem; color: #ffffff;"></i>
+                                    </div>
+                                    <h4 class="mb-0" style="color: #ffffff; font-weight: 600;">Who We Serve</h4>
+                                </div>
+                                <p class="mb-0" style="line-height: 1.8; color: #ffffff; font-size: 0.95rem; text-align: justify;">
+                                    From small startups to large enterprises, TaskFlow adapts to your team's needs. Whether you're a customer managing projects, a developer tracking assignments, or an admin overseeing operations, our platform provides the tools you need to succeed.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row justify-content-center mb-5">
+                    <div class="col-lg-10">
+                        <div class="card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 20px; border: none; box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);">
+                            <div class="card-body p-5 text-center">
+                                <h3 class="fw-bold mb-4" style="font-size: 2rem; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">Why Choose TaskFlow?</h3>
+                                <div class="row g-3 mt-2 justify-content-center">
+                                    <div class="col-lg-3 col-md-6 col-sm-6">
+                                        <div class="h-100 p-4 d-flex flex-column align-items-center justify-content-center" style="background: rgba(0, 0, 0, 0.3); border-radius: 12px; border: 2px solid rgba(255, 255, 255, 0.5); backdrop-filter: blur(10px); min-height: 200px;">
+                                            <div class="mb-3">
+                                                <i class="bi bi-lightning-charge" style="font-size: 3rem; color: #ffffff;"></i>
+                                            </div>
+                                            <h5 class="fw-bold mb-2" style="color: #ffffff;">Fast & Efficient</h5>
+                                            <p class="small mb-0" style="color: #ffffff;">Streamlined workflows</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-6 col-sm-6">
+                                        <div class="h-100 p-4 d-flex flex-column align-items-center justify-content-center" style="background: rgba(0, 0, 0, 0.3); border-radius: 12px; border: 2px solid rgba(255, 255, 255, 0.5); backdrop-filter: blur(10px); min-height: 200px;">
+                                            <div class="mb-3">
+                                                <i class="bi bi-shield-check" style="font-size: 3rem; color: #ffffff;"></i>
+                                            </div>
+                                            <h5 class="fw-bold mb-2" style="color: #ffffff;">Secure</h5>
+                                            <p class="small mb-0" style="color: #ffffff;">Your data is protected</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-6 col-sm-6">
+                                        <div class="h-100 p-4 d-flex flex-column align-items-center justify-content-center" style="background: rgba(0, 0, 0, 0.3); border-radius: 12px; border: 2px solid rgba(255, 255, 255, 0.5); backdrop-filter: blur(10px); min-height: 200px;">
+                                            <div class="mb-3">
+                                                <i class="bi bi-arrows-angle-expand" style="font-size: 3rem; color: #ffffff;"></i>
+                                            </div>
+                                            <h5 class="fw-bold mb-2" style="color: #ffffff;">Scalable</h5>
+                                            <p class="small mb-0" style="color: #ffffff;">Grows with your team</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-6 col-sm-6">
+                                        <div class="h-100 p-4 d-flex flex-column align-items-center justify-content-center" style="background: rgba(0, 0, 0, 0.3); border-radius: 12px; border: 2px solid rgba(255, 255, 255, 0.5); backdrop-filter: blur(10px); min-height: 200px;">
+                                            <div class="mb-3">
+                                                <i class="bi bi-heart-fill" style="font-size: 3rem; color: #ffffff;"></i>
+                                            </div>
+                                            <h5 class="fw-bold mb-2" style="color: #ffffff;">User-Friendly</h5>
+                                            <p class="small mb-0" style="color: #ffffff;">Intuitive interface</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="row justify-content-center text-center">
                     <div class="col-lg-8">
-                        <h2 class="display-5 fw-bold mb-4">Ready to Get Started?</h2>
-                        <p class="lead mb-5">
-                            Join teams worldwide who are already using TaskFlow to streamline their workflow and boost productivity.
-                        </p>
-                        <div class="d-flex gap-3 justify-content-center flex-wrap">
-                            <a class="btn btn-hero btn-hero-primary" href="{{ route('register') }}">
-                                <i class="bi bi-person-plus me-2"></i>
-                                Create Free Account
-                            </a>
-                            <a class="btn btn-hero btn-hero-outline" href="{{ route('login') }}">
-                                <i class="bi bi-box-arrow-in-right me-2"></i>
-                                Sign In Now
-                            </a>
+                        <div class="p-5" style="background: rgba(255, 255, 255, 0.15); border-radius: 20px; border: 2px solid rgba(255, 255, 255, 0.3); backdrop-filter: blur(10px);">
+                            <h3 class="fw-bold mb-3" style="color: #ffffff;">Ready to Get Started?</h3>
+                            <p class="lead mb-4" style="color: #ffffff;">
+                                Join teams worldwide who are already using TaskFlow to streamline their workflow and boost productivity.
+                            </p>
+                            <div class="d-flex gap-3 justify-content-center flex-wrap">
+                                <a class="btn btn-hero btn-hero-primary" href="{{ route('register') }}" style="padding: 0.875rem 2rem; font-size: 1.1rem;">
+                                    <i class="bi bi-person-plus me-2"></i>
+                                    Create Free Account
+                                </a>
+                                <a class="btn btn-hero btn-hero-outline" href="{{ route('login') }}" style="padding: 0.875rem 2rem; font-size: 1.1rem;">
+                                    <i class="bi bi-box-arrow-in-right me-2"></i>
+                                    Sign In Now
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
+        
+        <style>
+            .card:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 12px 28px rgba(102, 126, 234, 0.25) !important;
+                border-color: rgba(102, 126, 234, 0.5) !important;
+            }
+            
+            [data-theme="dark"] .card {
+                background-color: rgba(30, 41, 59, 0.5) !important;
+                border-color: rgba(139, 156, 245, 0.4) !important;
+            }
+            
+            [data-theme="dark"] .card:hover {
+                border-color: rgba(139, 156, 245, 0.6) !important;
+            }
+        </style>
 
         <!-- Footer -->
         <footer>
