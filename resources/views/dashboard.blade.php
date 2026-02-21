@@ -524,6 +524,59 @@
             </div>
         </div>
 
+        <!-- Recent Activity -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-6">
+                <div class="card dashboard-card shadow-sm" style="background: var(--card-bg); border: 1px solid rgba(167, 139, 250, 0.2);">
+                    <div class="card-header" style="background: var(--card-bg); border-bottom: 1px solid rgba(167, 139, 250, 0.2);">
+                        <h5 class="mb-0"><i class="bi bi-clock-history me-2"></i>Recent Tasks</h5>
+                    </div>
+                    <div class="card-body">
+                        @forelse($recentTasks as $task)
+                            <div class="d-flex align-items-start mb-3 pb-3 border-bottom">
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-1">{{ $task->title }}</h6>
+                                    <small class="text-muted">
+                                        By: {{ $task->createdBy->name ?? 'Unknown' }} | 
+                                        Assigned: {{ $task->assignedTo->name ?? 'Unassigned' }}
+                                    </small>
+                                </div>
+                                <span class="badge bg-{{ $task->status === 'done' ? 'success' : ($task->status === 'in_progress' ? 'info' : 'warning') }}">
+                                    {{ ucfirst(str_replace('_', ' ', $task->status)) }}
+                                </span>
+                            </div>
+                        @empty
+                            <p class="text-muted mb-0">No recent tasks</p>
+                        @endforelse
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card dashboard-card shadow-sm" style="background: var(--card-bg); border: 1px solid rgba(167, 139, 250, 0.2);">
+                    <div class="card-header" style="background: var(--card-bg); border-bottom: 1px solid rgba(167, 139, 250, 0.2);">
+                        <h5 class="mb-0"><i class="bi bi-person-plus me-2"></i>Recent Users</h5>
+                    </div>
+                    <div class="card-body">
+                        @forelse($recentUsers as $recentUser)
+                            <div class="d-flex align-items-center mb-3 pb-3 border-bottom">
+                                <div class="me-3">
+                                    {!! $recentUser->getProfilePictureHtml(40) !!}
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-0">{{ $recentUser->name }}</h6>
+                                    <small class="text-muted">{{ $recentUser->getRoleLabel() }}</small>
+                                </div>
+                                <small class="text-muted">{{ $recentUser->created_at->diffForHumans() }}</small>
+                            </div>
+                        @empty
+                            <p class="text-muted mb-0">No recent users</p>
+                        @endforelse
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Additional Actions -->
         <div class="row g-3 mb-4 justify-content-center">
             <div class="col-md-6 col-lg-4">
@@ -550,59 +603,6 @@
                         <p class="text-muted small mb-0">Generate reset codes</p>
                     </div>
                 </a>
-            </div>
-        </div>
-
-        <!-- Recent Activity -->
-        <div class="row g-3">
-            <div class="col-md-6">
-                <div class="card dashboard-card shadow-sm" style="background: var(--card-bg); border: 1px solid var(--border-color);">
-                    <div class="card-header" style="background: var(--card-bg); border-bottom: 1px solid var(--border-color);">
-                        <h5 class="mb-0"><i class="bi bi-clock-history me-2"></i>Recent Tasks</h5>
-                    </div>
-                    <div class="card-body">
-                        @forelse($recentTasks as $task)
-                            <div class="d-flex align-items-start mb-3 pb-3 border-bottom">
-                                <div class="flex-grow-1">
-                                    <h6 class="mb-1">{{ $task->title }}</h6>
-                                    <small class="text-muted">
-                                        By: {{ $task->createdBy->name ?? 'Unknown' }} | 
-                                        Assigned: {{ $task->assignedTo->name ?? 'Unassigned' }}
-                                    </small>
-                                </div>
-                                <span class="badge bg-{{ $task->status === 'done' ? 'success' : ($task->status === 'in_progress' ? 'info' : 'warning') }}">
-                                    {{ ucfirst(str_replace('_', ' ', $task->status)) }}
-                                </span>
-                            </div>
-                        @empty
-                            <p class="text-muted mb-0">No recent tasks</p>
-                        @endforelse
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                <div class="card dashboard-card shadow-sm" style="background: var(--card-bg); border: 1px solid var(--border-color);">
-                    <div class="card-header" style="background: var(--card-bg); border-bottom: 1px solid var(--border-color);">
-                        <h5 class="mb-0"><i class="bi bi-person-plus me-2"></i>Recent Users</h5>
-                    </div>
-                    <div class="card-body">
-                        @forelse($recentUsers as $recentUser)
-                            <div class="d-flex align-items-center mb-3 pb-3 border-bottom">
-                                <div class="me-3">
-                                    {!! $recentUser->getProfilePictureHtml(40) !!}
-                                </div>
-                                <div class="flex-grow-1">
-                                    <h6 class="mb-0">{{ $recentUser->name }}</h6>
-                                    <small class="text-muted">{{ $recentUser->getRoleLabel() }}</small>
-                                </div>
-                                <small class="text-muted">{{ $recentUser->created_at->diffForHumans() }}</small>
-                            </div>
-                        @empty
-                            <p class="text-muted mb-0">No recent users</p>
-                        @endforelse
-                    </div>
-                </div>
             </div>
         </div>
 
