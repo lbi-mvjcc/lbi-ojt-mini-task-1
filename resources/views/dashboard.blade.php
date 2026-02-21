@@ -438,123 +438,106 @@
         </div>
 
         <!-- Statistics Cards -->
-        <div class="mb-4">
-            <h4 class="mb-3" style="color: var(--text-color); font-weight: 600;">
-                <i class="bi bi-bar-chart-line me-2"></i>System Overview
-            </h4>
-            <div class="row g-3">
-                <div class="col-md-4">
-                    <div class="stat-card shadow-sm">
-                        <div class="d-flex justify-content-between align-items-start mb-3">
-                            <div class="stat-icon">
-                                <i class="bi bi-people"></i>
-                            </div>
-                        </div>
-                        <div>
-                            <p class="text-muted mb-1 small">Total Users</p>
-                            <h2 class="mb-0 fw-bold" style="color: var(--primary-purple);">{{ $totalUsers }}</h2>
+        <div class="row g-3 mb-5">
+            <div class="col-md-4">
+                <div class="stat-card shadow-sm">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div class="stat-icon">
+                            <i class="bi bi-people"></i>
                         </div>
                     </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="stat-card shadow-sm">
-                        <div class="d-flex justify-content-between align-items-start mb-3">
-                            <div class="stat-icon">
-                                <i class="bi bi-list-task"></i>
-                            </div>
-                        </div>
-                        <div>
-                            <p class="text-muted mb-1 small">Total Tasks</p>
-                            <h2 class="mb-0 fw-bold" style="color: var(--primary-purple);">{{ $totalTasks }}</h2>
-                        </div>
+                    <div>
+                        <p class="text-muted mb-1 small">Total Users</p>
+                        <h2 class="mb-0 fw-bold" style="color: var(--primary-purple);">{{ $totalUsers }}</h2>
                     </div>
                 </div>
+            </div>
 
-                <div class="col-md-4">
-                    <div class="stat-card shadow-sm">
-                        <div class="d-flex justify-content-between align-items-start mb-3">
-                            <div class="stat-icon">
-                                <i class="bi bi-folder"></i>
-                            </div>
+            <div class="col-md-4">
+                <div class="stat-card shadow-sm">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div class="stat-icon">
+                            <i class="bi bi-list-task"></i>
                         </div>
-                        <div>
-                            <p class="text-muted mb-1 small">Total Projects</p>
-                            <h2 class="mb-0 fw-bold" style="color: var(--primary-purple);">{{ $totalProjects }}</h2>
+                    </div>
+                    <div>
+                        <p class="text-muted mb-1 small">Total Tasks</p>
+                        <h2 class="mb-0 fw-bold" style="color: var(--primary-purple);">{{ $totalTasks }}</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="stat-card shadow-sm">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div class="stat-icon">
+                            <i class="bi bi-folder"></i>
                         </div>
+                    </div>
+                    <div>
+                        <p class="text-muted mb-1 small">Total Projects</p>
+                        <h2 class="mb-0 fw-bold" style="color: var(--primary-purple);">{{ $totalProjects }}</h2>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Divider -->
-        <hr style="border: 0; height: 2px; background: linear-gradient(to right, transparent, rgba(167, 139, 250, 0.5), transparent); margin: 2rem 0;">
-
         <!-- Quick Actions -->
-        <div class="mb-4">
-            <h4 class="mb-3" style="color: var(--text-color); font-weight: 600;">
-                <i class="bi bi-lightning-charge me-2"></i>Quick Actions
-            </h4>
-            <div class="row g-3">
-                <div class="col-md-6 col-lg-4">
-                    <a href="{{ route('admin.users') }}" class="action-card shadow-sm" style="background: var(--card-bg); color: var(--text-color);">
-                        <i class="bi bi-arrow-right-circle arrow-icon"></i>
-                        <div class="text-center">
-                            <div class="stat-icon mx-auto mb-3">
-                                <i class="bi bi-people"></i>
-                            </div>
-                            <h5 class="mb-2">Manage Users</h5>
-                            <p class="text-muted small mb-0">View, create, edit users</p>
+        <div class="row g-3 mb-4">
+            <div class="col-md-6 col-lg-4">
+                <a href="{{ route('admin.users') }}" class="action-card shadow-sm" style="background: var(--card-bg); color: var(--text-color);">
+                    <i class="bi bi-arrow-right-circle arrow-icon"></i>
+                    <div class="text-center">
+                        <div class="stat-icon mx-auto mb-3">
+                            <i class="bi bi-people"></i>
                         </div>
-                    </a>
-                </div>
+                        <h5 class="mb-2">Manage Users</h5>
+                        <p class="text-muted small mb-0">View, create, edit users</p>
+                    </div>
+                </a>
+            </div>
 
-                <div class="col-md-6 col-lg-4">
-                    <a href="{{ route('admin.tasks') }}" class="action-card shadow-sm" style="background: var(--card-bg); color: var(--text-color);">
-                        <i class="bi bi-arrow-right-circle arrow-icon"></i>
-                        <div class="text-center">
-                            <div class="stat-icon mx-auto mb-3">
-                                <i class="bi bi-list-task"></i>
-                            </div>
-                            <h5 class="mb-2">Manage Tasks</h5>
-                            <p class="text-muted small mb-0">View and delete tasks</p>
+            <div class="col-md-6 col-lg-4">
+                <a href="{{ route('admin.tasks') }}" class="action-card shadow-sm" style="background: var(--card-bg); color: var(--text-color);">
+                    <i class="bi bi-arrow-right-circle arrow-icon"></i>
+                    <div class="text-center">
+                        <div class="stat-icon mx-auto mb-3">
+                            <i class="bi bi-list-task"></i>
                         </div>
-                    </a>
-                </div>
+                        <h5 class="mb-2">Manage Tasks</h5>
+                        <p class="text-muted small mb-0">View and delete tasks</p>
+                    </div>
+                </a>
+            </div>
 
-                <div class="col-md-6 col-lg-4">
-                    <a href="{{ route('admin.projects') }}" class="action-card shadow-sm" style="background: var(--card-bg); color: var(--text-color);">
-                        <i class="bi bi-arrow-right-circle arrow-icon"></i>
-                        <div class="text-center">
-                            <div class="stat-icon mx-auto mb-3">
-                                <i class="bi bi-folder"></i>
-                            </div>
-                            <h5 class="mb-2">Manage Projects</h5>
-                            <p class="text-muted small mb-0">View and delete projects</p>
+            <div class="col-md-6 col-lg-4">
+                <a href="{{ route('admin.projects') }}" class="action-card shadow-sm" style="background: var(--card-bg); color: var(--text-color);">
+                    <i class="bi bi-arrow-right-circle arrow-icon"></i>
+                    <div class="text-center">
+                        <div class="stat-icon mx-auto mb-3">
+                            <i class="bi bi-folder"></i>
                         </div>
-                    </a>
-                </div>
+                        <h5 class="mb-2">Manage Projects</h5>
+                        <p class="text-muted small mb-0">View and delete projects</p>
+                    </div>
+                </a>
             </div>
         </div>
 
         <!-- Additional Actions -->
-        <div class="mb-4">
-            <h4 class="mb-3" style="color: var(--text-color); font-weight: 600;">
-                <i class="bi bi-gear me-2"></i>Administrative Functions
-            </h4>
-            <div class="row g-3 justify-content-center">
-                <div class="col-md-6 col-lg-4">
-                    <a href="{{ route('admin.users.create') }}" class="action-card shadow-sm" style="background: var(--card-bg); color: var(--text-color);">
-                        <i class="bi bi-arrow-right-circle arrow-icon"></i>
-                        <div class="text-center">
-                            <div class="stat-icon mx-auto mb-3">
-                                <i class="bi bi-person-plus"></i>
-                            </div>
-                            <h5 class="mb-2">Create User</h5>
-                            <p class="text-muted small mb-0">Add new user account</p>
+        <div class="row g-3 mb-4 justify-content-center">
+            <div class="col-md-6 col-lg-4">
+                <a href="{{ route('admin.users.create') }}" class="action-card shadow-sm" style="background: var(--card-bg); color: var(--text-color);">
+                    <i class="bi bi-arrow-right-circle arrow-icon"></i>
+                    <div class="text-center">
+                        <div class="stat-icon mx-auto mb-3">
+                            <i class="bi bi-person-plus"></i>
                         </div>
-                    </a>
-                </div>
+                        <h5 class="mb-2">Create User</h5>
+                        <p class="text-muted small mb-0">Add new user account</p>
+                    </div>
+                </a>
+            </div>
 
             <div class="col-md-6 col-lg-4">
                 <a href="{{ route('admin.password-reset-codes') }}" class="action-card shadow-sm" style="background: var(--card-bg); color: var(--text-color);">
@@ -568,7 +551,6 @@
                     </div>
                 </a>
             </div>
-        </div>
         </div>
 
         <!-- Recent Activity -->
