@@ -311,6 +311,18 @@
     [data-theme="dark"] .stat-label {
         color: var(--muted-text);
     }
+    
+    .project-header-customer {
+        background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+        color: white;
+        padding: 1.5rem;
+        border-radius: 12px;
+    }
+    
+    [data-theme="dark"] .project-header-customer {
+        background: linear-gradient(135deg, #334155 0%, #1e293b 100%);
+        border: 1px solid #475569;
+    }
 </style>
 
 <div class="container py-4">
@@ -394,63 +406,93 @@
         </div>
 
         @if($tasks->count() > 0)
-            @foreach($tasks as $task)
-                <div class="task-card">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <div class="flex-grow-1">
-                            <h3 class="task-title">{{ $task->title }}</h3>
-                            <div class="task-meta">
-                                <div class="task-meta-item">
-                                    <i class="bi bi-folder"></i>
-                                    <span>{{ $task->project->name }}</span>
-                                </div>
-                                <div class="task-meta-item">
-                                    <i class="bi bi-tag"></i>
-                                    <span class="category-badge">{{ $task->getCategoryLabel() }}</span>
-                                </div>
-                                <div class="task-meta-item">
-                                    <i class="bi bi-calendar3"></i>
-                                    <span>{{ $task->created_at->format('M d, Y') }}</span>
-                                </div>
-                                @if($task->deadline)
-                                    <div class="task-meta-item">
-                                        <i class="bi bi-clock"></i>
-                                        <span>Due: {{ $task->deadline->format('M d, Y') }}</span>
-                                    </div>
-                                @endif
+            @php
+                // Group tasks by project
+                $tasksByProject = $tasks->groupBy('project_id');
+            @endphp
+            
+            @foreach($tasksByProject as $projectId => $projectTasks)
+                @php
+                    $project = $projectTasks->first()->project;
+                    $totalTasks = $projectTasks->count();
+                    $completedTasks = $projectTasks->where('status', 'done')->count();
+                    $inProgressTasks = $projectTasks->where('status', 'in_progress')->count();
+                    $pendingTasks = $projectTasks->where('status', 'pending')->count();
+                @endphp
+                
+                <!-- Project Header -->
+                <div class="mb-3 project-header-customer">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h2 style="font-size: 1.5rem; font-weight: 700; margin: 0; display: flex; align-items: center; gap: 0.75rem;">
+                                <i class="bi bi-folder-fill"></i>
+                                {{ $project->name }}
+                            </h2>
+                            <div style="display: flex; gap: 1.5rem; margin-top: 0.5rem; font-size: 0.9rem; opacity: 0.9;">
+                                <span><i class="bi bi-list-check"></i> {{ $totalTasks }} Tasks</span>
+                                <span><i class="bi bi-clock"></i> {{ $pendingTasks }} Pending</span>
+                                <span><i class="bi bi-arrow-repeat"></i> {{ $inProgressTasks }} In Progress</span>
+                                <span><i class="bi bi-check-circle"></i> {{ $completedTasks }} Completed</span>
                             </div>
-                            @if($task->description)
-                                <p class="text-muted mb-3">{{ Str::limit($task->description, 150) }}</p>
-                            @endif
-                            <div class="d-flex gap-2 flex-wrap">
-                                @if($task->status === 'pending')
-                                    <span class="status-badge pending">Pending</span>
-                                @elseif($task->status === 'in_progress')
-                                    <span class="status-badge in-progress">In Progress</span>
-                                @elseif($task->status === 'in_review')
-                                    <span class="status-badge in-review">In Review</span>
-                                @elseif($task->status === 'done')
-                                    <span class="status-badge completed">Completed</span>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="task-actions">
-                            <a href="{{ route('tasks.show', $task) }}" class="btn btn-sm btn-outline-primary">
-                                <i class="bi bi-eye"></i> View
-                            </a>
-                            <a href="{{ route('tasks.edit', $task) }}" class="btn btn-sm" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none;">
-                                <i class="bi bi-pencil"></i> Edit
-                            </a>
-                            <form action="{{ route('tasks.destroy', $task) }}" method="POST" style="display: inline;" onsubmit="return confirm('This action cannot be undone. Are you sure you want to delete this task?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-outline-danger">
-                                    <i class="bi bi-trash"></i> Delete
-                                </button>
-                            </form>
                         </div>
                     </div>
                 </div>
+                
+                <!-- Tasks in this project -->
+                @foreach($projectTasks as $task)
+                    <div class="task-card">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div class="flex-grow-1">
+                                <h3 class="task-title">{{ $task->title }}</h3>
+                                <div class="task-meta">
+                                    <div class="task-meta-item">
+                                        <i class="bi bi-tag"></i>
+                                        <span class="category-badge">{{ $task->getCategoryLabel() }}</span>
+                                    </div>
+                                    <div class="task-meta-item">
+                                        <i class="bi bi-calendar3"></i>
+                                        <span>{{ $task->created_at->format('M d, Y') }}</span>
+                                    </div>
+                                    @if($task->deadline)
+                                        <div class="task-meta-item">
+                                            <i class="bi bi-clock"></i>
+                                            <span>Due: {{ $task->deadline->format('M d, Y') }}</span>
+                                        </div>
+                                    @endif
+                                </div>
+                                @if($task->description)
+                                    <p class="text-muted mb-3">{{ Str::limit($task->description, 150) }}</p>
+                                @endif
+                                <div class="d-flex gap-2 flex-wrap">
+                                    @if($task->status === 'pending')
+                                        <span class="status-badge pending">Pending</span>
+                                    @elseif($task->status === 'in_progress')
+                                        <span class="status-badge in-progress">In Progress</span>
+                                    @elseif($task->status === 'in_review')
+                                        <span class="status-badge in-review">In Review</span>
+                                    @elseif($task->status === 'done')
+                                        <span class="status-badge completed">Completed</span>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="task-actions">
+                                <a href="{{ route('tasks.show', $task) }}" class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-eye"></i> View
+                                </a>
+                                <a href="{{ route('tasks.edit', $task) }}" class="btn btn-sm" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none;">
+                                    <i class="bi bi-pencil"></i> Edit
+                                </a>
+                                <form action="{{ route('tasks.destroy', $task) }}" method="POST" style="display: inline;" onsubmit="return confirm('This action cannot be undone. Are you sure you want to delete this task?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                        <i class="bi bi-trash"></i> Delete
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
             @endforeach
         @else
             <div class="empty-state">

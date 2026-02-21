@@ -73,6 +73,20 @@
                 background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
             }
             
+            /* Footer dark mode support */
+            footer.navbar-purple {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+            }
+            
+            [data-theme="dark"] footer.navbar-purple {
+                background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
+                border-top: 1px solid var(--border-color);
+            }
+            
+            [data-theme="dark"] footer.navbar-purple p {
+                color: var(--muted-text) !important;
+            }
+            
             .theme-toggle {
                 background: rgba(255, 255, 255, 0.2);
                 border: none;

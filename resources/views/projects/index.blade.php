@@ -285,8 +285,8 @@
                             <!-- Stats Grid -->
                             <div class="stats-grid">
                                 <div class="stat-item">
-                                    <div class="stat-number">{{ $project->tasks()->select('title', 'project_id', 'category')->distinct()->count() }}</div>
-                                    <div class="stat-label">Unique Tasks</div>
+                                    <div class="stat-number">{{ $project->tasks()->count() }}</div>
+                                    <div class="stat-label">Total Tasks</div>
                                 </div>
                                 <div class="stat-item">
                                     <div class="stat-number">{{ $project->tasks()->where('status', 'in_progress')->count() }}</div>
@@ -309,35 +309,12 @@
                                     Recent Tasks
                                 </div>
                                 <div class="task-list">
-                                    @php
-                                        // Get all tasks and manually group them
-                                        $allTasks = $project->tasks()->latest()->get();
-                                        $uniqueTasks = collect();
-                                        $seenTasks = [];
-                                        
-                                        foreach($allTasks as $task) {
-                                            $key = $task->title . '|' . $task->category . '|' . $task->project_id;
-                                            if (!isset($seenTasks[$key])) {
-                                                $seenTasks[$key] = true;
-                                                $uniqueTasks->push($task);
-                                                if ($uniqueTasks->count() >= 5) break;
-                                            }
-                                        }
-                                    @endphp
-                                    @foreach($uniqueTasks as $task)
-                                        @php
-                                            // Count developers assigned to this specific task
-                                            $taskDeveloperCount = App\Models\Task::where('title', $task->title)
-                                                ->where('project_id', $task->project_id)
-                                                ->where('category', $task->category)
-                                                ->count();
-                                        @endphp
+                                    @foreach($project->tasks()->latest()->take(5)->get() as $task)
                                         <div class="task-item">
                                             <div class="d-flex justify-content-between align-items-start">
                                                 <div class="flex-grow-1">
                                                     <div class="task-item-title">{{ Str::limit($task->title, 35) }}</div>
                                                     <div class="task-item-meta">
-                                                        <i class="bi bi-people"></i> {{ $taskDeveloperCount }} dev{{ $taskDeveloperCount > 1 ? 's' : '' }} • 
                                                         <i class="bi bi-tag"></i> {{ ucfirst($task->category) }}
                                                     </div>
                                                 </div>

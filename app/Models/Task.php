@@ -64,8 +64,6 @@ class Task extends Model
 
         return $labels[$this->category] ?? ucfirst($this->category);
     }
-        return $this->hasMany(TaskSubmission::class);
-    }
 
     /**
      * Check if task requires any type of submission

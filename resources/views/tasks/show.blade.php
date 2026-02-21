@@ -416,6 +416,19 @@
                         <span class="info-value">{{ $task->createdBy->name }}</span>
                     </div>
                     
+                    @if(auth()->user()->isAdmin())
+                        <div class="info-row">
+                            <span class="info-label">Assigned To</span>
+                            <span class="info-value">
+                                <div class="d-flex align-items-center gap-2">
+                                    {!! $task->assignedTo->getProfilePictureHtml(24) !!}
+                                    <span>{{ $task->assignedTo->name }}</span>
+                                    <span class="badge bg-info">{{ $task->assignedTo->getRoleLabel() }}</span>
+                                </div>
+                            </span>
+                        </div>
+                    @endif
+                    
                     @if(auth()->user()->isDeveloper())
                         <div class="mt-4">
                             <div class="dropdown w-100">

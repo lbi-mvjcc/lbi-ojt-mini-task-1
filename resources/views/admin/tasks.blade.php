@@ -1,6 +1,207 @@
 @extends('layouts.app')
 
 @section('content')
+<style>
+    .projects-container {
+        column-count: 2;
+        column-gap: 1.5rem;
+    }
+    
+    @media (max-width: 768px) {
+        .projects-container {
+            column-count: 1;
+        }
+    }
+    
+    .project-section {
+        break-inside: avoid;
+        margin-bottom: 1.5rem;
+    }
+    
+    .project-header {
+        background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+        color: white;
+        padding: 1.5rem;
+        border-radius: 12px;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    .project-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+    
+    .project-stats {
+        display: flex;
+        gap: 1.5rem;
+        margin-top: 0.5rem;
+        font-size: 0.9rem;
+        opacity: 0.9;
+    }
+    
+    .task-card {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        height: 100%;
+        border: 1px solid #e5e7eb;
+    }
+    
+    .task-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 16px rgba(102, 126, 234, 0.2);
+        border-color: #667eea;
+    }
+    
+    .task-card-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-bottom: 0.75rem;
+        color: #1f2937;
+    }
+    
+    .task-card-meta {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .meta-row {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #6b7280;
+    }
+    
+    .meta-row i {
+        color: #667eea;
+        width: 16px;
+    }
+    
+    .developer-info {
+        background: #f9fafb;
+        padding: 0.75rem;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+    }
+    
+    .developer-name {
+        font-weight: 600;
+        color: #1f2937;
+        margin-bottom: 0.25rem;
+    }
+    
+    .role-badge {
+        font-size: 0.75rem;
+        padding: 0.25rem 0.6rem;
+        border-radius: 6px;
+        font-weight: 600;
+        display: inline-block;
+    }
+    
+    .role-frontend {
+        background-color: #dbeafe;
+        color: #1e40af;
+    }
+    
+    .role-backend {
+        background-color: #dcfce7;
+        color: #166534;
+    }
+    
+    .role-server {
+        background-color: #fef3c7;
+        color: #92400e;
+    }
+    
+    .status-badge {
+        padding: 0.35rem 0.75rem;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.8rem;
+    }
+    
+    .task-actions {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 1rem;
+    }
+    
+    .btn-action {
+        flex: 1;
+        padding: 0.5rem;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        transition: all 0.2s;
+    }
+    
+    .category-badge {
+        background: #f3f4f6;
+        color: #4b5563;
+        padding: 0.25rem 0.6rem;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+    
+    [data-theme="dark"] .task-card {
+        background: #1e293b;
+        border-color: #334155;
+        color: #f1f5f9;
+    }
+    
+    [data-theme="dark"] .task-card-title {
+        color: #f1f5f9;
+    }
+    
+    [data-theme="dark"] .developer-info {
+        background: #0f172a;
+    }
+    
+    [data-theme="dark"] .developer-name {
+        color: #f1f5f9;
+    }
+    
+    [data-theme="dark"] .meta-row {
+        color: #94a3b8;
+    }
+    
+    [data-theme="dark"] .role-frontend {
+        background-color: rgba(59, 130, 246, 0.2);
+        color: #93c5fd;
+    }
+    
+    [data-theme="dark"] .role-backend {
+        background-color: rgba(34, 197, 94, 0.2);
+        color: #86efac;
+    }
+    
+    [data-theme="dark"] .role-server {
+        background-color: rgba(251, 191, 36, 0.2);
+        color: #fcd34d;
+    }
+    
+    [data-theme="dark"] .category-badge {
+        background: #334155;
+        color: #cbd5e1;
+    }
+    
+    [data-theme="dark"] .project-header {
+        background: linear-gradient(135deg, #334155 0%, #1e293b 100%);
+        border: 1px solid #475569;
+    }
+</style>
+
     <div class="container-fluid py-4">
         <!-- Header -->
         <div class="row mb-4">
@@ -8,7 +209,7 @@
                 <div class="card border-0 shadow-sm" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
                     <div class="card-body text-white py-4">
                         <h1 class="mb-2"><i class="bi bi-list-task me-2"></i>Task Management</h1>
-                        <p class="mb-0 opacity-75">Oversee all tasks in the system</p>
+                        <p class="mb-0 opacity-75">Oversee all tasks organized by project</p>
                     </div>
                 </div>
             </div>
@@ -21,87 +222,115 @@
             </div>
         @endif
 
-        <!-- Tasks Table -->
-        <div class="card border-0 shadow-sm">
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Task</th>
-                                <th>Project</th>
-                                <th>Created By</th>
-                                <th>Assigned To</th>
-                                <th>Status</th>
-                                <th>Priority</th>
-                                <th>Deadline</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse($tasks as $task)
-                                <tr>
-                                    <td>
-                                        <a href="{{ route('tasks.show', $task) }}" class="text-decoration-none">
-                                            <strong>{{ $task->title }}</strong>
-                                        </a>
-                                    </td>
-                                    <td>{{ $task->project->name ?? 'N/A' }}</td>
-                                    <td>{{ $task->createdBy->name ?? 'N/A' }}</td>
-                                    <td>{{ $task->assignedTo->name ?? 'Unassigned' }}</td>
-                                    <td>
+        @php
+            // Group tasks by project
+            $tasksByProject = $tasks->groupBy('project_id');
+        @endphp
+
+        @if($tasksByProject->count() > 0)
+            <div class="projects-container">
+            @foreach($tasksByProject as $projectId => $projectTasks)
+                @php
+                    $project = $projectTasks->first()->project;
+                    $totalTasks = $projectTasks->count();
+                    $completedTasks = $projectTasks->where('status', 'done')->count();
+                    $inProgressTasks = $projectTasks->where('status', 'in_progress')->count();
+                @endphp
+                
+                <div class="project-section">
+                    <div class="project-header">
+                        <div>
+                            <h2 class="project-title">
+                                <i class="bi bi-folder-fill"></i>
+                                {{ $project->name }}
+                            </h2>
+                            <div class="project-stats">
+                                <span><i class="bi bi-list-check"></i> {{ $totalTasks }} Tasks</span>
+                                <span><i class="bi bi-arrow-repeat"></i> {{ $inProgressTasks }} In Progress</span>
+                                <span><i class="bi bi-check-circle"></i> {{ $completedTasks }} Completed</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row g-3">
+                        @foreach($projectTasks as $task)
+                            <div class="col-12">
+                                <div class="task-card">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <span class="category-badge">{{ $task->getCategoryLabel() }}</span>
                                         @if($task->status === 'pending')
-                                            <span class="badge bg-warning">Pending</span>
+                                            <span class="status-badge badge bg-warning">Pending</span>
                                         @elseif($task->status === 'in_progress')
-                                            <span class="badge bg-info">In Progress</span>
+                                            <span class="status-badge badge bg-info">In Progress</span>
                                         @elseif($task->status === 'in_review')
-                                            <span class="badge bg-primary">In Review</span>
+                                            <span class="status-badge badge bg-primary">In Review</span>
                                         @elseif($task->status === 'done')
-                                            <span class="badge bg-success">Done</span>
+                                            <span class="status-badge badge bg-success">Done</span>
                                         @endif
-                                    </td>
-                                    <td>
-                                        @if($task->priority === 'low')
-                                            <span class="badge bg-secondary">Low</span>
-                                        @elseif($task->priority === 'medium')
-                                            <span class="badge bg-info">Medium</span>
-                                        @elseif($task->priority === 'high')
-                                            <span class="badge bg-warning">High</span>
-                                        @elseif($task->priority === 'urgent')
-                                            <span class="badge bg-danger">Urgent</span>
+                                    </div>
+                                    
+                                    <h3 class="task-card-title">{{ $task->title }}</h3>
+                                    
+                                    <div class="task-card-meta">
+                                        <div class="meta-row">
+                                            <i class="bi bi-person"></i>
+                                            <span>Created by: {{ $task->createdBy->name ?? 'N/A' }}</span>
+                                        </div>
+                                        @if($task->deadline)
+                                            <div class="meta-row">
+                                                <i class="bi bi-calendar"></i>
+                                                <span>Due: {{ $task->deadline->format('M d, Y') }}</span>
+                                            </div>
                                         @endif
-                                    </td>
-                                    <td>{{ $task->deadline ? $task->deadline->format('M d, Y') : 'N/A' }}</td>
-                                    <td>
-                                        <a href="{{ route('tasks.show', $task) }}" class="btn btn-sm btn-outline-primary me-1">
-                                            <i class="bi bi-eye"></i>
+                                    </div>
+                                    
+                                    @if($task->assignedTo)
+                                        <div class="developer-info">
+                                            <div class="d-flex align-items-center gap-2 mb-1">
+                                                <i class="bi bi-person-badge text-primary"></i>
+                                                <span style="font-size: 0.75rem; color: #6b7280; font-weight: 600;">ASSIGNED TO</span>
+                                            </div>
+                                            <div class="developer-name">{{ $task->assignedTo->name }}</div>
+                                            @php
+                                                $roleClass = 'role-backend';
+                                                if($task->assignedTo->role === 'frontend_dev') {
+                                                    $roleClass = 'role-frontend';
+                                                } elseif($task->assignedTo->role === 'server_admin') {
+                                                    $roleClass = 'role-server';
+                                                }
+                                            @endphp
+                                            <span class="role-badge {{ $roleClass }}">
+                                                {{ $task->assignedTo->getRoleLabel() }}
+                                            </span>
+                                        </div>
+                                    @endif
+                                    
+                                    <div class="task-actions">
+                                        <a href="{{ route('tasks.show', $task) }}" class="btn btn-sm btn-outline-primary btn-action">
+                                            <i class="bi bi-eye"></i> View
                                         </a>
-                                        <form action="{{ route('admin.tasks.delete', $task) }}" method="POST" class="d-inline" onsubmit="return confirm('This action cannot be undone. Are you sure you want to delete this task?');">
+                                        <form action="{{ route('admin.tasks.delete', $task) }}" method="POST" class="flex-fill" onsubmit="return confirm('This action cannot be undone. Are you sure you want to delete this task?');">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-outline-danger">
-                                                <i class="bi bi-trash"></i>
+                                            <button type="submit" class="btn btn-sm btn-outline-danger btn-action w-100">
+                                                <i class="bi bi-trash"></i> Delete
                                             </button>
                                         </form>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="8" class="text-center py-4">
-                                        <i class="bi bi-inbox fs-1 text-muted"></i>
-                                        <p class="text-muted mt-2">No tasks found</p>
-                                    </td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
-
-                <!-- Pagination -->
-                <div class="mt-3">
-                    {{ $tasks->links() }}
+            @endforeach
+            </div>
+        @else
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center py-5">
+                    <i class="bi bi-inbox fs-1 text-muted"></i>
+                    <p class="text-muted mt-2">No tasks found</p>
                 </div>
             </div>
-        </div>
+        @endif
     </div>
 @endsection

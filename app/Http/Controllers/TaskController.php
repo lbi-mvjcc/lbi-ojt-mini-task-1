@@ -110,11 +110,21 @@ class TaskController extends Controller
             ]
         );
 
-        try {
-            // Automatically assign task to ONE developer with least workload
-            $assignedDeveloper = $this->assignTaskToDeveloper($validated['category']);
+        // Refresh to get latest data including team assignments
+        $project->refresh();
 
-            // Create task for the selected developer
+        try {
+            // Get the developer assigned to this project for the task category
+            $assignedDeveloper = $project->getDeveloperForCategory($validated['category']);
+            
+            // If no developer assigned to project yet, auto-assign one with least workload
+            if (!$assignedDeveloper) {
+                $assignedDeveloper = $this->assignDeveloperToProject($project, $validated['category']);
+                // Refresh project again after assignment
+                $project->refresh();
+            }
+
+            // Create task for the assigned developer
             $task = Task::create([
                 'title' => $validated['title'],
                 'description' => $validated['description'],
@@ -133,10 +143,59 @@ class TaskController extends Controller
             // Create notification for the assigned developer
             Notification::createTaskAssignedNotification($task, $user, [$assignedDeveloper]);
             
-            return redirect()->route('tasks.index')->with('success', "Task created successfully and assigned to {$assignedDeveloper->name}!");
+            return redirect()->route('tasks.index')->with('success', 'Task created successfully!');
         } catch (\Exception $e) {
             return redirect()->back()->withInput()->with('error', $e->getMessage());
         }
+    }
+
+    /**
+     * Assign a developer to a project for a specific category
+     * Returns the assigned developer
+     */
+    private function assignDeveloperToProject(Project $project, string $category): User
+    {
+        // Map category to developer role
+        $roleMap = [
+            'frontend' => User::ROLE_FRONTEND_DEV,
+            'backend' => User::ROLE_BACKEND_DEV,
+            'server' => User::ROLE_SERVER_ADMIN,
+        ];
+
+        $role = $roleMap[$category] ?? User::ROLE_BACKEND_DEV;
+
+        // Get all developers of this role
+        $developers = User::where('role', $role)->get();
+
+        if ($developers->isEmpty()) {
+            throw new \Exception("No {$category} developers available. Please contact admin to add developers.");
+        }
+
+        // Count projects for each developer and find the one with least workload
+        $developer = $developers->sortBy(function($dev) use ($category) {
+            $count = 0;
+            if ($category === 'frontend') {
+                $count = Project::where('frontend_developer_id', $dev->id)->count();
+            } elseif ($category === 'backend') {
+                $count = Project::where('backend_developer_id', $dev->id)->count();
+            } else {
+                $count = Project::where('server_admin_id', $dev->id)->count();
+            }
+            return $count;
+        })->first();
+
+        // Assign developer to project
+        $fieldMap = [
+            'frontend' => 'frontend_developer_id',
+            'backend' => 'backend_developer_id',
+            'server' => 'server_admin_id',
+        ];
+
+        $project->update([
+            $fieldMap[$category] => $developer->id
+        ]);
+
+        return $developer;
     }
 
     /**

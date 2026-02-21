@@ -62,6 +62,22 @@ class User extends Authenticatable
         return $this->hasMany(Project::class, 'customer_id');
     }
 
+    // Projects where this user is assigned as a team member
+    public function frontendProjects()
+    {
+        return $this->hasMany(Project::class, 'frontend_developer_id');
+    }
+
+    public function backendProjects()
+    {
+        return $this->hasMany(Project::class, 'backend_developer_id');
+    }
+
+    public function serverProjects()
+    {
+        return $this->hasMany(Project::class, 'server_admin_id');
+    }
+
     public function tasksCreated()
     {
         return $this->hasMany(Task::class, 'created_by');

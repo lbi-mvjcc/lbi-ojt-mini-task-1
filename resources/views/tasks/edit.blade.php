@@ -183,14 +183,6 @@
 
             <!-- Form Card -->
             <div class="form-card">
-                <!-- Developer Assignment Info -->
-                <div class="form-section">
-                    <div class="info-card">
-                        <i class="bi bi-info-circle-fill"></i>
-                        <strong>Note:</strong> This task is assigned to one developer. If you change the category, it will be reassigned to a developer in the new category.
-                    </div>
-                </div>
-
                 <!-- Task Details Section -->
                 <div class="form-section">
                     @if($errors->any())
@@ -202,16 +194,6 @@
                             </ul>
                         </div>
                     @endif
-
-                    <!-- Developer Assignment Info -->
-                    <div class="alert alert-info">
-                        <i class="bi bi-info-circle-fill"></i> <strong>Note:</strong> 
-                        This task is assigned to one developer. If you change the category, it will be reassigned to a developer in the new category.
-                    </div>
-
-                    <form action="{{ route('tasks.update', $task) }}" method="POST">
-                        @csrf
-                        @method('PUT')
 
                     <label for="title" class="form-label">
                         <i class="bi bi-card-text"></i>

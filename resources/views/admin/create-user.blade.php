@@ -47,11 +47,10 @@
                                 <label for="role" class="form-label">Role</label>
                                 <select class="form-select @error('role') is-invalid @enderror" id="role" name="role" required>
                                     <option value="">Select Role</option>
-                                    <option value="admin" {{ old('role') === 'admin' ? 'selected' : '' }}>Administrator</option>
                                     <option value="customer" {{ old('role') === 'customer' ? 'selected' : '' }}>Customer</option>
                                     <option value="frontend_dev" {{ old('role') === 'frontend_dev' ? 'selected' : '' }}>Frontend Developer</option>
                                     <option value="backend_dev" {{ old('role') === 'backend_dev' ? 'selected' : '' }}>Backend Developer</option>
-                                    <option value="server_admin" {{ old('role') === 'server_admin' ? 'selected' : '' }}>Server Admin</option>
+                                    <option value="server_admin" {{ old('role') === 'server_admin' ? 'selected' : '' }}>Server Administrator</option>
                                 </select>
                                 @error('role')
                                     <div class="invalid-feedback">{{ $message }}</div>
