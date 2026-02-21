@@ -453,25 +453,38 @@
             
             /* Dark mode notification fixes */
             [data-theme="dark"] .notification-item {
-                background-color: transparent;
+                background-color: transparent !important;
+                color: var(--text-color) !important;
             }
             
             [data-theme="dark"] .notification-item:hover {
-                background-color: rgba(102, 126, 234, 0.05);
+                background-color: rgba(102, 126, 234, 0.05) !important;
             }
             
             [data-theme="dark"] .notification-item.unread {
-                background-color: rgba(102, 126, 234, 0.15);
-                border-left-color: var(--primary-purple);
+                background-color: rgba(102, 126, 234, 0.15) !important;
+                border-left-color: var(--primary-purple) !important;
             }
             
             [data-theme="dark"] .notification-item.unread:hover {
-                background-color: rgba(102, 126, 234, 0.2);
+                background-color: rgba(102, 126, 234, 0.2) !important;
+            }
+            
+            [data-theme="dark"] .notification-title {
+                color: var(--text-color) !important;
+            }
+            
+            [data-theme="dark"] .notification-message {
+                color: var(--muted-text) !important;
+            }
+            
+            [data-theme="dark"] .notification-time {
+                color: var(--muted-text) !important;
             }
             
             [data-theme="dark"] .notification-dropdown {
                 background-color: var(--card-bg) !important;
-                border: 1px solid var(--border-color);
+                border: 1px solid var(--border-color) !important;
             }
             
             [data-theme="dark"] .dropdown-menu {
@@ -481,6 +494,7 @@
             
             [data-theme="dark"] .dropdown-item {
                 color: var(--text-color) !important;
+                background-color: transparent !important;
             }
             
             [data-theme="dark"] .dropdown-item:hover {
