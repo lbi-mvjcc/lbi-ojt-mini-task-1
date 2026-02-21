@@ -28,94 +28,89 @@
                         <div class="card border-0 shadow-sm notification-card {{ $notification->isRead() ? '' : 'unread-notification' }}">
                             <div class="card-body py-2 px-3">
                                 <div class="d-flex align-items-center gap-2">
-                                        <div class="flex-shrink-0">
-                                            @if($notification->type === 'task_assigned')
-                                                <div class="notification-icon bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
-                                                    <i class="bi bi-plus-circle"></i>
-                                                </div>
-                                            @elseif($notification->type === 'status_updated')
-                                                <div class="notification-icon bg-success text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
-                                                    <i class="bi bi-arrow-repeat"></i>
-                                                </div>
-                                            @elseif($notification->type === 'task_updated')
-                                                <div class="notification-icon bg-warning text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
-                                                    <i class="bi bi-pencil-square"></i>
-                                                </div>
-                                            @elseif($notification->type === 'task_deleted')
-                                                <div class="notification-icon bg-danger text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
-                                                    <i class="bi bi-trash"></i>
-                                                </div>
-                                            @elseif($notification->type === 'task_due_soon')
-                                                <div class="notification-icon bg-warning text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
-                                                    <i class="bi bi-clock-history"></i>
-                                                </div>
-                                            @elseif($notification->type === 'task_overdue')
-                                                <div class="notification-icon bg-danger text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
-                                                    <i class="bi bi-exclamation-triangle"></i>
-                                                </div>
-                                            @elseif($notification->type === 'submission_uploaded')
-                                                <div class="notification-icon bg-info text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
-                                                    <i class="bi bi-file-earmark-arrow-up"></i>
-                                                </div>
-                                            @else
-                                                <div class="notification-icon bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
-                                                    <i class="bi bi-bell"></i>
-                                                </div>
+                                    <div class="flex-shrink-0">
+                                        @if($notification->type === 'task_assigned')
+                                            <div class="notification-icon bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
+                                                <i class="bi bi-plus-circle"></i>
+                                            </div>
+                                        @elseif($notification->type === 'status_updated')
+                                            <div class="notification-icon bg-success text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
+                                                <i class="bi bi-arrow-repeat"></i>
+                                            </div>
+                                        @elseif($notification->type === 'task_updated')
+                                            <div class="notification-icon bg-warning text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </div>
+                                        @elseif($notification->type === 'task_deleted')
+                                            <div class="notification-icon bg-danger text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
+                                                <i class="bi bi-trash"></i>
+                                            </div>
+                                        @elseif($notification->type === 'task_due_soon')
+                                            <div class="notification-icon bg-warning text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
+                                                <i class="bi bi-clock-history"></i>
+                                            </div>
+                                        @elseif($notification->type === 'task_overdue')
+                                            <div class="notification-icon bg-danger text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
+                                                <i class="bi bi-exclamation-triangle"></i>
+                                            </div>
+                                        @elseif($notification->type === 'submission_uploaded')
+                                            <div class="notification-icon bg-info text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
+                                                <i class="bi bi-file-earmark-arrow-up"></i>
+                                            </div>
+                                        @else
+                                            <div class="notification-icon bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
+                                                <i class="bi bi-bell"></i>
+                                            </div>
+                                        @endif
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-1 fw-bold">
+                                            {{ $notification->title }}
+                                            @unless($notification->isRead())
+                                                <span class="badge bg-danger ms-2">New</span>
+                                            @endunless
+                                        </h6>
+                                        <p class="mb-2 text-muted">{{ $notification->message }}</p>
+                                        <div class="d-flex flex-wrap align-items-center text-muted small">
+                                            <span class="me-3">
+                                                <i class="bi bi-person me-1"></i>
+                                                {{ $notification->fromUser ? $notification->fromUser->getRoleLabel() : 'System' }}
+                                            </span>
+                                            <span class="me-3">
+                                                <i class="bi bi-clock me-1"></i>
+                                                {{ $notification->created_at->diffForHumans() }}
+                                            </span>
+                                            @if($notification->data && isset($notification->data['project_name']))
+                                                <span>
+                                                    <i class="bi bi-folder me-1"></i>
+                                                    {{ $notification->data['project_name'] }}
+                                                </span>
                                             @endif
                                         </div>
-                                        <div class="flex-grow-1">
-                                                <div class="d-flex justify-content-between align-items-start gap-3">
-                                                    <div class="flex-grow-1">
-                                                        <h6 class="mb-1 fw-bold">
-                                                            {{ $notification->title }}
-                                                            @unless($notification->isRead())
-                                                                <span class="badge bg-danger ms-2">New</span>
-                                                            @endunless
-                                                        </h6>
-                                                        <p class="mb-2 text-muted">{{ $notification->message }}</p>
-                                                        <div class="d-flex flex-wrap align-items-center text-muted small">
-                                                            <span class="me-3">
-                                                                <i class="bi bi-person me-1"></i>
-                                                                {{ $notification->fromUser ? $notification->fromUser->getRoleLabel() : 'System' }}
-                                                            </span>
-                                                            <span class="me-3">
-                                                                <i class="bi bi-clock me-1"></i>
-                                                                {{ $notification->created_at->diffForHumans() }}
-                                                            </span>
-                                                            @if($notification->data && isset($notification->data['project_name']))
-                                                                <span>
-                                                                    <i class="bi bi-folder me-1"></i>
-                                                                    {{ $notification->data['project_name'] }}
-                                                                </span>
-                                                            @endif
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="flex-shrink-0">
-                                                <div class="btn-group" role="group">
-                                                    @if($notification->task_id && $notification->task)
-                                                        <a href="{{ route('notifications.show', $notification->id) }}" class="btn btn-outline-primary btn-sm" title="View Task">
-                                                            <i class="bi bi-eye"></i>
-                                                        </a>
-                                                    @endif
-                                                    
-                                                    @unless($notification->isRead())
-                                                        <button class="btn btn-outline-success btn-sm" onclick="markAsRead('{{ $notification->id }}')" title="Mark as read">
-                                                            <i class="bi bi-check"></i>
-                                                        </button>
-                                                    @endunless
-                                                    
-                                                    <button class="btn btn-outline-danger btn-sm" onclick="deleteNotification('{{ $notification->id }}')">
-                                                        <i class="bi bi-trash"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
+                                    </div>
+                                    <div class="flex-shrink-0">
+                                        <div class="btn-group" role="group">
+                                            @if($notification->task_id && $notification->task)
+                                                <a href="{{ route('notifications.show', $notification->id) }}" class="btn btn-outline-primary btn-sm" title="View Task">
+                                                    <i class="bi bi-eye"></i>
+                                                </a>
+                                            @endif
+                                            
+                                            @unless($notification->isRead())
+                                                <button class="btn btn-outline-success btn-sm" onclick="markAsRead('{{ $notification->id }}')" title="Mark as read">
+                                                    <i class="bi bi-check"></i>
+                                                </button>
+                                            @endunless
+                                            
+                                            <button class="btn btn-outline-danger btn-sm" onclick="deleteNotification('{{ $notification->id }}')">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
                 @endforeach
 
                 <!-- Pagination -->
