@@ -173,6 +173,102 @@
         background-color: #d1fae5;
         color: #065f46;
     }
+    
+    [data-theme="dark"] .status-badge.pending {
+        background-color: rgba(254, 243, 199, 0.2);
+        color: #fbbf24;
+    }
+    
+    [data-theme="dark"] .status-badge.in-progress {
+        background-color: rgba(102, 126, 234, 0.2);
+        color: #93c5fd;
+    }
+    
+    [data-theme="dark"] .status-badge.in-review {
+        background-color: rgba(168, 85, 247, 0.2);
+        color: #c084fc;
+    }
+    
+    [data-theme="dark"] .status-badge.completed {
+        background-color: rgba(209, 250, 229, 0.2);
+        color: #34d399;
+    }
+    
+    /* Priority badges */
+    .priority-badge {
+        padding: 0.4rem 0.8rem;
+        border-radius: 12px;
+        font-weight: 500;
+        font-size: 0.75rem;
+    }
+    
+    .priority-badge.high {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+    
+    .priority-badge.medium {
+        background: #fef3c7;
+        color: #92400e;
+    }
+    
+    .priority-badge.low {
+        background: #dbeafe;
+        color: #1e40af;
+    }
+    
+    [data-theme="dark"] .priority-badge.high {
+        background: rgba(254, 226, 226, 0.2);
+        color: #fca5a5;
+    }
+    
+    [data-theme="dark"] .priority-badge.medium {
+        background: rgba(254, 243, 199, 0.2);
+        color: #fbbf24;
+    }
+    
+    [data-theme="dark"] .priority-badge.low {
+        background: rgba(219, 234, 254, 0.2);
+        color: #93c5fd;
+    }
+    
+    /* Task status badges in table */
+    .task-status-badge {
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-weight: 500;
+    }
+    
+    .task-status-badge.completed {
+        background: #d1fae5;
+        color: #065f46;
+    }
+    
+    .task-status-badge.in-progress {
+        background: #dbeafe;
+        color: #1e40af;
+    }
+    
+    .task-status-badge.pending {
+        background: #fef3c7;
+        color: #92400e;
+    }
+    
+    [data-theme="dark"] .task-status-badge.completed {
+        background: rgba(209, 250, 229, 0.2);
+        color: #34d399;
+    }
+    
+    [data-theme="dark"] .task-status-badge.in-progress {
+        background: rgba(219, 234, 254, 0.2);
+        color: #93c5fd;
+    }
+    
+    [data-theme="dark"] .task-status-badge.pending {
+        background: rgba(254, 243, 199, 0.2);
+        color: #fbbf24;
+    }
+    
     .btn-outline-primary {
         color: var(--primary-purple);
         border-color: var(--primary-purple);
@@ -402,13 +498,46 @@
     
     /* Make Recent Activity card more visible but still blend in dark mode */
     [data-theme="dark"] .card.dashboard-card.shadow-sm {
-        background-color: rgba(30, 41, 59, 0.5) !important;
-        border: 2px solid rgba(139, 156, 245, 0.4) !important;
+        background-color: transparent !important;
+        border: 1px solid rgba(139, 156, 245, 0.2) !important;
         box-shadow: none !important;
     }
     
     [data-theme="dark"] .card.dashboard-card.shadow-sm .card-body {
         background-color: transparent !important;
+    }
+    
+    [data-theme="dark"] .card.dashboard-card.shadow-sm .card-header {
+        background: transparent !important;
+        border-bottom: 1px solid rgba(167, 139, 250, 0.2) !important;
+    }
+    
+    /* Fix all white backgrounds in dark mode */
+    [data-theme="dark"] .bg-white {
+        background-color: var(--card-bg) !important;
+    }
+    
+    [data-theme="dark"] .bg-opacity-25 {
+        background-color: rgba(139, 156, 245, 0.25) !important;
+    }
+    
+    /* Ensure table rows don't have white backgrounds */
+    [data-theme="dark"] .table tbody tr {
+        background-color: transparent !important;
+    }
+    
+    [data-theme="dark"] .table tbody tr td {
+        background-color: transparent !important;
+    }
+    
+    /* Fix table header in dark mode */
+    [data-theme="dark"] .table thead {
+        background: rgba(30, 41, 59, 0.6) !important;
+    }
+    
+    [data-theme="dark"] .table thead th {
+        background-color: transparent !important;
+        color: #f1f5f9 !important;
     }
     
     /* Make activity items and list items blend */
@@ -428,8 +557,21 @@
     }
     
     [data-theme="dark"] .card.shadow-sm .card-header {
-        background-color: transparent !important;
-        border-bottom-color: rgba(51, 65, 85, 0.3) !important;
+        background: linear-gradient(135deg, rgba(167, 139, 250, 0.1) 0%, rgba(196, 181, 253, 0.1) 100%) !important;
+        border-bottom: 2px solid rgba(167, 139, 250, 0.3) !important;
+    }
+    
+    /* Ensure all dashboard card headers have gradient in dark mode */
+    [data-theme="dark"] .dashboard-card .card-header {
+        background: linear-gradient(135deg, rgba(167, 139, 250, 0.1) 0%, rgba(196, 181, 253, 0.1) 100%) !important;
+        border-bottom: 2px solid rgba(167, 139, 250, 0.3) !important;
+    }
+    
+    /* Ensure table headers have gradient in dark mode */
+    [data-theme="dark"] thead {
+        background: linear-gradient(135deg, rgba(167, 139, 250, 0.1) 0%, rgba(196, 181, 253, 0.1) 100%) !important;
+        border-bottom: 2px solid rgba(167, 139, 250, 0.3) !important;
+    }
     }
 </style>
 
@@ -534,10 +676,10 @@
                                     <tr>
                                         <th style="padding: 1rem; font-weight: 600; color: var(--text-color); border: none;">Task</th>
                                         <th style="padding: 1rem; font-weight: 600; color: var(--text-color); border: none;">User</th>
-                                        <th style="padding: 1rem; font-weight: 600; color: var(--text-color); border: none;">Category</th>
-                                        <th style="padding: 1rem; font-weight: 600; color: var(--text-color); border: none;">Status</th>
-                                        <th style="padding: 1rem; font-weight: 600; color: var(--text-color); border: none;">Priority</th>
-                                        <th style="padding: 1rem; font-weight: 600; color: var(--text-color); border: none;">Actions</th>
+                                        <th style="padding: 1rem; font-weight: 600; color: var(--text-color); border: none;">Project</th>
+                                        <th style="padding: 1rem; font-weight: 600; color: var(--text-color); border: none; text-align: center;">Status</th>
+                                        <th style="padding: 1rem; font-weight: 600; color: var(--text-color); border: none; text-align: center;">Priority</th>
+                                        <th style="padding: 1rem; font-weight: 600; color: var(--text-color); border: none; text-align: center;">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -560,19 +702,19 @@
                                             <td style="padding: 1.25rem 1rem; border: none;">
                                                 <span class="text-muted">{{ $task->project->name ?? 'General' }}</span>
                                             </td>
-                                            <td style="padding: 1.25rem 1rem; border: none;">
+                                            <td style="padding: 1.25rem 1rem; border: none; text-align: center;">
                                                 @if($task->status === 'done')
-                                                    <span class="badge" style="background: #d1fae5; color: #065f46; padding: 0.5rem 1rem; border-radius: 20px; font-weight: 500;">Completed</span>
+                                                    <span class="badge task-status-badge completed">Completed</span>
                                                 @elseif($task->status === 'in_progress')
-                                                    <span class="badge" style="background: #dbeafe; color: #1e40af; padding: 0.5rem 1rem; border-radius: 20px; font-weight: 500;">In Progress</span>
+                                                    <span class="badge task-status-badge in-progress">In Progress</span>
                                                 @else
-                                                    <span class="badge" style="background: #fef3c7; color: #92400e; padding: 0.5rem 1rem; border-radius: 20px; font-weight: 500;">Pending</span>
+                                                    <span class="badge task-status-badge pending">Pending</span>
                                                 @endif
                                             </td>
-                                            <td style="padding: 1.25rem 1rem; border: none;">
-                                                <span class="badge" style="background: #fee2e2; color: #991b1b; padding: 0.4rem 0.8rem; border-radius: 12px; font-weight: 500; font-size: 0.75rem;">high</span>
+                                            <td style="padding: 1.25rem 1rem; border: none; text-align: center;">
+                                                <span class="badge priority-badge high">high</span>
                                             </td>
-                                            <td style="padding: 1.25rem 1rem; border: none;">
+                                            <td style="padding: 1.25rem 1rem; border: none; text-align: center;">
                                                 <a href="{{ route('tasks.show', $task->id) }}" class="text-decoration-none" style="color: var(--text-color); font-weight: 500;">View</a>
                                             </td>
                                         </tr>
@@ -629,7 +771,7 @@
                     </div>
                     <div class="card-body" style="padding: 1.5rem;">
                         @forelse($recentUsers as $recentUser)
-                            <div class="d-flex align-items-center mb-3 pb-3" style="border-bottom: 1px solid rgba(167, 139, 250, 0.1); transition: all 0.2s;" onmouseover="this.style.backgroundColor='rgba(167, 139, 250, 0.05)'; this.style.marginLeft='-1rem'; this.style.marginRight='-1rem'; this.style.paddingLeft='1rem'; this.style.paddingRight='1rem'; this.style.borderRadius='8px';" onmouseout="this.style.backgroundColor='transparent'; this.style.marginLeft='0'; this.style.marginRight='0'; this.style.paddingLeft='0'; this.style.paddingRight='0';">
+                            <div class="d-flex align-items-center mb-3 pb-3" style="border-bottom: 1px solid rgba(167, 139, 250, 0.15); transition: all 0.2s;" onmouseover="this.style.backgroundColor='transparent'; this.style.transform='translateX(4px)'; this.style.borderBottom='1px solid rgba(167, 139, 250, 0.3)';" onmouseout="this.style.backgroundColor='transparent'; this.style.transform='translateX(0)'; this.style.borderBottom='1px solid rgba(167, 139, 250, 0.15)';">
                                 <div class="me-3" style="position: relative;">
                                     {!! $recentUser->getProfilePictureHtml(45) !!}
                                     <span style="position: absolute; bottom: 0; right: 0; width: 12px; height: 12px; background: #10b981; border: 2px solid var(--card-bg); border-radius: 50%;"></span>
@@ -639,10 +781,12 @@
                                     <small class="text-muted d-block" style="font-size: 0.8rem;">
                                         <i class="bi bi-shield-check me-1"></i>{{ $recentUser->getRoleLabel() }}
                                     </small>
-                                    <small class="text-muted d-block mt-1" style="font-size: 0.75rem;">
-                                        <i class="bi bi-list-check me-1" style="color: #a78bfa;"></i>
-                                        <strong>{{ $recentUser->tasksAssigned->count() }}</strong> tasks assigned
-                                    </small>
+                                    @if($recentUser->isDeveloper())
+                                        <small class="text-muted d-block mt-1" style="font-size: 0.75rem;">
+                                            <i class="bi bi-list-check me-1" style="color: #a78bfa;"></i>
+                                            <strong>{{ $recentUser->tasksAssigned->count() }}</strong> tasks assigned
+                                        </small>
+                                    @endif
                                 </div>
                                 <small class="text-muted" style="font-size: 0.75rem; background: rgba(167, 139, 250, 0.1); padding: 0.3rem 0.6rem; border-radius: 12px;">
                                     {{ $recentUser->created_at->diffForHumans() }}
@@ -666,7 +810,7 @@
                     </div>
                     <div class="card-body" style="padding: 1.5rem;">
                         <div class="d-flex flex-column gap-3">
-                            <a href="{{ route('admin.users') }}" class="d-flex align-items-center p-3 text-decoration-none" style="background: var(--card-bg); color: var(--text-color); border: 2px solid rgba(167, 139, 250, 0.3); border-radius: 12px; transition: all 0.2s;" onmouseover="this.style.borderColor='#a78bfa'; this.style.backgroundColor='rgba(167, 139, 250, 0.05)';" onmouseout="this.style.borderColor='rgba(167, 139, 250, 0.3)'; this.style.backgroundColor='var(--card-bg)';">
+                            <a href="{{ route('admin.users') }}" class="d-flex align-items-center p-3 text-decoration-none" style="background: transparent; color: var(--text-color); border: 1px solid rgba(167, 139, 250, 0.15); border-radius: 12px; transition: all 0.2s;" onmouseover="this.style.borderColor='rgba(167, 139, 250, 0.5)'; this.style.transform='translateX(4px)';" onmouseout="this.style.borderColor='rgba(167, 139, 250, 0.15)'; this.style.transform='translateX(0)';">
                                 <div class="me-3" style="background: rgba(167, 139, 250, 0.1); color: #a78bfa; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0;">
                                     <i class="bi bi-people" style="font-size: 1.3rem;"></i>
                                 </div>
@@ -677,7 +821,7 @@
                                 <i class="bi bi-arrow-right" style="color: #a78bfa; font-size: 1.2rem;"></i>
                             </a>
 
-                            <a href="{{ route('admin.tasks') }}" class="d-flex align-items-center p-3 text-decoration-none" style="background: var(--card-bg); color: var(--text-color); border: 2px solid rgba(167, 139, 250, 0.3); border-radius: 12px; transition: all 0.2s;" onmouseover="this.style.borderColor='#a78bfa'; this.style.backgroundColor='rgba(167, 139, 250, 0.05)';" onmouseout="this.style.borderColor='rgba(167, 139, 250, 0.3)'; this.style.backgroundColor='var(--card-bg)';">
+                            <a href="{{ route('admin.tasks') }}" class="d-flex align-items-center p-3 text-decoration-none" style="background: transparent; color: var(--text-color); border: 1px solid rgba(167, 139, 250, 0.15); border-radius: 12px; transition: all 0.2s;" onmouseover="this.style.borderColor='rgba(167, 139, 250, 0.5)'; this.style.transform='translateX(4px)';" onmouseout="this.style.borderColor='rgba(167, 139, 250, 0.15)'; this.style.transform='translateX(0)';">
                                 <div class="me-3" style="background: rgba(167, 139, 250, 0.1); color: #a78bfa; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0;">
                                     <i class="bi bi-list-task" style="font-size: 1.3rem;"></i>
                                 </div>
@@ -688,7 +832,7 @@
                                 <i class="bi bi-arrow-right" style="color: #a78bfa; font-size: 1.2rem;"></i>
                             </a>
 
-                            <a href="{{ route('admin.projects') }}" class="d-flex align-items-center p-3 text-decoration-none" style="background: var(--card-bg); color: var(--text-color); border: 2px solid rgba(167, 139, 250, 0.3); border-radius: 12px; transition: all 0.2s;" onmouseover="this.style.borderColor='#a78bfa'; this.style.backgroundColor='rgba(167, 139, 250, 0.05)';" onmouseout="this.style.borderColor='rgba(167, 139, 250, 0.3)'; this.style.backgroundColor='var(--card-bg)';">
+                            <a href="{{ route('admin.projects') }}" class="d-flex align-items-center p-3 text-decoration-none" style="background: transparent; color: var(--text-color); border: 1px solid rgba(167, 139, 250, 0.15); border-radius: 12px; transition: all 0.2s;" onmouseover="this.style.borderColor='rgba(167, 139, 250, 0.5)'; this.style.transform='translateX(4px)';" onmouseout="this.style.borderColor='rgba(167, 139, 250, 0.15)'; this.style.transform='translateX(0)';">
                                 <div class="me-3" style="background: rgba(167, 139, 250, 0.1); color: #a78bfa; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0;">
                                     <i class="bi bi-folder" style="font-size: 1.3rem;"></i>
                                 </div>
@@ -699,7 +843,7 @@
                                 <i class="bi bi-arrow-right" style="color: #a78bfa; font-size: 1.2rem;"></i>
                             </a>
 
-                            <a href="{{ route('admin.users.create') }}" class="d-flex align-items-center p-3 text-decoration-none" style="background: var(--card-bg); color: var(--text-color); border: 2px solid rgba(167, 139, 250, 0.3); border-radius: 12px; transition: all 0.2s;" onmouseover="this.style.borderColor='#a78bfa'; this.style.backgroundColor='rgba(167, 139, 250, 0.05)';" onmouseout="this.style.borderColor='rgba(167, 139, 250, 0.3)'; this.style.backgroundColor='var(--card-bg)';">
+                            <a href="{{ route('admin.users.create') }}" class="d-flex align-items-center p-3 text-decoration-none" style="background: transparent; color: var(--text-color); border: 1px solid rgba(167, 139, 250, 0.15); border-radius: 12px; transition: all 0.2s;" onmouseover="this.style.borderColor='rgba(167, 139, 250, 0.5)'; this.style.transform='translateX(4px)';" onmouseout="this.style.borderColor='rgba(167, 139, 250, 0.15)'; this.style.transform='translateX(0)';">
                                 <div class="me-3" style="background: rgba(167, 139, 250, 0.1); color: #a78bfa; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0;">
                                     <i class="bi bi-person-plus" style="font-size: 1.3rem;"></i>
                                 </div>
@@ -710,7 +854,7 @@
                                 <i class="bi bi-arrow-right" style="color: #a78bfa; font-size: 1.2rem;"></i>
                             </a>
 
-                            <a href="{{ route('admin.password-reset-codes') }}" class="d-flex align-items-center p-3 text-decoration-none" style="background: var(--card-bg); color: var(--text-color); border: 2px solid rgba(167, 139, 250, 0.3); border-radius: 12px; transition: all 0.2s;" onmouseover="this.style.borderColor='#a78bfa'; this.style.backgroundColor='rgba(167, 139, 250, 0.05)';" onmouseout="this.style.borderColor='rgba(167, 139, 250, 0.3)'; this.style.backgroundColor='var(--card-bg)';">
+                            <a href="{{ route('admin.password-reset-codes') }}" class="d-flex align-items-center p-3 text-decoration-none" style="background: transparent; color: var(--text-color); border: 1px solid rgba(167, 139, 250, 0.15); border-radius: 12px; transition: all 0.2s;" onmouseover="this.style.borderColor='rgba(167, 139, 250, 0.5)'; this.style.transform='translateX(4px)';" onmouseout="this.style.borderColor='rgba(167, 139, 250, 0.15)'; this.style.transform='translateX(0)';">
                                 <div class="me-3" style="background: rgba(167, 139, 250, 0.1); color: #a78bfa; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0;">
                                     <i class="bi bi-key" style="font-size: 1.3rem;"></i>
                                 </div>
@@ -877,17 +1021,19 @@
         </div>
 
         <!-- Recent Activity -->
-        <div class="card dashboard-card shadow-sm">
-            <div class="card-body p-4">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <div>
-                        <h5 class="fw-bold mb-1">Recent Activity</h5>
-                        <p class="text-muted small mb-0">Your latest task updates</p>
-                    </div>
-                    <a href="{{ route('tasks.index') }}" class="btn btn-sm btn-outline-primary">
-                        View All <i class="bi bi-arrow-right ms-1"></i>
-                    </a>
+        <div class="card dashboard-card shadow-sm" style="background: var(--card-bg); border: 1px solid rgba(167, 139, 250, 0.2); border-radius: 16px; overflow: hidden;">
+            <div class="card-header d-flex justify-content-between align-items-center" style="background: linear-gradient(135deg, rgba(167, 139, 250, 0.1) 0%, rgba(196, 181, 253, 0.1) 100%); border-bottom: 2px solid rgba(167, 139, 250, 0.3); padding: 1.25rem;">
+                <div>
+                    <h5 class="mb-0" style="font-weight: 600; color: var(--text-color);">
+                        <i class="bi bi-activity me-2" style="color: #a78bfa;"></i>Recent Activity
+                    </h5>
+                    <p class="text-muted small mb-0 mt-1">Your latest task updates</p>
                 </div>
+                <a href="{{ route('tasks.index') }}" class="btn btn-sm btn-outline-primary">
+                    View All <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+            </div>
+            <div class="card-body p-4">
 
                 @if($recentTasks->isEmpty())
                     <div class="text-center py-5">
@@ -1031,12 +1177,13 @@
         <div class="row g-3 mb-4">
             <!-- Progress Chart -->
             <div class="col-lg-6">
-                <div class="dashboard-card shadow-sm">
-                    <div class="card-body p-4">
-                        <h5 class="fw-bold mb-4">
-                            <i class="bi bi-graph-up text-purple me-2"></i>
-                            Task Progress
+                <div class="dashboard-card shadow-sm" style="background: var(--card-bg); border: 1px solid rgba(167, 139, 250, 0.2); border-radius: 16px; overflow: hidden;">
+                    <div class="card-header" style="background: linear-gradient(135deg, rgba(167, 139, 250, 0.1) 0%, rgba(196, 181, 253, 0.1) 100%); border-bottom: 2px solid rgba(167, 139, 250, 0.3); padding: 1.25rem;">
+                        <h5 class="mb-0" style="font-weight: 600; color: var(--text-color);">
+                            <i class="bi bi-graph-up me-2" style="color: #a78bfa;"></i>Task Progress
                         </h5>
+                    </div>
+                    <div class="card-body p-4">
                         
                         <!-- Completion Rate -->
                         <div class="text-center mb-4">
@@ -1101,12 +1248,13 @@
 
             <!-- Upcoming Deadlines Calendar -->
             <div class="col-lg-6">
-                <div class="dashboard-card shadow-sm">
-                    <div class="card-body p-4">
-                        <h5 class="fw-bold mb-4">
-                            <i class="bi bi-calendar-event text-purple me-2"></i>
-                            Upcoming Deadlines
+                <div class="dashboard-card shadow-sm" style="background: var(--card-bg); border: 1px solid rgba(167, 139, 250, 0.2); border-radius: 16px; overflow: hidden;">
+                    <div class="card-header" style="background: linear-gradient(135deg, rgba(167, 139, 250, 0.1) 0%, rgba(196, 181, 253, 0.1) 100%); border-bottom: 2px solid rgba(167, 139, 250, 0.3); padding: 1.25rem;">
+                        <h5 class="mb-0" style="font-weight: 600; color: var(--text-color);">
+                            <i class="bi bi-calendar-event me-2" style="color: #a78bfa;"></i>Upcoming Deadlines
                         </h5>
+                    </div>
+                    <div class="card-body p-4">
                         
                         @if($upcomingDeadlines->count() > 0)
                             <div class="deadline-list">

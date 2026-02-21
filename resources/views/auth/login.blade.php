@@ -331,7 +331,7 @@
                         <div class="mb-4 form-check">
                             <input class="form-check-input" type="checkbox" name="remember" id="remember_me">
                             <label class="form-check-label" for="remember_me">
-                                Remember me for 30 days
+                                Remember me
                             </label>
                         </div>
 

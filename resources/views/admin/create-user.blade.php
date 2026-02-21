@@ -76,7 +76,7 @@
 
                             <!-- Buttons -->
                             <div class="d-flex justify-content-between">
-                                <a href="{{ route('admin.users') }}" class="btn btn-secondary">
+                                <a href="{{ route('dashboard') }}" class="btn btn-secondary">
                                     <i class="bi bi-arrow-left me-2"></i>Back
                                 </a>
                                 <button type="submit" class="btn btn-primary" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none;">

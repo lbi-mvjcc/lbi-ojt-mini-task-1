@@ -26,14 +26,14 @@
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-hover">
-                        <thead>
+                        <thead style="background: linear-gradient(135deg, rgba(167, 139, 250, 0.1) 0%, rgba(196, 181, 253, 0.1) 100%); border-bottom: 2px solid rgba(167, 139, 250, 0.3);">
                             <tr>
-                                <th>Project Name</th>
-                                <th>Description</th>
-                                <th>Customer</th>
-                                <th>Tasks</th>
-                                <th>Created</th>
-                                <th>Actions</th>
+                                <th style="padding: 1rem; font-weight: 600; color: var(--text-color); border: none;">Project Name</th>
+                                <th style="padding: 1rem; font-weight: 600; color: var(--text-color); border: none;">Description</th>
+                                <th style="padding: 1rem; font-weight: 600; color: var(--text-color); border: none;">Customer</th>
+                                <th style="padding: 1rem; font-weight: 600; color: var(--text-color); border: none;">Tasks</th>
+                                <th style="padding: 1rem; font-weight: 600; color: var(--text-color); border: none;">Created</th>
+                                <th style="padding: 1rem; font-weight: 600; color: var(--text-color); border: none;">Actions</th>
                             </tr>
                         </thead>
                         <tbody>

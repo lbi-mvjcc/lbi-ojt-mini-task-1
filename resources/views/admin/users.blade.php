@@ -40,15 +40,15 @@
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-hover">
-                        <thead>
+                        <thead style="background: linear-gradient(135deg, rgba(167, 139, 250, 0.1) 0%, rgba(196, 181, 253, 0.1) 100%); border-bottom: 2px solid rgba(167, 139, 250, 0.3);">
                             <tr>
-                                <th>User</th>
-                                <th>Email</th>
-                                <th>Role</th>
-                                <th>Tasks Created</th>
-                                <th>Tasks Assigned</th>
-                                <th>Joined</th>
-                                <th>Actions</th>
+                                <th style="padding: 1rem; font-weight: 600; color: var(--text-color); border: none;">User</th>
+                                <th style="padding: 1rem; font-weight: 600; color: var(--text-color); border: none;">Email</th>
+                                <th style="padding: 1rem; font-weight: 600; color: var(--text-color); border: none;">Role</th>
+                                <th style="padding: 1rem; font-weight: 600; color: var(--text-color); border: none;">Tasks Created</th>
+                                <th style="padding: 1rem; font-weight: 600; color: var(--text-color); border: none;">Tasks Assigned</th>
+                                <th style="padding: 1rem; font-weight: 600; color: var(--text-color); border: none;">Joined</th>
+                                <th style="padding: 1rem; font-weight: 600; color: var(--text-color); border: none;">Actions</th>
                             </tr>
                         </thead>
                         <tbody>

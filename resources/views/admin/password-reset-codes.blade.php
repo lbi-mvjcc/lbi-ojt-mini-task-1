@@ -7,7 +7,7 @@
             <h1 class="display-6 fw-bold">Password Reset Codes</h1>
             <p class="text-muted">Generate and manage password reset codes for users</p>
         </div>
-        <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-secondary">
+        <a href="{{ route('dashboard') }}" class="btn btn-outline-secondary">
             <i class="bi bi-arrow-left me-2"></i>Back to Dashboard
         </a>
     </div>
@@ -58,14 +58,14 @@
             @if($codes->count() > 0)
                 <div class="table-responsive">
                     <table class="table table-hover mb-0">
-                        <thead class="table-light">
+                        <thead style="background: linear-gradient(135deg, rgba(167, 139, 250, 0.1) 0%, rgba(196, 181, 253, 0.1) 100%); border-bottom: 2px solid rgba(167, 139, 250, 0.3);">
                             <tr>
-                                <th>User</th>
-                                <th>Email</th>
-                                <th>Code</th>
-                                <th>Generated</th>
-                                <th>Expires</th>
-                                <th>Status</th>
+                                <th style="padding: 1rem; font-weight: 600; color: var(--text-color); border: none;">User</th>
+                                <th style="padding: 1rem; font-weight: 600; color: var(--text-color); border: none;">Email</th>
+                                <th style="padding: 1rem; font-weight: 600; color: var(--text-color); border: none;">Code</th>
+                                <th style="padding: 1rem; font-weight: 600; color: var(--text-color); border: none;">Generated</th>
+                                <th style="padding: 1rem; font-weight: 600; color: var(--text-color); border: none;">Expires</th>
+                                <th style="padding: 1rem; font-weight: 600; color: var(--text-color); border: none;">Status</th>
                             </tr>
                         </thead>
                         <tbody>
