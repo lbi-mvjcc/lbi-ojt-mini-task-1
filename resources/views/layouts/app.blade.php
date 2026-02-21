@@ -12,7 +12,7 @@
         <!-- Bootstrap icons-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet" />
         <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="{{ asset('css/styles.css') }}" rel="stylesheet" />
+        <link href="{{ asset('css/styles.css') }}?v={{ time() }}" rel="stylesheet" />
         <style>
             :root {
                 --primary-purple: #667eea;
@@ -73,18 +73,24 @@
                 background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
             }
             
-            /* Footer dark mode support */
+            /* Navbar - adapt to dark mode */
+            [data-theme="dark"] nav.navbar-purple {
+                background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
+                border-bottom: 1px solid #334155;
+            }
+            
+            /* Footer - purple in light mode, dark in dark mode */
             footer.navbar-purple {
                 background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
             }
             
             [data-theme="dark"] footer.navbar-purple {
                 background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
-                border-top: 1px solid var(--border-color);
+                border-top: 1px solid #334155 !important;
             }
             
             [data-theme="dark"] footer.navbar-purple p {
-                color: var(--muted-text) !important;
+                color: #94a3b8 !important;
             }
             
             .theme-toggle {

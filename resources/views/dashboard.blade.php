@@ -172,8 +172,13 @@
     
     /* Additional dark mode support */
     [data-theme="dark"] .dashboard-card {
-        background-color: var(--card-bg);
+        background-color: var(--card-bg) !important;
         color: var(--text-color);
+        border: 1px solid var(--border-color) !important;
+    }
+    
+    [data-theme="dark"] .dashboard-card .card-body {
+        background-color: transparent !important;
     }
     
     [data-theme="dark"] .stat-card {
@@ -201,6 +206,17 @@
     
     [data-theme="dark"] .activity-item {
         color: var(--text-color);
+        background-color: transparent !important;
+        border-bottom-color: var(--border-color) !important;
+    }
+    
+    [data-theme="dark"] .activity-item:hover {
+        background-color: rgba(102, 126, 234, 0.05) !important;
+    }
+    
+    [data-theme="dark"] .list-group-item {
+        background-color: transparent !important;
+        border-color: var(--border-color) !important;
     }
     
     [data-theme="dark"] .activity-item h6 {
@@ -209,6 +225,10 @@
     
     [data-theme="dark"] .list-group-flush {
         border-color: var(--border-color);
+    }
+    
+    [data-theme="dark"] .border-bottom {
+        border-color: var(--border-color) !important;
     }
     
     [data-theme="dark"] .deadline-item {
