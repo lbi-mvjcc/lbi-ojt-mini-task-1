@@ -154,6 +154,21 @@
             </div>
         </div>
 
+        <!-- Additional Actions -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-4">
+                <a href="{{ route('admin.password-reset-codes') }}" class="text-decoration-none">
+                    <div class="card border-0 shadow-sm h-100 hover-lift">
+                        <div class="card-body text-center py-4">
+                            <i class="bi bi-key fs-1 text-warning mb-3"></i>
+                            <h5>Password Reset Codes</h5>
+                            <p class="text-muted mb-0">Generate reset codes</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
         <!-- Recent Activity -->
         <div class="row g-3">
             <div class="col-md-6">

@@ -91,6 +91,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // Project management
     Route::get('/projects', [AdminController::class, 'projects'])->name('projects');
     Route::delete('/projects/{project}', [AdminController::class, 'deleteProject'])->name('projects.delete');
+    
+    // Password reset code management
+    Route::get('/password-reset-codes', [AdminController::class, 'passwordResetCodes'])->name('password-reset-codes');
+    Route::post('/generate-reset-code', [AdminController::class, 'generateResetCode'])->name('generate-reset-code');
 });
 
 require __DIR__.'/auth.php';

@@ -6,9 +6,11 @@ use App\Models\User;
 use App\Models\Task;
 use App\Models\Project;
 use App\Models\Notification;
+use App\Models\PasswordResetCode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
@@ -207,5 +209,55 @@ class AdminController extends Controller
         $project->delete();
 
         return redirect()->back()->with('success', 'Project deleted successfully!');
+    }
+
+    /**
+     * Show password reset codes page
+     */
+    public function passwordResetCodes()
+    {
+        if (!auth()->user()->isAdmin()) {
+            abort(403, 'Unauthorized - Admin access only');
+        }
+
+        $codes = PasswordResetCode::with('user')
+            ->latest()
+            ->paginate(20);
+
+        return view('admin.password-reset-codes', compact('codes'));
+    }
+
+    /**
+     * Generate password reset code for a user
+     */
+    public function generateResetCode(Request $request)
+    {
+        if (!auth()->user()->isAdmin()) {
+            abort(403, 'Unauthorized - Admin access only');
+        }
+
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+        ]);
+
+        $user = User::findOrFail($request->user_id);
+
+        // Invalidate any existing codes for this user
+        PasswordResetCode::where('user_id', $user->id)
+            ->where('used', false)
+            ->update(['used' => true]);
+
+        // Generate a 6-digit code
+        $code = strtoupper(Str::random(6));
+
+        // Create new reset code (valid for 24 hours)
+        $resetCode = PasswordResetCode::create([
+            'user_id' => $user->id,
+            'code' => $code,
+            'expires_at' => now()->addHours(24),
+            'used' => false,
+        ]);
+
+        return redirect()->back()->with('success', "Reset code generated for {$user->name}: {$code}");
     }
 }
