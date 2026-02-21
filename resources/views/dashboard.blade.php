@@ -219,6 +219,15 @@
         border-color: var(--border-color) !important;
     }
     
+    [data-theme="dark"] .dashboard-card .activity-item {
+        background-color: transparent !important;
+    }
+    
+    [data-theme="dark"] .dashboard-card .list-group-flush .activity-item {
+        background-color: transparent !important;
+        border-bottom-color: var(--border-color) !important;
+    }
+    
     [data-theme="dark"] .activity-item h6 {
         color: var(--text-color);
     }

@@ -170,7 +170,7 @@
         box-shadow: none !important;
     }
     
-    .file-hint-text i {
+    .file-hint-text * {
         background: transparent !important;
         background-color: transparent !important;
     }
@@ -223,7 +223,7 @@
         background-color: transparent !important;
     }
     
-    [data-theme="dark"] .file-hint-text i {
+    [data-theme="dark"] .file-hint-text * {
         background: transparent !important;
         background-color: transparent !important;
     }
