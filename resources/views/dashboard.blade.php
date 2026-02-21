@@ -525,7 +525,7 @@
         </div>
 
         <!-- Additional Actions -->
-        <div class="row g-3 mb-4">
+        <div class="row g-3 mb-4 justify-content-center">
             <div class="col-md-6 col-lg-4">
                 <a href="{{ route('admin.users.create') }}" class="action-card shadow-sm" style="background: var(--card-bg); color: var(--text-color);">
                     <i class="bi bi-arrow-right-circle arrow-icon"></i>
