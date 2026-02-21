@@ -534,6 +534,19 @@
                     </div>
                 </a>
             </div>
+
+            <div class="col-md-6 col-lg-3">
+                <a href="{{ route('admin.password-reset-codes') }}" class="action-card shadow-sm" style="background: var(--card-bg); color: var(--text-color);">
+                    <i class="bi bi-arrow-right-circle arrow-icon"></i>
+                    <div class="text-center">
+                        <div class="stat-icon mx-auto mb-3">
+                            <i class="bi bi-key"></i>
+                        </div>
+                        <h5 class="mb-2">Password Reset Codes</h5>
+                        <p class="text-muted small mb-0">Generate reset codes</p>
+                    </div>
+                </a>
+            </div>
         </div>
 
         <!-- Recent Activity -->
