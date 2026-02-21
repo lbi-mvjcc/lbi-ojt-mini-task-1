@@ -23,12 +23,11 @@
 
             <!-- Notifications List -->
             @if($notifications->count() > 0)
-                <div class="row">
-                    @foreach($notifications as $notification)
-                        <div class="col-12 mb-3">
-                            <div class="card border-0 shadow-sm notification-card {{ $notification->isRead() ? '' : 'unread-notification' }}">
-                                <div class="card-body">
-                                    <div class="d-flex align-items-start gap-3">
+                @foreach($notifications as $notification)
+                    <div class="mb-3">
+                        <div class="card border-0 shadow-sm notification-card {{ $notification->isRead() ? '' : 'unread-notification' }}">
+                            <div class="card-body">
+                                <div class="d-flex align-items-start gap-3">
                                         <div class="flex-shrink-0">
                                             @if($notification->type === 'task_assigned')
                                                 <div class="notification-icon bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
@@ -117,8 +116,8 @@
                                 </div>
                             </div>
                         </div>
-                    @endforeach
-                </div>
+                    </div>
+                @endforeach
 
                 <!-- Pagination -->
                 @if($notifications->hasPages())
@@ -148,6 +147,10 @@
 
 .notification-card {
     transition: all 0.2s ease;
+}
+
+.notification-card .card-body {
+    padding: 1.25rem !important;
 }
 
 .notification-card:hover {
