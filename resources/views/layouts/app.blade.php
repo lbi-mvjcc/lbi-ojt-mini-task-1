@@ -867,38 +867,12 @@
                                         <i class="bi ${readIcon}"></i> ${notification.time_ago}
                                     </div>
                                 </div>
-                                <div class="dropdown">
-                                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-                                        <i class="bi bi-three-dots"></i>
-                                    </button>
-                                    <ul class="dropdown-menu dropdown-menu-end">
-                                        ${!notification.is_read ? `
-                                            <li><button class="dropdown-item" onclick="markAsReadFromElement(this); event.stopPropagation(); return false;">
-                                                <i class="bi bi-check"></i> Mark as read
-                                            </button></li>
-                                        ` : ''}
-                                        <li><button class="dropdown-item" onclick="viewNotificationFromElement(this); event.stopPropagation(); return false;">
-                                            <i class="bi bi-eye"></i> View
-                                        </button></li>
-                                        <li><button class="dropdown-item text-danger" onclick="deleteNotificationFromElement(this); event.stopPropagation(); return false;">
-                                            <i class="bi bi-trash"></i> Delete
-                                        </button></li>
-                                    </ul>
-                                </div>
                             </div>
                         </li>
                     `;
                 });
                 
                 list.innerHTML = html;
-                
-                // Reinitialize Bootstrap dropdowns for the notification items
-                setTimeout(() => {
-                    const dropdownElements = list.querySelectorAll('[data-bs-toggle="dropdown"]');
-                    dropdownElements.forEach(element => {
-                        new bootstrap.Dropdown(element);
-                    });
-                }, 100);
             }
             
             function showNotificationMessage(message, type = 'success') {
