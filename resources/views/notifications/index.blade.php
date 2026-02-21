@@ -31,40 +31,40 @@
                                     <div class="d-flex align-items-start gap-3">
                                         <div class="flex-shrink-0">
                                             @if($notification->type === 'task_assigned')
-                                                    <div class="notification-icon bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                                                        <i class="bi bi-plus-circle"></i>
-                                                    </div>
-                                                @elseif($notification->type === 'status_updated')
-                                                    <div class="notification-icon bg-success text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                                                        <i class="bi bi-arrow-repeat"></i>
-                                                    </div>
-                                                @elseif($notification->type === 'task_updated')
-                                                    <div class="notification-icon bg-warning text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                                                        <i class="bi bi-pencil-square"></i>
-                                                    </div>
-                                                @elseif($notification->type === 'task_deleted')
-                                                    <div class="notification-icon bg-danger text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                                                        <i class="bi bi-trash"></i>
-                                                    </div>
-                                                @elseif($notification->type === 'task_due_soon')
-                                                    <div class="notification-icon bg-warning text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                                                        <i class="bi bi-clock-history"></i>
-                                                    </div>
-                                                @elseif($notification->type === 'task_overdue')
-                                                    <div class="notification-icon bg-danger text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                                                        <i class="bi bi-exclamation-triangle"></i>
-                                                    </div>
-                                                @elseif($notification->type === 'submission_uploaded')
-                                                    <div class="notification-icon bg-info text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                                                        <i class="bi bi-file-earmark-arrow-up"></i>
-                                                    </div>
-                                                @else
-                                                    <div class="notification-icon bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                                                        <i class="bi bi-bell"></i>
-                                                    </div>
-                                                @endif
-                                            </div>
-                                            <div class="flex-grow-1">
+                                                <div class="notification-icon bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                    <i class="bi bi-plus-circle"></i>
+                                                </div>
+                                            @elseif($notification->type === 'status_updated')
+                                                <div class="notification-icon bg-success text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                    <i class="bi bi-arrow-repeat"></i>
+                                                </div>
+                                            @elseif($notification->type === 'task_updated')
+                                                <div class="notification-icon bg-warning text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                    <i class="bi bi-pencil-square"></i>
+                                                </div>
+                                            @elseif($notification->type === 'task_deleted')
+                                                <div class="notification-icon bg-danger text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                    <i class="bi bi-trash"></i>
+                                                </div>
+                                            @elseif($notification->type === 'task_due_soon')
+                                                <div class="notification-icon bg-warning text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                    <i class="bi bi-clock-history"></i>
+                                                </div>
+                                            @elseif($notification->type === 'task_overdue')
+                                                <div class="notification-icon bg-danger text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                    <i class="bi bi-exclamation-triangle"></i>
+                                                </div>
+                                            @elseif($notification->type === 'submission_uploaded')
+                                                <div class="notification-icon bg-info text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                    <i class="bi bi-file-earmark-arrow-up"></i>
+                                                </div>
+                                            @else
+                                                <div class="notification-icon bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                    <i class="bi bi-bell"></i>
+                                                </div>
+                                            @endif
+                                        </div>
+                                        <div class="flex-grow-1">
                                                 <div class="d-flex justify-content-between align-items-start gap-3">
                                                     <div class="flex-grow-1">
                                                         <h6 class="mb-1 fw-bold">
@@ -157,6 +157,14 @@
 
 .notification-icon {
     font-size: 1.1rem;
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px;
+    min-height: 40px;
+}
+
+.flex-shrink-0 {
+    flex-shrink: 0 !important;
 }
 
 /* Dark mode support */
