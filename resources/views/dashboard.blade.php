@@ -517,20 +517,20 @@
                         </h5>
                         <div class="dropdown">
                             <button class="btn btn-sm dropdown-toggle" type="button" id="statusDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 20px; padding: 0.4rem 1rem; border: 1px solid rgba(167, 139, 250, 0.3); background: var(--card-bg); color: var(--text-color);">
-                                All Status
+                                <span id="selectedStatus">All Status</span>
                             </button>
-                            <ul class="dropdown-menu" aria-labelledby="statusDropdown" style="border: 1px solid rgba(167, 139, 250, 0.2); border-radius: 12px;">
-                                <li><a class="dropdown-item" href="#" style="color: var(--text-color);">All Status</a></li>
-                                <li><a class="dropdown-item" href="#" style="color: var(--text-color);">Pending</a></li>
-                                <li><a class="dropdown-item" href="#" style="color: var(--text-color);">In Progress</a></li>
-                                <li><a class="dropdown-item" href="#" style="color: var(--text-color);">Completed</a></li>
+                            <ul class="dropdown-menu" aria-labelledby="statusDropdown" style="border: 1px solid rgba(167, 139, 250, 0.2); border-radius: 12px; background: var(--card-bg);">
+                                <li><a class="dropdown-item status-filter" href="#" data-status="all" style="color: var(--text-color);">All Status</a></li>
+                                <li><a class="dropdown-item status-filter" href="#" data-status="pending" style="color: var(--text-color);">Pending</a></li>
+                                <li><a class="dropdown-item status-filter" href="#" data-status="in_progress" style="color: var(--text-color);">In Progress</a></li>
+                                <li><a class="dropdown-item status-filter" href="#" data-status="done" style="color: var(--text-color);">Completed</a></li>
                             </ul>
                         </div>
                     </div>
                     <div class="card-body p-0">
                         <div class="table-responsive">
-                            <table class="table table-hover mb-0" style="border: none;">
-                                <thead style="background: rgba(167, 139, 250, 0.05); border-bottom: 1px solid rgba(167, 139, 250, 0.1);">
+                            <table class="table table-hover mb-0" id="tasksTable" style="border: none;">
+                                <thead style="background: linear-gradient(135deg, rgba(167, 139, 250, 0.1) 0%, rgba(196, 181, 253, 0.1) 100%); border-bottom: 2px solid rgba(167, 139, 250, 0.2);">
                                     <tr>
                                         <th style="padding: 1rem; font-weight: 600; color: var(--text-color); border: none;">Task</th>
                                         <th style="padding: 1rem; font-weight: 600; color: var(--text-color); border: none;">User</th>
@@ -542,7 +542,7 @@
                                 </thead>
                                 <tbody>
                                     @forelse($recentTasks as $task)
-                                        <tr style="border-bottom: 1px solid rgba(167, 139, 250, 0.05);">
+                                        <tr class="task-row" data-status="{{ $task->status }}" style="border-bottom: 1px solid rgba(167, 139, 250, 0.05);">
                                             <td style="padding: 1.25rem 1rem; border: none;">
                                                 <div>
                                                     <h6 class="mb-1" style="font-weight: 600; font-size: 0.95rem;">{{ $task->title }}</h6>
@@ -592,10 +592,38 @@
             </div>
         </div>
 
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const statusFilters = document.querySelectorAll('.status-filter');
+                const taskRows = document.querySelectorAll('.task-row');
+                const selectedStatusSpan = document.getElementById('selectedStatus');
+
+                statusFilters.forEach(filter => {
+                    filter.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const status = this.getAttribute('data-status');
+                        const statusText = this.textContent;
+                        
+                        // Update button text
+                        selectedStatusSpan.textContent = statusText;
+
+                        // Filter rows
+                        taskRows.forEach(row => {
+                            if (status === 'all' || row.getAttribute('data-status') === status) {
+                                row.style.display = '';
+                            } else {
+                                row.style.display = 'none';
+                            }
+                        });
+                    });
+                });
+            });
+        </script>
+
         <!-- Recent Users and Action Cards -->
         <div class="row g-3 mb-4">
             <div class="col-md-6">
-                <div class="card dashboard-card shadow-sm" style="background: var(--card-bg); border: 1px solid rgba(167, 139, 250, 0.2); border-radius: 16px; overflow: hidden;">
+                <div class="card dashboard-card shadow-sm" style="background: var(--card-bg); border: 1px solid rgba(167, 139, 250, 0.2); border-radius: 16px; overflow: hidden; height: 100%;">
                     <div class="card-header" style="background: linear-gradient(135deg, rgba(167, 139, 250, 0.1) 0%, rgba(196, 181, 253, 0.1) 100%); border-bottom: 2px solid rgba(167, 139, 250, 0.3); padding: 1.25rem;">
                         <h5 class="mb-0" style="font-weight: 600; color: var(--text-color);"><i class="bi bi-people me-2" style="color: #a78bfa;"></i>Recent Users</h5>
                     </div>
@@ -632,80 +660,67 @@
 
             <!-- Action Cards -->
             <div class="col-md-6">
-                <div class="row g-3">
-                    <div class="col-12">
-                        <a href="{{ route('admin.users') }}" class="action-card-vibrant shadow-sm d-block" style="background: var(--card-bg); color: var(--text-color); border: 2px solid #a78bfa; text-decoration: none; padding: 1.25rem;">
-                            <i class="bi bi-arrow-right-circle arrow-icon" style="color: #a78bfa;"></i>
-                            <div class="d-flex align-items-center">
-                                <div class="stat-icon-vibrant me-3" style="background: rgba(167, 139, 250, 0.1); color: #a78bfa; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 12px; flex-shrink: 0;">
-                                    <i class="bi bi-people" style="font-size: 1.5rem;"></i>
-                                </div>
-                                <div class="flex-grow-1">
-                                    <h6 class="mb-1" style="color: var(--text-color); font-weight: 600;">Manage Users</h6>
-                                    <p class="text-muted small mb-0">View, create, edit users</p>
-                                </div>
-                            </div>
-                        </a>
+                <div class="card dashboard-card shadow-sm" style="background: var(--card-bg); border: 1px solid rgba(167, 139, 250, 0.2); border-radius: 16px; overflow: hidden; height: 100%;">
+                    <div class="card-header" style="background: linear-gradient(135deg, rgba(167, 139, 250, 0.1) 0%, rgba(196, 181, 253, 0.1) 100%); border-bottom: 2px solid rgba(167, 139, 250, 0.3); padding: 1.25rem;">
+                        <h5 class="mb-0" style="font-weight: 600; color: var(--text-color);"><i class="bi bi-lightning-charge me-2" style="color: #a78bfa;"></i>Quick Actions</h5>
                     </div>
-
-                    <div class="col-12">
-                        <a href="{{ route('admin.tasks') }}" class="action-card-vibrant shadow-sm d-block" style="background: var(--card-bg); color: var(--text-color); border: 2px solid #a78bfa; text-decoration: none; padding: 1.25rem;">
-                            <i class="bi bi-arrow-right-circle arrow-icon" style="color: #a78bfa;"></i>
-                            <div class="d-flex align-items-center">
-                                <div class="stat-icon-vibrant me-3" style="background: rgba(167, 139, 250, 0.1); color: #a78bfa; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 12px; flex-shrink: 0;">
-                                    <i class="bi bi-list-task" style="font-size: 1.5rem;"></i>
+                    <div class="card-body" style="padding: 1.5rem;">
+                        <div class="d-flex flex-column gap-3">
+                            <a href="{{ route('admin.users') }}" class="d-flex align-items-center p-3 text-decoration-none" style="background: var(--card-bg); color: var(--text-color); border: 2px solid rgba(167, 139, 250, 0.3); border-radius: 12px; transition: all 0.2s;" onmouseover="this.style.borderColor='#a78bfa'; this.style.backgroundColor='rgba(167, 139, 250, 0.05)';" onmouseout="this.style.borderColor='rgba(167, 139, 250, 0.3)'; this.style.backgroundColor='var(--card-bg)';">
+                                <div class="me-3" style="background: rgba(167, 139, 250, 0.1); color: #a78bfa; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0;">
+                                    <i class="bi bi-people" style="font-size: 1.3rem;"></i>
                                 </div>
                                 <div class="flex-grow-1">
-                                    <h6 class="mb-1" style="color: var(--text-color); font-weight: 600;">Manage Tasks</h6>
-                                    <p class="text-muted small mb-0">View and delete tasks</p>
+                                    <h6 class="mb-0" style="color: var(--text-color); font-weight: 600; font-size: 0.95rem;">Manage Users</h6>
+                                    <small class="text-muted" style="font-size: 0.8rem;">View, create, edit users</small>
                                 </div>
-                            </div>
-                        </a>
-                    </div>
+                                <i class="bi bi-arrow-right" style="color: #a78bfa; font-size: 1.2rem;"></i>
+                            </a>
 
-                    <div class="col-12">
-                        <a href="{{ route('admin.projects') }}" class="action-card-vibrant shadow-sm d-block" style="background: var(--card-bg); color: var(--text-color); border: 2px solid #a78bfa; text-decoration: none; padding: 1.25rem;">
-                            <i class="bi bi-arrow-right-circle arrow-icon" style="color: #a78bfa;"></i>
-                            <div class="d-flex align-items-center">
-                                <div class="stat-icon-vibrant me-3" style="background: rgba(167, 139, 250, 0.1); color: #a78bfa; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 12px; flex-shrink: 0;">
-                                    <i class="bi bi-folder" style="font-size: 1.5rem;"></i>
+                            <a href="{{ route('admin.tasks') }}" class="d-flex align-items-center p-3 text-decoration-none" style="background: var(--card-bg); color: var(--text-color); border: 2px solid rgba(167, 139, 250, 0.3); border-radius: 12px; transition: all 0.2s;" onmouseover="this.style.borderColor='#a78bfa'; this.style.backgroundColor='rgba(167, 139, 250, 0.05)';" onmouseout="this.style.borderColor='rgba(167, 139, 250, 0.3)'; this.style.backgroundColor='var(--card-bg)';">
+                                <div class="me-3" style="background: rgba(167, 139, 250, 0.1); color: #a78bfa; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0;">
+                                    <i class="bi bi-list-task" style="font-size: 1.3rem;"></i>
                                 </div>
                                 <div class="flex-grow-1">
-                                    <h6 class="mb-1" style="color: var(--text-color); font-weight: 600;">Manage Projects</h6>
-                                    <p class="text-muted small mb-0">View and delete projects</p>
+                                    <h6 class="mb-0" style="color: var(--text-color); font-weight: 600; font-size: 0.95rem;">Manage Tasks</h6>
+                                    <small class="text-muted" style="font-size: 0.8rem;">View and delete tasks</small>
                                 </div>
-                            </div>
-                        </a>
-                    </div>
+                                <i class="bi bi-arrow-right" style="color: #a78bfa; font-size: 1.2rem;"></i>
+                            </a>
 
-                    <div class="col-12">
-                        <a href="{{ route('admin.users.create') }}" class="action-card-vibrant shadow-sm d-block" style="background: var(--card-bg); color: var(--text-color); border: 2px solid #a78bfa; text-decoration: none; padding: 1.25rem;">
-                            <i class="bi bi-arrow-right-circle arrow-icon" style="color: #a78bfa;"></i>
-                            <div class="d-flex align-items-center">
-                                <div class="stat-icon-vibrant me-3" style="background: rgba(167, 139, 250, 0.1); color: #a78bfa; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 12px; flex-shrink: 0;">
-                                    <i class="bi bi-person-plus" style="font-size: 1.5rem;"></i>
+                            <a href="{{ route('admin.projects') }}" class="d-flex align-items-center p-3 text-decoration-none" style="background: var(--card-bg); color: var(--text-color); border: 2px solid rgba(167, 139, 250, 0.3); border-radius: 12px; transition: all 0.2s;" onmouseover="this.style.borderColor='#a78bfa'; this.style.backgroundColor='rgba(167, 139, 250, 0.05)';" onmouseout="this.style.borderColor='rgba(167, 139, 250, 0.3)'; this.style.backgroundColor='var(--card-bg)';">
+                                <div class="me-3" style="background: rgba(167, 139, 250, 0.1); color: #a78bfa; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0;">
+                                    <i class="bi bi-folder" style="font-size: 1.3rem;"></i>
                                 </div>
                                 <div class="flex-grow-1">
-                                    <h6 class="mb-1" style="color: var(--text-color); font-weight: 600;">Create User</h6>
-                                    <p class="text-muted small mb-0">Add new user account</p>
+                                    <h6 class="mb-0" style="color: var(--text-color); font-weight: 600; font-size: 0.95rem;">Manage Projects</h6>
+                                    <small class="text-muted" style="font-size: 0.8rem;">View and delete projects</small>
                                 </div>
-                            </div>
-                        </a>
-                    </div>
+                                <i class="bi bi-arrow-right" style="color: #a78bfa; font-size: 1.2rem;"></i>
+                            </a>
 
-                    <div class="col-12">
-                        <a href="{{ route('admin.password-reset-codes') }}" class="action-card-vibrant shadow-sm d-block" style="background: var(--card-bg); color: var(--text-color); border: 2px solid #a78bfa; text-decoration: none; padding: 1.25rem;">
-                            <i class="bi bi-arrow-right-circle arrow-icon" style="color: #a78bfa;"></i>
-                            <div class="d-flex align-items-center">
-                                <div class="stat-icon-vibrant me-3" style="background: rgba(167, 139, 250, 0.1); color: #a78bfa; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 12px; flex-shrink: 0;">
-                                    <i class="bi bi-key" style="font-size: 1.5rem;"></i>
+                            <a href="{{ route('admin.users.create') }}" class="d-flex align-items-center p-3 text-decoration-none" style="background: var(--card-bg); color: var(--text-color); border: 2px solid rgba(167, 139, 250, 0.3); border-radius: 12px; transition: all 0.2s;" onmouseover="this.style.borderColor='#a78bfa'; this.style.backgroundColor='rgba(167, 139, 250, 0.05)';" onmouseout="this.style.borderColor='rgba(167, 139, 250, 0.3)'; this.style.backgroundColor='var(--card-bg)';">
+                                <div class="me-3" style="background: rgba(167, 139, 250, 0.1); color: #a78bfa; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0;">
+                                    <i class="bi bi-person-plus" style="font-size: 1.3rem;"></i>
                                 </div>
                                 <div class="flex-grow-1">
-                                    <h6 class="mb-1" style="color: var(--text-color); font-weight: 600;">Password Reset Codes</h6>
-                                    <p class="text-muted small mb-0">Generate reset codes</p>
+                                    <h6 class="mb-0" style="color: var(--text-color); font-weight: 600; font-size: 0.95rem;">Create User</h6>
+                                    <small class="text-muted" style="font-size: 0.8rem;">Add new user account</small>
                                 </div>
-                            </div>
-                        </a>
+                                <i class="bi bi-arrow-right" style="color: #a78bfa; font-size: 1.2rem;"></i>
+                            </a>
+
+                            <a href="{{ route('admin.password-reset-codes') }}" class="d-flex align-items-center p-3 text-decoration-none" style="background: var(--card-bg); color: var(--text-color); border: 2px solid rgba(167, 139, 250, 0.3); border-radius: 12px; transition: all 0.2s;" onmouseover="this.style.borderColor='#a78bfa'; this.style.backgroundColor='rgba(167, 139, 250, 0.05)';" onmouseout="this.style.borderColor='rgba(167, 139, 250, 0.3)'; this.style.backgroundColor='var(--card-bg)';">
+                                <div class="me-3" style="background: rgba(167, 139, 250, 0.1); color: #a78bfa; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0;">
+                                    <i class="bi bi-key" style="font-size: 1.3rem;"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-0" style="color: var(--text-color); font-weight: 600; font-size: 0.95rem;">Password Reset Codes</h6>
+                                    <small class="text-muted" style="font-size: 0.8rem;">Generate reset codes</small>
+                                </div>
+                                <i class="bi bi-arrow-right" style="color: #a78bfa; font-size: 1.2rem;"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
