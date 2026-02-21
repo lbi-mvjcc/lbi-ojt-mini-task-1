@@ -159,6 +159,22 @@
         border-color: var(--primary-purple);
     }
     
+    .file-hint-text {
+        font-size: 0.875rem !important;
+        color: #6b7280 !important;
+        margin-top: 0.25rem !important;
+        background: transparent !important;
+        background-color: transparent !important;
+        padding: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+    
+    .file-hint-text i {
+        background: transparent !important;
+        background-color: transparent !important;
+    }
+    
     /* Dark mode fixes */
     [data-theme="dark"] .btn-light {
         background-color: var(--card-bg);
@@ -201,8 +217,15 @@
     }
     
     /* Fix for accepted formats text */
-    [data-theme="dark"] #profile_picture + div {
+    [data-theme="dark"] .file-hint-text {
         color: var(--muted-text) !important;
+        background: transparent !important;
+        background-color: transparent !important;
+    }
+    
+    [data-theme="dark"] .file-hint-text i {
+        background: transparent !important;
+        background-color: transparent !important;
     }
     
     /* Dark mode scrollbar */
