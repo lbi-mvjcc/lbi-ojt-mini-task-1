@@ -430,7 +430,7 @@
                     @endif
                 </div>
                 <div>
-                    <h1 class="display-6 fw-bold mb-1">Welcome Admin, {{ $user->name }}! 🛡️</h1>
+                    <h1 class="display-6 fw-bold mb-1">Welcome, {{ $user->name }}! 🛡️</h1>
                     <p class="text-muted mb-0">System overview and quick access to admin functions</p>
                 </div>
             </div>
@@ -534,7 +534,10 @@
                     </div>
                 </a>
             </div>
+        </div>
 
+        <!-- Additional Actions -->
+        <div class="row g-3 mb-4">
             <div class="col-md-6 col-lg-3">
                 <a href="{{ route('admin.password-reset-codes') }}" class="action-card shadow-sm" style="background: var(--card-bg); color: var(--text-color);">
                     <i class="bi bi-arrow-right-circle arrow-icon"></i>
