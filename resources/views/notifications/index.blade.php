@@ -161,22 +161,22 @@
 }
 
 .notification-card h6 {
-    font-size: 0.9rem;
+    font-size: 1rem;
     margin-bottom: 0.25rem !important;
 }
 
 .notification-card p {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     margin-bottom: 0.25rem !important;
 }
 
 .notification-card .small {
-    font-size: 0.75rem !important;
+    font-size: 0.8rem !important;
 }
 
 .notification-card .btn-sm {
-    padding: 0.2rem 0.4rem;
-    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
 }
 
 .flex-shrink-0 {
