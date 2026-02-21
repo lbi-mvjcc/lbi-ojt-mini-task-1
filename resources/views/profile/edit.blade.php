@@ -200,6 +200,11 @@
         color: var(--muted-text);
     }
     
+    /* Fix for accepted formats text */
+    [data-theme="dark"] #profile_picture + div {
+        color: var(--muted-text) !important;
+    }
+    
     /* Dark mode scrollbar */
     [data-theme="dark"] ::-webkit-scrollbar {
         width: 12px;

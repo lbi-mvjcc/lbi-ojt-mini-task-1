@@ -24,9 +24,9 @@
             </div>
             <div class="flex-grow-1">
                 <input type="file" class="form-control" id="profile_picture" name="profile_picture" accept="image/*" onchange="previewProfilePicture(event)">
-                <small class="text-muted d-block mt-1" style="background: transparent !important; padding: 0 !important;">
+                <div style="font-size: 0.875rem; color: #6b7280; margin-top: 0.25rem; background: none; padding: 0;">
                     <i class="bi bi-info-circle"></i> Accepted formats: JPG, PNG, GIF (Max: 2MB)
-                </small>
+                </div>
                 @error('profile_picture')
                     <div class="text-danger mt-1 small">{{ $message }}</div>
                 @enderror
