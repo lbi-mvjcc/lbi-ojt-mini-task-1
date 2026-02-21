@@ -173,9 +173,16 @@
     
     [data-theme="dark"] .text-muted {
         color: var(--muted-text) !important;
+        background-color: transparent !important;
     }
     
     [data-theme="dark"] small.text-muted {
+        background-color: transparent !important;
+        color: var(--muted-text) !important;
+        padding: 0 !important;
+    }
+    
+    [data-theme="dark"] small {
         background-color: transparent !important;
         color: var(--muted-text) !important;
     }
@@ -191,6 +198,25 @@
     
     [data-theme="dark"] .profile-card p {
         color: var(--muted-text);
+    }
+    
+    /* Dark mode scrollbar */
+    [data-theme="dark"] ::-webkit-scrollbar {
+        width: 12px;
+        height: 12px;
+    }
+    
+    [data-theme="dark"] ::-webkit-scrollbar-track {
+        background: var(--card-bg);
+    }
+    
+    [data-theme="dark"] ::-webkit-scrollbar-thumb {
+        background: var(--border-color);
+        border-radius: 6px;
+    }
+    
+    [data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+        background: #475569;
     }
 </style>
 

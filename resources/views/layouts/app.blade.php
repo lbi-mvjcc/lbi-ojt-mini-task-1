@@ -529,6 +529,25 @@
                 color: var(--muted-text) !important;
             }
             
+            /* Dark mode scrollbar */
+            [data-theme="dark"] ::-webkit-scrollbar {
+                width: 12px;
+                height: 12px;
+            }
+            
+            [data-theme="dark"] ::-webkit-scrollbar-track {
+                background: var(--bg-color);
+            }
+            
+            [data-theme="dark"] ::-webkit-scrollbar-thumb {
+                background: var(--border-color);
+                border-radius: 6px;
+            }
+            
+            [data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+                background: #475569;
+            }
+            
             /* Fix nested dropdown in notifications */
             .notification-item .dropdown {
                 position: relative;
