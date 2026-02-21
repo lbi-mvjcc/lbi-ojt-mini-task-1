@@ -510,47 +510,59 @@
         <!-- Recent Activity -->
         <div class="row g-3 mb-4">
             <div class="col-md-6">
-                <div class="card dashboard-card shadow-sm" style="background: var(--card-bg); border: 1px solid rgba(167, 139, 250, 0.2);">
-                    <div class="card-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-bottom: none;">
-                        <h5 class="mb-0" style="color: white;"><i class="bi bi-clock-history me-2"></i>Recent Tasks</h5>
+                <div class="card dashboard-card shadow-sm" style="background: var(--card-bg); border: 1px solid rgba(167, 139, 250, 0.2); border-radius: 16px; overflow: hidden;">
+                    <div class="card-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-bottom: none; padding: 1.25rem;">
+                        <h5 class="mb-0" style="color: white; font-weight: 600;"><i class="bi bi-clock-history me-2"></i>Recent Tasks</h5>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body" style="padding: 1.5rem;">
                         @forelse($recentTasks as $task)
-                            <div class="d-flex align-items-start mb-3 pb-3 border-bottom">
+                            <div class="d-flex align-items-start mb-3 pb-3" style="border-bottom: 1px solid rgba(167, 139, 250, 0.1); transition: all 0.2s;" onmouseover="this.style.backgroundColor='rgba(167, 139, 250, 0.05)'; this.style.marginLeft='-1rem'; this.style.marginRight='-1rem'; this.style.paddingLeft='1rem'; this.style.paddingRight='1rem'; this.style.borderRadius='8px';" onmouseout="this.style.backgroundColor='transparent'; this.style.marginLeft='0'; this.style.marginRight='0'; this.style.paddingLeft='0'; this.style.paddingRight='0';">
+                                <div class="me-3" style="width: 40px; height: 40px; border-radius: 8px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <i class="bi bi-check-circle" style="color: var(--primary-purple); font-size: 1.2rem;"></i>
+                                </div>
                                 <div class="flex-grow-1">
-                                    <h6 class="mb-1">{{ $task->title }}</h6>
-                                    <small class="text-muted">
-                                        By: {{ $task->createdBy->name ?? 'Unknown' }} | 
-                                        Assigned: {{ $task->assignedTo->name ?? 'Unassigned' }}
+                                    <h6 class="mb-1" style="font-weight: 600;">{{ $task->title }}</h6>
+                                    <small class="text-muted" style="font-size: 0.8rem;">
+                                        <i class="bi bi-person me-1"></i>{{ $task->createdBy->name ?? 'Unknown' }} 
+                                        <i class="bi bi-arrow-right mx-1"></i>
+                                        {{ $task->assignedTo->name ?? 'Unassigned' }}
                                     </small>
                                 </div>
-                                <span class="badge bg-{{ $task->status === 'done' ? 'success' : ($task->status === 'in_progress' ? 'info' : 'warning') }}">
+                                <span class="badge bg-{{ $task->status === 'done' ? 'success' : ($task->status === 'in_progress' ? 'info' : 'warning') }}" style="padding: 0.4rem 0.8rem; border-radius: 20px;">
                                     {{ ucfirst(str_replace('_', ' ', $task->status)) }}
                                 </span>
                             </div>
                         @empty
-                            <p class="text-muted mb-0">No recent tasks</p>
+                            <div class="text-center py-4">
+                                <i class="bi bi-inbox" style="font-size: 3rem; color: #dee2e6;"></i>
+                                <p class="text-muted mt-2 mb-0">No recent tasks</p>
+                            </div>
                         @endforelse
                     </div>
                 </div>
             </div>
 
             <div class="col-md-6">
-                <div class="card dashboard-card shadow-sm" style="background: var(--card-bg); border: 1px solid rgba(167, 139, 250, 0.2);">
-                    <div class="card-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-bottom: none;">
-                        <h5 class="mb-0" style="color: white;"><i class="bi bi-person-plus me-2"></i>Recent Users</h5>
+                <div class="card dashboard-card shadow-sm" style="background: var(--card-bg); border: 1px solid rgba(167, 139, 250, 0.2); border-radius: 16px; overflow: hidden;">
+                    <div class="card-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-bottom: none; padding: 1.25rem;">
+                        <h5 class="mb-0" style="color: white; font-weight: 600;"><i class="bi bi-people me-2"></i>Recent Users</h5>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body" style="padding: 1.5rem;">
                         @forelse($recentUsers as $recentUser)
-                            <div class="d-flex align-items-center mb-3 pb-3 border-bottom">
-                                <div class="me-3">
-                                    {!! $recentUser->getProfilePictureHtml(40) !!}
+                            <div class="d-flex align-items-center mb-3 pb-3" style="border-bottom: 1px solid rgba(167, 139, 250, 0.1); transition: all 0.2s;" onmouseover="this.style.backgroundColor='rgba(167, 139, 250, 0.05)'; this.style.marginLeft='-1rem'; this.style.marginRight='-1rem'; this.style.paddingLeft='1rem'; this.style.paddingRight='1rem'; this.style.borderRadius='8px';" onmouseout="this.style.backgroundColor='transparent'; this.style.marginLeft='0'; this.style.marginRight='0'; this.style.paddingLeft='0'; this.style.paddingRight='0';">
+                                <div class="me-3" style="position: relative;">
+                                    {!! $recentUser->getProfilePictureHtml(45) !!}
+                                    <span style="position: absolute; bottom: 0; right: 0; width: 12px; height: 12px; background: #10b981; border: 2px solid var(--card-bg); border-radius: 50%;"></span>
                                 </div>
                                 <div class="flex-grow-1">
-                                    <h6 class="mb-0">{{ $recentUser->name }}</h6>
-                                    <small class="text-muted">{{ $recentUser->getRoleLabel() }}</small>
+                                    <h6 class="mb-0" style="font-weight: 600;">{{ $recentUser->name }}</h6>
+                                    <small class="text-muted" style="font-size: 0.8rem;">
+                                        <i class="bi bi-shield-check me-1"></i>{{ $recentUser->getRoleLabel() }}
+                                    </small>
                                 </div>
-                                <small class="text-muted">{{ $recentUser->created_at->diffForHumans() }}</small>
+                                <small class="text-muted" style="font-size: 0.75rem; background: rgba(167, 139, 250, 0.1); padding: 0.3rem 0.6rem; border-radius: 12px;">
+                                    {{ $recentUser->created_at->diffForHumans() }}
+                                </small>
                             </div>
                         @empty
                             <p class="text-muted mb-0">No recent users</p>
@@ -563,66 +575,66 @@
         <!-- Additional Actions -->
         <div class="row g-3 mb-4">
             <div class="col-md-6 col-lg-4">
-                <a href="{{ route('admin.users') }}" class="action-card-vibrant shadow-sm" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                <a href="{{ route('admin.users') }}" class="action-card-vibrant shadow-sm" style="background: linear-gradient(135deg, #a78bfa 0%, #c4b5fd 100%); color: white;">
                     <i class="bi bi-arrow-right-circle arrow-icon" style="color: white;"></i>
                     <div class="text-center">
                         <div class="stat-icon-vibrant mx-auto mb-3">
                             <i class="bi bi-people"></i>
                         </div>
                         <h5 class="mb-2">Manage Users</h5>
-                        <p class="small mb-0" style="color: rgba(255,255,255,0.9);">View, create, edit users</p>
+                        <p class="small mb-0" style="color: rgba(255,255,255,0.95);">View, create, edit users</p>
                     </div>
                 </a>
             </div>
 
             <div class="col-md-6 col-lg-4">
-                <a href="{{ route('admin.tasks') }}" class="action-card-vibrant shadow-sm" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                <a href="{{ route('admin.tasks') }}" class="action-card-vibrant shadow-sm" style="background: linear-gradient(135deg, #a78bfa 0%, #c4b5fd 100%); color: white;">
                     <i class="bi bi-arrow-right-circle arrow-icon" style="color: white;"></i>
                     <div class="text-center">
                         <div class="stat-icon-vibrant mx-auto mb-3">
                             <i class="bi bi-list-task"></i>
                         </div>
                         <h5 class="mb-2">Manage Tasks</h5>
-                        <p class="small mb-0" style="color: rgba(255,255,255,0.9);">View and delete tasks</p>
+                        <p class="small mb-0" style="color: rgba(255,255,255,0.95);">View and delete tasks</p>
                     </div>
                 </a>
             </div>
 
             <div class="col-md-6 col-lg-4">
-                <a href="{{ route('admin.projects') }}" class="action-card-vibrant shadow-sm" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                <a href="{{ route('admin.projects') }}" class="action-card-vibrant shadow-sm" style="background: linear-gradient(135deg, #a78bfa 0%, #c4b5fd 100%); color: white;">
                     <i class="bi bi-arrow-right-circle arrow-icon" style="color: white;"></i>
                     <div class="text-center">
                         <div class="stat-icon-vibrant mx-auto mb-3">
                             <i class="bi bi-folder"></i>
                         </div>
                         <h5 class="mb-2">Manage Projects</h5>
-                        <p class="small mb-0" style="color: rgba(255,255,255,0.9);">View and delete projects</p>
+                        <p class="small mb-0" style="color: rgba(255,255,255,0.95);">View and delete projects</p>
                     </div>
                 </a>
             </div>
 
             <div class="col-md-6 col-lg-4">
-                <a href="{{ route('admin.users.create') }}" class="action-card-vibrant shadow-sm" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                <a href="{{ route('admin.users.create') }}" class="action-card-vibrant shadow-sm" style="background: linear-gradient(135deg, #a78bfa 0%, #c4b5fd 100%); color: white;">
                     <i class="bi bi-arrow-right-circle arrow-icon" style="color: white;"></i>
                     <div class="text-center">
                         <div class="stat-icon-vibrant mx-auto mb-3">
                             <i class="bi bi-person-plus"></i>
                         </div>
                         <h5 class="mb-2">Create User</h5>
-                        <p class="small mb-0" style="color: rgba(255,255,255,0.9);">Add new user account</p>
+                        <p class="small mb-0" style="color: rgba(255,255,255,0.95);">Add new user account</p>
                     </div>
                 </a>
             </div>
 
             <div class="col-md-6 col-lg-4">
-                <a href="{{ route('admin.password-reset-codes') }}" class="action-card-vibrant shadow-sm" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                <a href="{{ route('admin.password-reset-codes') }}" class="action-card-vibrant shadow-sm" style="background: linear-gradient(135deg, #a78bfa 0%, #c4b5fd 100%); color: white;">
                     <i class="bi bi-arrow-right-circle arrow-icon" style="color: white;"></i>
                     <div class="text-center">
                         <div class="stat-icon-vibrant mx-auto mb-3">
                             <i class="bi bi-key"></i>
                         </div>
                         <h5 class="mb-2">Password Reset Codes</h5>
-                        <p class="small mb-0" style="color: rgba(255,255,255,0.9);">Generate reset codes</p>
+                        <p class="small mb-0" style="color: rgba(255,255,255,0.95);">Generate reset codes</p>
                     </div>
                 </a>
             </div>
