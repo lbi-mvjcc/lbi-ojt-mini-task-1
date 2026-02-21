@@ -24,7 +24,7 @@
             </div>
             <div class="flex-grow-1">
                 <input type="file" class="form-control" id="profile_picture" name="profile_picture" accept="image/*" onchange="previewProfilePicture(event)">
-                <small class="text-muted d-block mt-1">
+                <small class="text-muted d-block mt-1" style="background: transparent !important; padding: 0 !important;">
                     <i class="bi bi-info-circle"></i> Accepted formats: JPG, PNG, GIF (Max: 2MB)
                 </small>
                 @error('profile_picture')
