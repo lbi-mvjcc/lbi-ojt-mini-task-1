@@ -448,6 +448,71 @@
             .notification-item.unread:hover {
                 background-color: rgba(102, 126, 234, 0.15);
             }
+            
+            /* Dark mode notification fixes */
+            [data-theme="dark"] .notification-item {
+                background-color: transparent;
+            }
+            
+            [data-theme="dark"] .notification-item:hover {
+                background-color: rgba(102, 126, 234, 0.05);
+            }
+            
+            [data-theme="dark"] .notification-item.unread {
+                background-color: rgba(102, 126, 234, 0.15);
+                border-left-color: var(--primary-purple);
+            }
+            
+            [data-theme="dark"] .notification-item.unread:hover {
+                background-color: rgba(102, 126, 234, 0.2);
+            }
+            
+            [data-theme="dark"] .notification-dropdown {
+                background-color: var(--card-bg) !important;
+                border: 1px solid var(--border-color);
+            }
+            
+            [data-theme="dark"] .dropdown-menu {
+                background-color: var(--card-bg) !important;
+                border-color: var(--border-color) !important;
+            }
+            
+            [data-theme="dark"] .dropdown-item {
+                color: var(--text-color) !important;
+            }
+            
+            [data-theme="dark"] .dropdown-item:hover {
+                background-color: rgba(102, 126, 234, 0.1) !important;
+            }
+            
+            [data-theme="dark"] .dropdown-header {
+                color: var(--text-color) !important;
+                background-color: transparent !important;
+                border-bottom-color: var(--border-color) !important;
+            }
+            
+            [data-theme="dark"] .dropdown-divider {
+                border-color: var(--border-color) !important;
+            }
+            
+            [data-theme="dark"] .btn-outline-secondary {
+                color: var(--muted-text) !important;
+                border-color: var(--border-color) !important;
+            }
+            
+            [data-theme="dark"] .btn-outline-secondary:hover {
+                background-color: var(--border-color) !important;
+                color: var(--text-color) !important;
+            }
+            
+            [data-theme="dark"] .btn-link {
+                color: var(--primary-purple) !important;
+            }
+            
+            [data-theme="dark"] .text-muted {
+                color: var(--muted-text) !important;
+            }
+            
             .notification-title {
                 font-weight: 600;
                 font-size: 0.9rem;
