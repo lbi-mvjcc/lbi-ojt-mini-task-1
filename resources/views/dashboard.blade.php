@@ -511,8 +511,8 @@
         <div class="row g-3 mb-4">
             <div class="col-md-6">
                 <div class="card dashboard-card shadow-sm" style="background: var(--card-bg); border: 1px solid rgba(167, 139, 250, 0.2);">
-                    <div class="card-header" style="background: var(--card-bg); border-bottom: 1px solid rgba(167, 139, 250, 0.2);">
-                        <h5 class="mb-0"><i class="bi bi-clock-history me-2"></i>Recent Tasks</h5>
+                    <div class="card-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-bottom: none;">
+                        <h5 class="mb-0" style="color: white;"><i class="bi bi-clock-history me-2"></i>Recent Tasks</h5>
                     </div>
                     <div class="card-body">
                         @forelse($recentTasks as $task)
@@ -537,8 +537,8 @@
 
             <div class="col-md-6">
                 <div class="card dashboard-card shadow-sm" style="background: var(--card-bg); border: 1px solid rgba(167, 139, 250, 0.2);">
-                    <div class="card-header" style="background: var(--card-bg); border-bottom: 1px solid rgba(167, 139, 250, 0.2);">
-                        <h5 class="mb-0"><i class="bi bi-person-plus me-2"></i>Recent Users</h5>
+                    <div class="card-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-bottom: none;">
+                        <h5 class="mb-0" style="color: white;"><i class="bi bi-person-plus me-2"></i>Recent Users</h5>
                     </div>
                     <div class="card-body">
                         @forelse($recentUsers as $recentUser)
@@ -576,7 +576,7 @@
             </div>
 
             <div class="col-md-6 col-lg-4">
-                <a href="{{ route('admin.tasks') }}" class="action-card-vibrant shadow-sm" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white;">
+                <a href="{{ route('admin.tasks') }}" class="action-card-vibrant shadow-sm" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
                     <i class="bi bi-arrow-right-circle arrow-icon" style="color: white;"></i>
                     <div class="text-center">
                         <div class="stat-icon-vibrant mx-auto mb-3">
@@ -589,7 +589,7 @@
             </div>
 
             <div class="col-md-6 col-lg-4">
-                <a href="{{ route('admin.projects') }}" class="action-card-vibrant shadow-sm" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white;">
+                <a href="{{ route('admin.projects') }}" class="action-card-vibrant shadow-sm" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
                     <i class="bi bi-arrow-right-circle arrow-icon" style="color: white;"></i>
                     <div class="text-center">
                         <div class="stat-icon-vibrant mx-auto mb-3">
@@ -602,7 +602,7 @@
             </div>
 
             <div class="col-md-6 col-lg-4">
-                <a href="{{ route('admin.users.create') }}" class="action-card-vibrant shadow-sm" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: white;">
+                <a href="{{ route('admin.users.create') }}" class="action-card-vibrant shadow-sm" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
                     <i class="bi bi-arrow-right-circle arrow-icon" style="color: white;"></i>
                     <div class="text-center">
                         <div class="stat-icon-vibrant mx-auto mb-3">
@@ -615,14 +615,14 @@
             </div>
 
             <div class="col-md-6 col-lg-4">
-                <a href="{{ route('admin.password-reset-codes') }}" class="action-card-vibrant shadow-sm" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); color: #333;">
-                    <i class="bi bi-arrow-right-circle arrow-icon" style="color: #333;"></i>
+                <a href="{{ route('admin.password-reset-codes') }}" class="action-card-vibrant shadow-sm" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                    <i class="bi bi-arrow-right-circle arrow-icon" style="color: white;"></i>
                     <div class="text-center">
-                        <div class="stat-icon-vibrant mx-auto mb-3" style="background: rgba(0,0,0,0.1);">
+                        <div class="stat-icon-vibrant mx-auto mb-3">
                             <i class="bi bi-key"></i>
                         </div>
                         <h5 class="mb-2">Password Reset Codes</h5>
-                        <p class="small mb-0" style="color: rgba(0,0,0,0.7);">Generate reset codes</p>
+                        <p class="small mb-0" style="color: rgba(255,255,255,0.9);">Generate reset codes</p>
                     </div>
                 </a>
             </div>
