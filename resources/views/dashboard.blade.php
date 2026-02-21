@@ -483,7 +483,7 @@
 
         <!-- Quick Actions -->
         <div class="row g-3 mb-4">
-            <div class="col-md-6 col-lg-3">
+            <div class="col-md-6 col-lg-4">
                 <a href="{{ route('admin.users') }}" class="action-card shadow-sm" style="background: var(--card-bg); color: var(--text-color);">
                     <i class="bi bi-arrow-right-circle arrow-icon"></i>
                     <div class="text-center">
@@ -496,7 +496,7 @@
                 </a>
             </div>
 
-            <div class="col-md-6 col-lg-3">
+            <div class="col-md-6 col-lg-4">
                 <a href="{{ route('admin.tasks') }}" class="action-card shadow-sm" style="background: var(--card-bg); color: var(--text-color);">
                     <i class="bi bi-arrow-right-circle arrow-icon"></i>
                     <div class="text-center">
@@ -509,7 +509,7 @@
                 </a>
             </div>
 
-            <div class="col-md-6 col-lg-3">
+            <div class="col-md-6 col-lg-4">
                 <a href="{{ route('admin.projects') }}" class="action-card shadow-sm" style="background: var(--card-bg); color: var(--text-color);">
                     <i class="bi bi-arrow-right-circle arrow-icon"></i>
                     <div class="text-center">
@@ -521,8 +521,11 @@
                     </div>
                 </a>
             </div>
+        </div>
 
-            <div class="col-md-6 col-lg-3">
+        <!-- Additional Actions -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-6 col-lg-4">
                 <a href="{{ route('admin.users.create') }}" class="action-card shadow-sm" style="background: var(--card-bg); color: var(--text-color);">
                     <i class="bi bi-arrow-right-circle arrow-icon"></i>
                     <div class="text-center">
@@ -534,11 +537,8 @@
                     </div>
                 </a>
             </div>
-        </div>
 
-        <!-- Additional Actions -->
-        <div class="row g-3 mb-4">
-            <div class="col-md-6 col-lg-3">
+            <div class="col-md-6 col-lg-4">
                 <a href="{{ route('admin.password-reset-codes') }}" class="action-card shadow-sm" style="background: var(--card-bg); color: var(--text-color);">
                     <i class="bi bi-arrow-right-circle arrow-icon"></i>
                     <div class="text-center">
