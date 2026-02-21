@@ -449,10 +449,35 @@
             }
             .notification-item.unread {
                 background-color: transparent !important;
-                border-left-color: var(--primary-purple);
+                border-left-color: transparent !important;
             }
             .notification-item.unread:hover {
                 background-color: transparent !important;
+                border-left-color: var(--primary-purple) !important;
+            }
+            
+            /* Force transparent backgrounds with highest specificity */
+            li.notification-item,
+            li.notification-item.unread,
+            .dropdown-menu li.notification-item,
+            .dropdown-menu li.notification-item.unread {
+                background-color: transparent !important;
+                background: transparent !important;
+                border-left-color: transparent !important;
+            }
+            
+            li.notification-item:hover,
+            li.notification-item.unread:hover,
+            .dropdown-menu li.notification-item:hover,
+            .dropdown-menu li.notification-item.unread:hover {
+                background-color: transparent !important;
+                background: transparent !important;
+                border-left-color: var(--primary-purple) !important;
+            }
+            
+            /* Remove purple border from all notifications (only show on hover) */
+            .notification-item:not(:hover) {
+                border-left-color: transparent !important;
             }
             
             /* Dark mode notification fixes */
@@ -460,7 +485,7 @@
                 background-color: transparent !important;
                 color: var(--text-color) !important;
                 border-bottom: 1px solid rgba(139, 156, 245, 0.2) !important;
-                border-left: 3px solid transparent;
+                border-left: 3px solid transparent !important;
                 transition: all 0.2s ease;
             }
             
@@ -472,11 +497,30 @@
             
             [data-theme="dark"] .notification-item.unread {
                 background-color: transparent !important;
-                border-left: 3px solid var(--primary-purple) !important;
+                border-left: 3px solid transparent !important;
             }
             
             [data-theme="dark"] .notification-item.unread:hover {
                 background-color: transparent !important;
+                border-left-color: var(--primary-purple) !important;
+            }
+            
+            /* Force transparent in dark mode with highest specificity */
+            [data-theme="dark"] li.notification-item,
+            [data-theme="dark"] li.notification-item.unread,
+            [data-theme="dark"] .dropdown-menu li.notification-item,
+            [data-theme="dark"] .dropdown-menu li.notification-item.unread {
+                background-color: transparent !important;
+                background: transparent !important;
+                border-left-color: transparent !important;
+            }
+            
+            [data-theme="dark"] li.notification-item:hover,
+            [data-theme="dark"] li.notification-item.unread:hover,
+            [data-theme="dark"] .dropdown-menu li.notification-item:hover,
+            [data-theme="dark"] .dropdown-menu li.notification-item.unread:hover {
+                background-color: transparent !important;
+                background: transparent !important;
                 border-left-color: var(--primary-purple) !important;
             }
             
