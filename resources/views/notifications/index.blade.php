@@ -25,7 +25,7 @@
             @if($notifications->count() > 0)
                 @foreach($notifications as $notification)
                     <div class="mb-2">
-                        <div class="card border-0 shadow-sm notification-card {{ $notification->isRead() ? '' : 'unread-notification' }}">
+                        <div class="card border-0 notification-card {{ $notification->isRead() ? '' : 'unread-notification' }}">
                             <div class="card-body py-2 px-3">
                                 <div class="d-flex align-items-center gap-2">
                                     <div class="flex-shrink-0">
@@ -121,7 +121,7 @@
                 @endif
             @else
                 <!-- Empty State -->
-                <div class="card border-0 shadow-sm">
+                <div class="card border-0">
                     <div class="card-body text-center py-5">
                         <i class="bi bi-bell-slash text-muted" style="font-size: 4rem;"></i>
                         <h4 class="mt-3 text-muted">No Notifications</h4>
@@ -136,20 +136,26 @@
 <style>
 .unread-notification {
     border-left: 3px solid #007bff !important;
-    background-color: #f8f9ff;
+    background-color: rgba(0, 123, 255, 0.05);
+}
+
+[data-theme="dark"] .unread-notification {
+    background-color: transparent !important;
+    border-left: 3px solid var(--primary-purple) !important;
 }
 
 .notification-card {
     transition: all 0.2s ease;
-}
-
-.notification-card .card-body {
-    padding: 0.75rem 1rem !important;
+    background-color: transparent;
+    border: 1px solid rgba(139, 156, 245, 0.2);
+    border-left: 3px solid transparent;
 }
 
 .notification-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
+    background-color: transparent !important;
+    border-left-color: var(--primary-purple) !important;
+    transform: translateY(0) !important;
+    box-shadow: none !important;
 }
 
 .notification-icon {
@@ -186,13 +192,21 @@
 /* Dark mode support */
 [data-theme="dark"] .notification-card {
     background-color: transparent !important;
-    border: 1px solid rgba(139, 156, 245, 0.4) !important;
+    border: 1px solid rgba(139, 156, 245, 0.3) !important;
+    border-left: 3px solid transparent !important;
     box-shadow: none !important;
 }
 
 [data-theme="dark"] .notification-card:hover {
-    border-color: rgba(139, 156, 245, 0.6) !important;
+    background-color: transparent !important;
+    border-color: rgba(139, 156, 245, 0.3) !important;
+    border-left-color: var(--primary-purple) !important;
     box-shadow: none !important;
+    transform: translateY(0) !important;
+}
+
+[data-theme="dark"] .notification-card .card-body {
+    background-color: transparent !important;
 }
 
 [data-theme="dark"] .unread-notification {
@@ -210,6 +224,14 @@
 
 [data-theme="dark"] .lead {
     color: var(--muted-text) !important;
+}
+
+[data-theme="dark"] .notification-card .card-body {
+    padding: 0.75rem 1rem !important;
+}
+
+.notification-card .card-body {
+    padding: 0.75rem 1rem !important;
 }
 
 /* Mobile responsive improvements */
@@ -231,6 +253,16 @@
 /* Ensure proper spacing */
 .container-fluid {
     min-height: calc(100vh - 200px);
+}
+
+/* Empty state styling */
+[data-theme="dark"] .card.border-0 {
+    background-color: transparent !important;
+    border: 1px solid rgba(139, 156, 245, 0.3) !important;
+}
+
+[data-theme="dark"] .card.border-0 .card-body {
+    background-color: transparent !important;
 }
 </style>
 

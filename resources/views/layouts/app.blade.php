@@ -437,9 +437,10 @@
             .notification-item {
                 padding: 12px 16px;
                 border-left: 3px solid transparent;
-                background-color: var(--card-bg);
+                background-color: transparent !important;
                 transition: all 0.2s ease;
                 cursor: pointer;
+                border-bottom: 1px solid rgba(139, 156, 245, 0.2);
             }
             .notification-item:hover {
                 background-color: transparent !important;
@@ -447,18 +448,18 @@
                 transform: translateX(2px);
             }
             .notification-item.unread {
-                background-color: rgba(102, 126, 234, 0.1);
+                background-color: transparent !important;
                 border-left-color: var(--primary-purple);
             }
             .notification-item.unread:hover {
-                background-color: rgba(102, 126, 234, 0.15);
+                background-color: transparent !important;
             }
             
             /* Dark mode notification fixes */
             [data-theme="dark"] .notification-item {
                 background-color: transparent !important;
                 color: var(--text-color) !important;
-                border-bottom: 1px solid rgba(139, 156, 245, 0.3) !important;
+                border-bottom: 1px solid rgba(139, 156, 245, 0.2) !important;
                 border-left: 3px solid transparent;
                 transition: all 0.2s ease;
             }
@@ -470,12 +471,12 @@
             }
             
             [data-theme="dark"] .notification-item.unread {
-                background-color: rgba(102, 126, 234, 0.05) !important;
+                background-color: transparent !important;
                 border-left: 3px solid var(--primary-purple) !important;
             }
             
             [data-theme="dark"] .notification-item.unread:hover {
-                background-color: rgba(102, 126, 234, 0.08) !important;
+                background-color: transparent !important;
                 border-left-color: var(--primary-purple) !important;
             }
             

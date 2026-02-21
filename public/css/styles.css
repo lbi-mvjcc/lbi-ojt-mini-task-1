@@ -10962,15 +10962,19 @@ body, .navbar, .nav-link, .btn, .card, .form-control, .form-label, .badge, .aler
   margin: 0.25rem 0 !important;
   border-radius: 0.5rem !important;
   transition: all 0.15s ease-in-out !important;
+  background-color: transparent !important;
+  border-left: 3px solid transparent !important;
+  border-bottom: 1px solid rgba(139, 156, 245, 0.2) !important;
 }
 
 .notification-item:hover {
-  background-color: #f9fafb !important;
+  background-color: transparent !important;
+  border-left-color: #8b9cf5 !important;
 }
 
 .notification-item.unread {
-  background-color: #eff6ff !important;
-  border-left: 3px solid #3b82f6 !important;
+  background-color: transparent !important;
+  border-left: 3px solid #8b9cf5 !important;
 }
 
 /* Loading states */
