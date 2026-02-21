@@ -437,9 +437,11 @@
                 border-left: 3px solid transparent;
                 background-color: var(--card-bg);
                 transition: all 0.2s ease;
+                cursor: pointer;
             }
             .notification-item:hover {
                 background-color: var(--bg-color);
+                transform: translateX(2px);
             }
             .notification-item.unread {
                 background-color: rgba(102, 126, 234, 0.1);
@@ -858,7 +860,7 @@
                     const readIcon = notification.is_read ? 'bi-envelope-open' : 'bi-envelope';
                     
                     html += `
-                        <li class="notification-item ${unreadClass}" data-notification-id="${notification.id}">
+                        <li class="notification-item ${unreadClass}" data-notification-id="${notification.id}" onclick="viewNotification(${notification.id})" style="cursor: pointer;">
                             <div class="d-flex justify-content-between align-items-start">
                                 <div class="flex-grow-1">
                                     <div class="notification-title">${notification.title}</div>
