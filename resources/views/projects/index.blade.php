@@ -67,7 +67,26 @@
         border: 1px solid var(--border-color);
         overflow: hidden;
         transition: all 0.3s ease;
-        height: 100%;
+        display: flex;
+        flex-direction: column;
+        break-inside: avoid;
+        margin-bottom: 2rem;
+    }
+    
+    .project-body {
+        flex: 1;
+    }
+    
+    /* Masonry layout for projects */
+    .projects-masonry {
+        column-count: 2;
+        column-gap: 1.5rem;
+    }
+    
+    @media (max-width: 991px) {
+        .projects-masonry {
+            column-count: 1;
+        }
     }
     
     .project-card:hover {
@@ -79,7 +98,7 @@
     .project-header {
         background: var(--purple-light-bg);
         padding: 1.5rem;
-        border-bottom: 1px solid var(--purple-border);
+        border-bottom: 2px solid var(--primary-purple);
     }
     
     .project-title {
@@ -98,6 +117,7 @@
     
     .project-body {
         padding: 1.5rem;
+        flex: 1;
     }
     
     .stats-grid {
@@ -134,8 +154,10 @@
     
     .task-item {
         padding: 0.75rem;
-        border-bottom: 1px solid var(--border-color);
+        border-bottom: 1px solid rgba(139, 156, 245, 0.3);
         transition: all 0.2s ease;
+        background: transparent !important;
+        border-left: 3px solid transparent;
     }
     
     .task-item:last-child {
@@ -143,7 +165,19 @@
     }
     
     .task-item:hover {
-        background: var(--purple-light-bg);
+        background: transparent !important;
+        border-left-color: var(--primary-purple);
+        padding-left: 0.85rem;
+    }
+    
+    [data-theme="dark"] .task-item {
+        background: transparent !important;
+        border-bottom-color: rgba(139, 156, 245, 0.4) !important;
+    }
+    
+    [data-theme="dark"] .task-item:hover {
+        background: transparent !important;
+        border-left-color: var(--primary-purple);
     }
     
     .task-item-title {
@@ -185,7 +219,7 @@
     }
     
     .project-footer {
-        padding: 1rem 1.5rem;
+        padding: 0.75rem 1.5rem;
         background: var(--purple-light-bg);
         border-top: 1px solid var(--purple-border);
         display: flex;
@@ -251,6 +285,32 @@
         background-color: rgba(209, 250, 229, 0.2);
         color: #34d399;
     }
+    
+    /* Dark mode project cards */
+    [data-theme="dark"] .project-card {
+        background-color: transparent !important;
+        border: 2px solid rgba(139, 156, 245, 0.4) !important;
+        box-shadow: none !important;
+    }
+    
+    [data-theme="dark"] .project-card:hover {
+        border-color: rgba(139, 156, 245, 0.6) !important;
+        box-shadow: none !important;
+    }
+    
+    [data-theme="dark"] .project-header {
+        background-color: rgba(30, 41, 59, 0.5) !important;
+        border-bottom: 2px solid var(--primary-purple) !important;
+    }
+    
+    [data-theme="dark"] .project-body {
+        background-color: transparent !important;
+    }
+    
+    [data-theme="dark"] .project-footer {
+        background-color: transparent !important;
+        border-top-color: rgba(139, 156, 245, 0.3) !important;
+    }
 </style>
 
 <div class="container py-4">
@@ -268,10 +328,9 @@
     </div>
 
     @if($projects->count() > 0)
-        <div class="row g-4">
+        <div class="projects-masonry">
             @foreach($projects as $project)
-                <div class="col-lg-6">
-                    <div class="project-card">
+                <div class="project-card">
                         <!-- Project Header -->
                         <div class="project-header">
                             <h3 class="project-title">
@@ -351,7 +410,6 @@
                             </a>
                         </div>
                     </div>
-                </div>
             @endforeach
         </div>
     @else

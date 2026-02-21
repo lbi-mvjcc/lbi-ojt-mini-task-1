@@ -63,6 +63,11 @@
         background: var(--purple-light-bg);
         color: var(--primary-purple);
     }
+    
+    /* Make stat cards blend in dark mode */
+    [data-theme="dark"] .stat-card {
+        border: 1px solid rgba(30, 41, 59, 0.5);
+    }
     .percentage-badge {
         font-size: 0.75rem;
         padding: 0.25rem 0.5rem;
@@ -114,9 +119,10 @@
         border-left: 3px solid transparent;
         transition: all 0.2s;
         border-radius: 8px;
+        background: transparent !important;
     }
     .activity-item:hover {
-        background-color: var(--purple-light-bg);
+        background-color: transparent !important;
         border-left-color: var(--primary-purple);
     }
     .status-badge {
@@ -172,13 +178,13 @@
     
     /* Additional dark mode support */
     [data-theme="dark"] .dashboard-card {
-        background-color: var(--card-bg) !important;
+        background-color: #1e293b !important;
         color: var(--text-color);
-        border: 1px solid var(--border-color) !important;
+        border: 1px solid #334155 !important;
     }
     
     [data-theme="dark"] .dashboard-card .card-body {
-        background-color: transparent !important;
+        background-color: #1e293b !important;
     }
     
     [data-theme="dark"] .card.dashboard-card {
@@ -189,18 +195,24 @@
         background-color: #1e293b !important;
     }
     
+    /* Make stat cards blend in dark mode */
     [data-theme="dark"] .stat-card {
-        background-color: var(--card-bg);
+        border: 1px solid rgba(30, 41, 59, 0.5);
+    }
+    
+    [data-theme="dark"] .stat-card {
+        background-color: #1e293b !important;
         color: var(--text-color);
+        border-color: #334155;
     }
     
     [data-theme="dark"] .action-card {
-        background-color: var(--card-bg);
+        background-color: #1e293b;
         color: var(--text-color);
     }
     
     [data-theme="dark"] .action-card.gradient-secondary {
-        background-color: var(--card-bg);
+        background-color: #1e293b;
         border-color: var(--primary-purple);
     }
     
@@ -219,7 +231,18 @@
     }
     
     [data-theme="dark"] .activity-item:hover {
-        background-color: rgba(102, 126, 234, 0.05) !important;
+        background-color: transparent !important;
+        border-left-color: var(--primary-purple) !important;
+    }
+    
+    [data-theme="dark"] .activity-item * {
+        background-color: transparent !important;
+    }
+    
+    [data-theme="dark"] .activity-item p,
+    [data-theme="dark"] .activity-item div,
+    [data-theme="dark"] .activity-item span {
+        background-color: transparent !important;
     }
     
     [data-theme="dark"] .list-group-item {
@@ -301,6 +324,7 @@
     }
     
     [data-theme="dark"] .stat-card {
+        background-color: #1e293b !important;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
     }
     
@@ -348,6 +372,38 @@
         background-color: rgba(239, 68, 68, 0.15);
         border-color: rgba(239, 68, 68, 0.3);
         color: #fca5a5;
+    }
+    
+    /* Make Recent Activity card more visible but still blend in dark mode */
+    [data-theme="dark"] .card.dashboard-card.shadow-sm {
+        background-color: rgba(30, 41, 59, 0.5) !important;
+        border: 2px solid rgba(139, 156, 245, 0.4) !important;
+        box-shadow: none !important;
+    }
+    
+    [data-theme="dark"] .card.dashboard-card.shadow-sm .card-body {
+        background-color: transparent !important;
+    }
+    
+    /* Make activity items and list items blend */
+    [data-theme="dark"] .list-group-flush .activity-item {
+        background-color: transparent !important;
+        border-bottom: 1px solid rgba(139, 156, 245, 0.7) !important;
+        border-left: 3px solid rgba(139, 156, 245, 0.6) !important;
+        padding: 1rem !important;
+        margin-bottom: 0.5rem !important;
+    }
+    
+    /* Make project cards in task list blend */
+    [data-theme="dark"] .card.shadow-sm {
+        background-color: transparent !important;
+        border: 1px solid rgba(51, 65, 85, 0.3) !important;
+        box-shadow: none !important;
+    }
+    
+    [data-theme="dark"] .card.shadow-sm .card-header {
+        background-color: transparent !important;
+        border-bottom-color: rgba(51, 65, 85, 0.3) !important;
     }
 </style>
 
@@ -708,9 +764,9 @@
                                 <div class="d-flex justify-content-between align-items-start">
                                     <div class="flex-grow-1">
                                         <h6 class="mb-1 fw-semibold">{{ $task->title }}</h6>
-                                        <p class="text-muted small mb-2">{{ $task->category }}</p>
+                                        <div class="text-muted small mb-2" style="background: transparent !important;">{{ $task->category }}</div>
                                         <div class="d-flex align-items-center gap-2">
-                                            <span class="text-muted small">
+                                            <span class="text-muted small" style="background: transparent !important;">
                                                 <i class="bi bi-calendar3"></i> {{ $task->created_at->format('Y-m-d') }}
                                             </span>
                                         </div>

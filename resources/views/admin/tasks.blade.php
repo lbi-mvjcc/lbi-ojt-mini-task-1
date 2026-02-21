@@ -155,9 +155,13 @@
     }
     
     [data-theme="dark"] .task-card {
-        background: #1e293b;
-        border-color: #334155;
-        color: #f1f5f9;
+        background: transparent !important;
+        border-color: rgba(51, 65, 85, 0.3) !important;
+        box-shadow: none !important;
+    }
+    
+    [data-theme="dark"] .task-card:hover {
+        border-color: var(--primary-purple) !important;
     }
     
     [data-theme="dark"] .task-card-title {
@@ -197,8 +201,10 @@
     }
     
     [data-theme="dark"] .project-header {
-        background: linear-gradient(135deg, #334155 0%, #1e293b 100%);
-        border: 1px solid #475569;
+        background: rgba(30, 41, 59, 0.6) !important;
+        border: 1px solid rgba(139, 156, 245, 0.3) !important;
+        border-left: 4px solid var(--primary-purple) !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
     }
 </style>
 

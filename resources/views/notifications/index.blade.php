@@ -10,7 +10,7 @@
                     <p class="lead text-muted mb-0">Stay updated with your tasks and projects</p>
                 </div>
                 <div class="btn-group flex-shrink-0">
-                    <button class="btn btn-outline-primary" onclick="markAllAsRead()" title="Mark all as read">
+                    <button class="btn btn-outline-primary me-2" onclick="markAllAsRead()" title="Mark all as read">
                         <i class="bi bi-check-all"></i> 
                         <span class="d-none d-sm-inline">Mark All Read</span>
                     </button>
@@ -89,7 +89,7 @@
                                         </div>
                                     </div>
                                     <div class="flex-shrink-0">
-                                        <div class="btn-group" role="group">
+                                        <div class="d-flex gap-2" role="group">
                                             @if($notification->task_id && $notification->task)
                                                 <a href="{{ route('notifications.show', $notification->id) }}" class="btn btn-outline-primary btn-sm" title="View Task">
                                                     <i class="bi bi-eye"></i>
@@ -185,13 +185,19 @@
 
 /* Dark mode support */
 [data-theme="dark"] .notification-card {
-    background-color: var(--card-bg);
-    border-color: var(--border-color);
+    background-color: transparent !important;
+    border: 1px solid rgba(139, 156, 245, 0.4) !important;
+    box-shadow: none !important;
+}
+
+[data-theme="dark"] .notification-card:hover {
+    border-color: rgba(139, 156, 245, 0.6) !important;
+    box-shadow: none !important;
 }
 
 [data-theme="dark"] .unread-notification {
-    background-color: rgba(102, 126, 234, 0.1);
-    border-left-color: var(--primary-purple) !important;
+    background-color: rgba(102, 126, 234, 0.05) !important;
+    border-left: 3px solid var(--primary-purple) !important;
 }
 
 [data-theme="dark"] .text-dark {

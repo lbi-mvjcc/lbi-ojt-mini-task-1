@@ -279,9 +279,14 @@
     
     /* Comprehensive dark mode support */
     [data-theme="dark"] .task-card {
-        background-color: var(--card-bg);
-        border-color: var(--border-color);
+        background-color: transparent !important;
+        border-color: rgba(51, 65, 85, 0.3) !important;
         color: var(--text-color);
+        box-shadow: none !important;
+    }
+    
+    [data-theme="dark"] .task-card:hover {
+        border-color: var(--primary-purple) !important;
     }
     
     [data-theme="dark"] .task-card h5,
@@ -320,8 +325,10 @@
     }
     
     [data-theme="dark"] .project-header-customer {
-        background: linear-gradient(135deg, #334155 0%, #1e293b 100%);
-        border: 1px solid #475569;
+        background: rgba(30, 41, 59, 0.6) !important;
+        border: 1px solid rgba(139, 156, 245, 0.3) !important;
+        border-left: 4px solid var(--primary-purple) !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
     }
 </style>
 

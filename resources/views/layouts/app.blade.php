@@ -75,8 +75,9 @@
             
             /* Navbar - adapt to dark mode */
             [data-theme="dark"] nav.navbar-purple {
-                background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
-                border-bottom: 1px solid #334155;
+                background: #0f172a !important;
+                border-bottom: 1px solid rgba(139, 156, 245, 0.2) !important;
+                box-shadow: none !important;
             }
             
             /* Footer - purple in light mode, dark in dark mode */
@@ -85,8 +86,9 @@
             }
             
             [data-theme="dark"] footer.navbar-purple {
-                background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
-                border-top: 1px solid #334155 !important;
+                background: #0f172a !important;
+                border-top: 1px solid rgba(139, 156, 245, 0.2) !important;
+                box-shadow: none !important;
             }
             
             [data-theme="dark"] footer.navbar-purple p {
@@ -440,7 +442,8 @@
                 cursor: pointer;
             }
             .notification-item:hover {
-                background-color: var(--bg-color);
+                background-color: transparent !important;
+                border-left-color: var(--primary-purple);
                 transform: translateX(2px);
             }
             .notification-item.unread {
@@ -455,19 +458,25 @@
             [data-theme="dark"] .notification-item {
                 background-color: transparent !important;
                 color: var(--text-color) !important;
+                border-bottom: 1px solid rgba(139, 156, 245, 0.3) !important;
+                border-left: 3px solid transparent;
+                transition: all 0.2s ease;
             }
             
             [data-theme="dark"] .notification-item:hover {
-                background-color: rgba(102, 126, 234, 0.05) !important;
+                background-color: transparent !important;
+                border-left-color: var(--primary-purple) !important;
+                padding-left: 18px !important;
             }
             
             [data-theme="dark"] .notification-item.unread {
-                background-color: rgba(102, 126, 234, 0.15) !important;
-                border-left-color: var(--primary-purple) !important;
+                background-color: rgba(102, 126, 234, 0.05) !important;
+                border-left: 3px solid var(--primary-purple) !important;
             }
             
             [data-theme="dark"] .notification-item.unread:hover {
-                background-color: rgba(102, 126, 234, 0.2) !important;
+                background-color: rgba(102, 126, 234, 0.08) !important;
+                border-left-color: var(--primary-purple) !important;
             }
             
             [data-theme="dark"] .notification-title {
@@ -483,13 +492,14 @@
             }
             
             [data-theme="dark"] .notification-dropdown {
-                background-color: var(--card-bg) !important;
-                border: 1px solid var(--border-color) !important;
+                background-color: rgba(15, 23, 42, 0.95) !important;
+                border: 1px solid rgba(139, 156, 245, 0.4) !important;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
             }
             
             [data-theme="dark"] .dropdown-menu {
-                background-color: var(--card-bg) !important;
-                border-color: var(--border-color) !important;
+                background-color: rgba(15, 23, 42, 0.95) !important;
+                border-color: rgba(139, 156, 245, 0.4) !important;
             }
             
             [data-theme="dark"] .dropdown-item {
@@ -504,7 +514,7 @@
             [data-theme="dark"] .dropdown-header {
                 color: var(--text-color) !important;
                 background-color: transparent !important;
-                border-bottom-color: var(--border-color) !important;
+                border-bottom-color: rgba(139, 156, 245, 0.3) !important;
             }
             
             [data-theme="dark"] .dropdown-divider {
@@ -636,7 +646,7 @@
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 me-4">
                         <li class="nav-item"><a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ route('tasks.index') }}">Task</a></li>
                         @auth
