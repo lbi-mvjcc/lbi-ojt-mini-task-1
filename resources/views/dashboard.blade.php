@@ -509,54 +509,81 @@
 
         <!-- Recent Activity -->
         <div class="row g-3 mb-4">
-            <div class="col-md-6">
+            <div class="col-12">
                 <div class="card dashboard-card shadow-sm" style="background: var(--card-bg); border: 1px solid rgba(167, 139, 250, 0.2); border-radius: 16px; overflow: hidden;">
-                    <div class="card-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-bottom: none; padding: 1.25rem;">
-                        <h5 class="mb-0" style="color: white; font-weight: 600;"><i class="bi bi-clock-history me-2"></i>Recent Tasks</h5>
+                    <div class="card-header d-flex justify-content-between align-items-center" style="background: var(--card-bg); border-bottom: 1px solid rgba(167, 139, 250, 0.2); padding: 1.25rem;">
+                        <h5 class="mb-0" style="font-weight: 600;">
+                            <i class="bi bi-activity me-2" style="color: var(--primary-purple);"></i>Recent Tasks Activity
+                        </h5>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-sm btn-outline-secondary" style="border-radius: 20px; padding: 0.4rem 1rem;">
+                                <i class="bi bi-search me-1"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary" style="border-radius: 20px; padding: 0.4rem 1rem;">
+                                All Status
+                            </button>
+                        </div>
                     </div>
-                    <div class="card-body" style="padding: 1.5rem;">
-                        @forelse($recentTasks as $task)
-                            <div class="mb-4 pb-4" style="border-bottom: 1px solid rgba(167, 139, 250, 0.1); transition: all 0.2s;" onmouseover="this.style.backgroundColor='rgba(167, 139, 250, 0.05)'; this.style.marginLeft='-1rem'; this.style.marginRight='-1rem'; this.style.paddingLeft='1rem'; this.style.paddingRight='1rem'; this.style.borderRadius='8px';" onmouseout="this.style.backgroundColor='transparent'; this.style.marginLeft='0'; this.style.marginRight='0'; this.style.paddingLeft='0'; this.style.paddingRight='0';">
-                                <div class="d-flex align-items-start mb-2">
-                                    <div class="me-3" style="width: 40px; height: 40px; border-radius: 8px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                                        <i class="bi bi-check-circle" style="color: var(--primary-purple); font-size: 1.2rem;"></i>
-                                    </div>
-                                    <div class="flex-grow-1">
-                                        <h6 class="mb-1" style="font-weight: 600; font-size: 1rem;">{{ $task->title }}</h6>
-                                        <span class="badge bg-{{ $task->status === 'done' ? 'success' : ($task->status === 'in_progress' ? 'info' : 'warning') }}" style="padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem;">
-                                            {{ ucfirst(str_replace('_', ' ', $task->status)) }}
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="ms-5">
-                                    <div class="mb-2">
-                                        <small class="text-muted d-block" style="font-size: 0.8rem;">
-                                            <i class="bi bi-person-circle me-1" style="color: var(--primary-purple);"></i>
-                                            <strong>Created by:</strong> {{ $task->createdBy->name ?? 'Unknown' }}
-                                        </small>
-                                        <small class="text-muted d-block mt-1" style="font-size: 0.8rem;">
-                                            <i class="bi bi-person-check me-1" style="color: var(--primary-purple);"></i>
-                                            <strong>Assigned to:</strong> {{ $task->assignedTo->name ?? 'Unassigned' }}
-                                        </small>
-                                    </div>
-                                    @if($task->project)
-                                        <small class="text-muted d-block" style="font-size: 0.8rem;">
-                                            <i class="bi bi-folder me-1" style="color: var(--primary-purple);"></i>
-                                            <strong>Project:</strong> {{ $task->project->name }}
-                                        </small>
-                                    @endif
-                                    <small class="text-muted d-block mt-1" style="font-size: 0.75rem;">
-                                        <i class="bi bi-clock me-1"></i>
-                                        Created {{ $task->created_at->diffForHumans() }}
-                                    </small>
-                                </div>
-                            </div>
-                        @empty
-                            <div class="text-center py-4">
-                                <i class="bi bi-inbox" style="font-size: 3rem; color: #dee2e6;"></i>
-                                <p class="text-muted mt-2 mb-0">No recent tasks</p>
-                            </div>
-                        @endforelse
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0" style="border: none;">
+                                <thead style="background: rgba(167, 139, 250, 0.05); border-bottom: 1px solid rgba(167, 139, 250, 0.1);">
+                                    <tr>
+                                        <th style="padding: 1rem; font-weight: 600; color: var(--text-color); border: none;">Task</th>
+                                        <th style="padding: 1rem; font-weight: 600; color: var(--text-color); border: none;">User</th>
+                                        <th style="padding: 1rem; font-weight: 600; color: var(--text-color); border: none;">Category</th>
+                                        <th style="padding: 1rem; font-weight: 600; color: var(--text-color); border: none;">Status</th>
+                                        <th style="padding: 1rem; font-weight: 600; color: var(--text-color); border: none;">Priority</th>
+                                        <th style="padding: 1rem; font-weight: 600; color: var(--text-color); border: none;">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse($recentTasks as $task)
+                                        <tr style="border-bottom: 1px solid rgba(167, 139, 250, 0.05);">
+                                            <td style="padding: 1.25rem 1rem; border: none;">
+                                                <div>
+                                                    <h6 class="mb-1" style="font-weight: 600; font-size: 0.95rem;">{{ $task->title }}</h6>
+                                                    <small class="text-muted" style="font-size: 0.8rem;">{{ $task->created_at->format('Y-m-d') }}</small>
+                                                </div>
+                                            </td>
+                                            <td style="padding: 1.25rem 1rem; border: none;">
+                                                <div class="d-flex align-items-center">
+                                                    <div style="width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; margin-right: 0.75rem;">
+                                                        {{ strtoupper(substr($task->assignedTo->name ?? 'U', 0, 1)) }}
+                                                    </div>
+                                                    <span style="font-weight: 500;">{{ $task->assignedTo->name ?? 'Unassigned' }}</span>
+                                                </div>
+                                            </td>
+                                            <td style="padding: 1.25rem 1rem; border: none;">
+                                                <span class="text-muted">{{ $task->project->name ?? 'General' }}</span>
+                                            </td>
+                                            <td style="padding: 1.25rem 1rem; border: none;">
+                                                @if($task->status === 'done')
+                                                    <span class="badge" style="background: #d1fae5; color: #065f46; padding: 0.5rem 1rem; border-radius: 20px; font-weight: 500;">Completed</span>
+                                                @elseif($task->status === 'in_progress')
+                                                    <span class="badge" style="background: #dbeafe; color: #1e40af; padding: 0.5rem 1rem; border-radius: 20px; font-weight: 500;">In Progress</span>
+                                                @else
+                                                    <span class="badge" style="background: #fef3c7; color: #92400e; padding: 0.5rem 1rem; border-radius: 20px; font-weight: 500;">Pending</span>
+                                                @endif
+                                            </td>
+                                            <td style="padding: 1.25rem 1rem; border: none;">
+                                                <span class="badge" style="background: #fee2e2; color: #991b1b; padding: 0.4rem 0.8rem; border-radius: 12px; font-weight: 500; font-size: 0.75rem;">high</span>
+                                            </td>
+                                            <td style="padding: 1.25rem 1rem; border: none;">
+                                                <a href="{{ route('tasks.show', $task->id) }}" class="text-decoration-none" style="color: var(--text-color); font-weight: 500;">View</a>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="6" class="text-center py-5" style="border: none;">
+                                                <i class="bi bi-inbox" style="font-size: 3rem; color: #dee2e6;"></i>
+                                                <p class="text-muted mt-2 mb-0">No recent tasks</p>
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
