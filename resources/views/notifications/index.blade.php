@@ -4,7 +4,6 @@
 <div class="container-fluid px-4 py-4">
     <div class="row justify-content-center">
         <div class="col-12 col-xl-10">
-        <div class="col-12">
             <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-4 gap-3">
                 <div>
                     <h1 class="display-6 fw-bold text-dark mb-2">Notifications</h1>
@@ -22,8 +21,6 @@
                 </div>
             </div>
 
-
-
             <!-- Notifications List -->
             @if($notifications->count() > 0)
                 <div class="row">
@@ -31,8 +28,8 @@
                         <div class="col-12 mb-3">
                             <div class="card border-0 shadow-sm notification-card {{ $notification->isRead() ? '' : 'unread-notification' }}">
                                 <div class="card-body">
-                                    <div class="row align-items-center">
-                                            <div class="col-auto text-center">
+                                    <div class="d-flex align-items-start gap-3">
+                                        <div class="flex-shrink-0">
                                             @if($notification->type === 'task_assigned')
                                                     <div class="notification-icon bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
                                                         <i class="bi bi-plus-circle"></i>
@@ -67,8 +64,8 @@
                                                     </div>
                                                 @endif
                                             </div>
-                                            <div class="col flex-grow-1">
-                                                <div class="d-flex justify-content-between align-items-start">
+                                            <div class="flex-grow-1">
+                                                <div class="d-flex justify-content-between align-items-start gap-3">
                                                     <div class="flex-grow-1">
                                                         <h6 class="mb-1 fw-bold">
                                                             {{ $notification->title }}
@@ -96,7 +93,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-auto">
+                                            <div class="flex-shrink-0">
                                                 <div class="btn-group" role="group">
                                                     @if($notification->task_id && $notification->task)
                                                         <a href="{{ route('notifications.show', $notification->id) }}" class="btn btn-outline-primary btn-sm" title="View Task">
@@ -139,7 +136,6 @@
                     </div>
                 </div>
             @endif
-            </div>
         </div>
     </div>
 </div>
@@ -161,6 +157,29 @@
 
 .notification-icon {
     font-size: 1.1rem;
+}
+
+/* Dark mode support */
+[data-theme="dark"] .notification-card {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .unread-notification {
+    background-color: rgba(102, 126, 234, 0.1);
+    border-left-color: var(--primary-purple) !important;
+}
+
+[data-theme="dark"] .text-dark {
+    color: var(--text-color) !important;
+}
+
+[data-theme="dark"] .text-muted {
+    color: var(--muted-text) !important;
+}
+
+[data-theme="dark"] .lead {
+    color: var(--muted-text) !important;
 }
 
 /* Mobile responsive improvements */
