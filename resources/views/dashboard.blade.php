@@ -98,6 +98,31 @@
         box-shadow: 0 12px 24px rgba(102, 126, 234, 0.25) !important;
         border-color: rgba(167, 139, 250, 0.6);
     }
+    .action-card-vibrant {
+        border-radius: 12px;
+        padding: 2rem;
+        cursor: pointer;
+        text-decoration: none;
+        display: block;
+        transition: all 0.3s;
+        position: relative;
+        overflow: hidden;
+        border: none;
+    }
+    .action-card-vibrant:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3) !important;
+    }
+    .stat-icon-vibrant {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+    }
     .action-card .arrow-icon {
         position: absolute;
         top: 1rem;
@@ -482,48 +507,6 @@
             </div>
         </div>
 
-        <!-- Quick Actions -->
-        <div class="row g-3 mb-4">
-            <div class="col-md-6 col-lg-4">
-                <a href="{{ route('admin.users') }}" class="action-card shadow-sm" style="background: var(--card-bg); color: var(--text-color);">
-                    <i class="bi bi-arrow-right-circle arrow-icon"></i>
-                    <div class="text-center">
-                        <div class="stat-icon mx-auto mb-3">
-                            <i class="bi bi-people"></i>
-                        </div>
-                        <h5 class="mb-2">Manage Users</h5>
-                        <p class="text-muted small mb-0">View, create, edit users</p>
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-md-6 col-lg-4">
-                <a href="{{ route('admin.tasks') }}" class="action-card shadow-sm" style="background: var(--card-bg); color: var(--text-color);">
-                    <i class="bi bi-arrow-right-circle arrow-icon"></i>
-                    <div class="text-center">
-                        <div class="stat-icon mx-auto mb-3">
-                            <i class="bi bi-list-task"></i>
-                        </div>
-                        <h5 class="mb-2">Manage Tasks</h5>
-                        <p class="text-muted small mb-0">View and delete tasks</p>
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-md-6 col-lg-4">
-                <a href="{{ route('admin.projects') }}" class="action-card shadow-sm" style="background: var(--card-bg); color: var(--text-color);">
-                    <i class="bi bi-arrow-right-circle arrow-icon"></i>
-                    <div class="text-center">
-                        <div class="stat-icon mx-auto mb-3">
-                            <i class="bi bi-folder"></i>
-                        </div>
-                        <h5 class="mb-2">Manage Projects</h5>
-                        <p class="text-muted small mb-0">View and delete projects</p>
-                    </div>
-                </a>
-            </div>
-        </div>
-
         <!-- Recent Activity -->
         <div class="row g-3 mb-4">
             <div class="col-md-6">
@@ -578,29 +561,68 @@
         </div>
 
         <!-- Additional Actions -->
-        <div class="row g-3 mb-4 justify-content-center">
+        <div class="row g-3 mb-4">
             <div class="col-md-6 col-lg-4">
-                <a href="{{ route('admin.users.create') }}" class="action-card shadow-sm" style="background: var(--card-bg); color: var(--text-color);">
-                    <i class="bi bi-arrow-right-circle arrow-icon"></i>
+                <a href="{{ route('admin.users') }}" class="action-card-vibrant shadow-sm" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                    <i class="bi bi-arrow-right-circle arrow-icon" style="color: white;"></i>
                     <div class="text-center">
-                        <div class="stat-icon mx-auto mb-3">
-                            <i class="bi bi-person-plus"></i>
+                        <div class="stat-icon-vibrant mx-auto mb-3">
+                            <i class="bi bi-people"></i>
                         </div>
-                        <h5 class="mb-2">Create User</h5>
-                        <p class="text-muted small mb-0">Add new user account</p>
+                        <h5 class="mb-2">Manage Users</h5>
+                        <p class="small mb-0" style="color: rgba(255,255,255,0.9);">View, create, edit users</p>
                     </div>
                 </a>
             </div>
 
             <div class="col-md-6 col-lg-4">
-                <a href="{{ route('admin.password-reset-codes') }}" class="action-card shadow-sm" style="background: var(--card-bg); color: var(--text-color);">
-                    <i class="bi bi-arrow-right-circle arrow-icon"></i>
+                <a href="{{ route('admin.tasks') }}" class="action-card-vibrant shadow-sm" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white;">
+                    <i class="bi bi-arrow-right-circle arrow-icon" style="color: white;"></i>
                     <div class="text-center">
-                        <div class="stat-icon mx-auto mb-3">
+                        <div class="stat-icon-vibrant mx-auto mb-3">
+                            <i class="bi bi-list-task"></i>
+                        </div>
+                        <h5 class="mb-2">Manage Tasks</h5>
+                        <p class="small mb-0" style="color: rgba(255,255,255,0.9);">View and delete tasks</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <a href="{{ route('admin.projects') }}" class="action-card-vibrant shadow-sm" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white;">
+                    <i class="bi bi-arrow-right-circle arrow-icon" style="color: white;"></i>
+                    <div class="text-center">
+                        <div class="stat-icon-vibrant mx-auto mb-3">
+                            <i class="bi bi-folder"></i>
+                        </div>
+                        <h5 class="mb-2">Manage Projects</h5>
+                        <p class="small mb-0" style="color: rgba(255,255,255,0.9);">View and delete projects</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <a href="{{ route('admin.users.create') }}" class="action-card-vibrant shadow-sm" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: white;">
+                    <i class="bi bi-arrow-right-circle arrow-icon" style="color: white;"></i>
+                    <div class="text-center">
+                        <div class="stat-icon-vibrant mx-auto mb-3">
+                            <i class="bi bi-person-plus"></i>
+                        </div>
+                        <h5 class="mb-2">Create User</h5>
+                        <p class="small mb-0" style="color: rgba(255,255,255,0.9);">Add new user account</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <a href="{{ route('admin.password-reset-codes') }}" class="action-card-vibrant shadow-sm" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); color: #333;">
+                    <i class="bi bi-arrow-right-circle arrow-icon" style="color: #333;"></i>
+                    <div class="text-center">
+                        <div class="stat-icon-vibrant mx-auto mb-3" style="background: rgba(0,0,0,0.1);">
                             <i class="bi bi-key"></i>
                         </div>
                         <h5 class="mb-2">Password Reset Codes</h5>
-                        <p class="text-muted small mb-0">Generate reset codes</p>
+                        <p class="small mb-0" style="color: rgba(0,0,0,0.7);">Generate reset codes</p>
                     </div>
                 </a>
             </div>
