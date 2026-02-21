@@ -516,21 +516,40 @@
                     </div>
                     <div class="card-body" style="padding: 1.5rem;">
                         @forelse($recentTasks as $task)
-                            <div class="d-flex align-items-start mb-3 pb-3" style="border-bottom: 1px solid rgba(167, 139, 250, 0.1); transition: all 0.2s;" onmouseover="this.style.backgroundColor='rgba(167, 139, 250, 0.05)'; this.style.marginLeft='-1rem'; this.style.marginRight='-1rem'; this.style.paddingLeft='1rem'; this.style.paddingRight='1rem'; this.style.borderRadius='8px';" onmouseout="this.style.backgroundColor='transparent'; this.style.marginLeft='0'; this.style.marginRight='0'; this.style.paddingLeft='0'; this.style.paddingRight='0';">
-                                <div class="me-3" style="width: 40px; height: 40px; border-radius: 8px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                                    <i class="bi bi-check-circle" style="color: var(--primary-purple); font-size: 1.2rem;"></i>
+                            <div class="mb-4 pb-4" style="border-bottom: 1px solid rgba(167, 139, 250, 0.1); transition: all 0.2s;" onmouseover="this.style.backgroundColor='rgba(167, 139, 250, 0.05)'; this.style.marginLeft='-1rem'; this.style.marginRight='-1rem'; this.style.paddingLeft='1rem'; this.style.paddingRight='1rem'; this.style.borderRadius='8px';" onmouseout="this.style.backgroundColor='transparent'; this.style.marginLeft='0'; this.style.marginRight='0'; this.style.paddingLeft='0'; this.style.paddingRight='0';">
+                                <div class="d-flex align-items-start mb-2">
+                                    <div class="me-3" style="width: 40px; height: 40px; border-radius: 8px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                        <i class="bi bi-check-circle" style="color: var(--primary-purple); font-size: 1.2rem;"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-1" style="font-weight: 600; font-size: 1rem;">{{ $task->title }}</h6>
+                                        <span class="badge bg-{{ $task->status === 'done' ? 'success' : ($task->status === 'in_progress' ? 'info' : 'warning') }}" style="padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem;">
+                                            {{ ucfirst(str_replace('_', ' ', $task->status)) }}
+                                        </span>
+                                    </div>
                                 </div>
-                                <div class="flex-grow-1">
-                                    <h6 class="mb-1" style="font-weight: 600;">{{ $task->title }}</h6>
-                                    <small class="text-muted" style="font-size: 0.8rem;">
-                                        <i class="bi bi-person me-1"></i>{{ $task->createdBy->name ?? 'Unknown' }} 
-                                        <i class="bi bi-arrow-right mx-1"></i>
-                                        {{ $task->assignedTo->name ?? 'Unassigned' }}
+                                <div class="ms-5">
+                                    <div class="mb-2">
+                                        <small class="text-muted d-block" style="font-size: 0.8rem;">
+                                            <i class="bi bi-person-circle me-1" style="color: var(--primary-purple);"></i>
+                                            <strong>Created by:</strong> {{ $task->createdBy->name ?? 'Unknown' }}
+                                        </small>
+                                        <small class="text-muted d-block mt-1" style="font-size: 0.8rem;">
+                                            <i class="bi bi-person-check me-1" style="color: var(--primary-purple);"></i>
+                                            <strong>Assigned to:</strong> {{ $task->assignedTo->name ?? 'Unassigned' }}
+                                        </small>
+                                    </div>
+                                    @if($task->project)
+                                        <small class="text-muted d-block" style="font-size: 0.8rem;">
+                                            <i class="bi bi-folder me-1" style="color: var(--primary-purple);"></i>
+                                            <strong>Project:</strong> {{ $task->project->name }}
+                                        </small>
+                                    @endif
+                                    <small class="text-muted d-block mt-1" style="font-size: 0.75rem;">
+                                        <i class="bi bi-clock me-1"></i>
+                                        Created {{ $task->created_at->diffForHumans() }}
                                     </small>
                                 </div>
-                                <span class="badge bg-{{ $task->status === 'done' ? 'success' : ($task->status === 'in_progress' ? 'info' : 'warning') }}" style="padding: 0.4rem 0.8rem; border-radius: 20px;">
-                                    {{ ucfirst(str_replace('_', ' ', $task->status)) }}
-                                </span>
                             </div>
                         @empty
                             <div class="text-center py-4">
@@ -575,66 +594,66 @@
         <!-- Additional Actions -->
         <div class="row g-3 mb-4">
             <div class="col-md-6 col-lg-4">
-                <a href="{{ route('admin.users') }}" class="action-card-vibrant shadow-sm" style="background: linear-gradient(135deg, #a78bfa 0%, #c4b5fd 100%); color: white;">
-                    <i class="bi bi-arrow-right-circle arrow-icon" style="color: white;"></i>
+                <a href="{{ route('admin.users') }}" class="action-card-vibrant shadow-sm" style="background: var(--card-bg); color: var(--text-color); border: 2px solid #a78bfa;">
+                    <i class="bi bi-arrow-right-circle arrow-icon" style="color: #a78bfa;"></i>
                     <div class="text-center">
-                        <div class="stat-icon-vibrant mx-auto mb-3">
+                        <div class="stat-icon-vibrant mx-auto mb-3" style="background: rgba(167, 139, 250, 0.1); color: #a78bfa;">
                             <i class="bi bi-people"></i>
                         </div>
-                        <h5 class="mb-2">Manage Users</h5>
-                        <p class="small mb-0" style="color: rgba(255,255,255,0.95);">View, create, edit users</p>
+                        <h5 class="mb-2" style="color: var(--text-color);">Manage Users</h5>
+                        <p class="text-muted small mb-0">View, create, edit users</p>
                     </div>
                 </a>
             </div>
 
             <div class="col-md-6 col-lg-4">
-                <a href="{{ route('admin.tasks') }}" class="action-card-vibrant shadow-sm" style="background: linear-gradient(135deg, #a78bfa 0%, #c4b5fd 100%); color: white;">
-                    <i class="bi bi-arrow-right-circle arrow-icon" style="color: white;"></i>
+                <a href="{{ route('admin.tasks') }}" class="action-card-vibrant shadow-sm" style="background: var(--card-bg); color: var(--text-color); border: 2px solid #a78bfa;">
+                    <i class="bi bi-arrow-right-circle arrow-icon" style="color: #a78bfa;"></i>
                     <div class="text-center">
-                        <div class="stat-icon-vibrant mx-auto mb-3">
+                        <div class="stat-icon-vibrant mx-auto mb-3" style="background: rgba(167, 139, 250, 0.1); color: #a78bfa;">
                             <i class="bi bi-list-task"></i>
                         </div>
-                        <h5 class="mb-2">Manage Tasks</h5>
-                        <p class="small mb-0" style="color: rgba(255,255,255,0.95);">View and delete tasks</p>
+                        <h5 class="mb-2" style="color: var(--text-color);">Manage Tasks</h5>
+                        <p class="text-muted small mb-0">View and delete tasks</p>
                     </div>
                 </a>
             </div>
 
             <div class="col-md-6 col-lg-4">
-                <a href="{{ route('admin.projects') }}" class="action-card-vibrant shadow-sm" style="background: linear-gradient(135deg, #a78bfa 0%, #c4b5fd 100%); color: white;">
-                    <i class="bi bi-arrow-right-circle arrow-icon" style="color: white;"></i>
+                <a href="{{ route('admin.projects') }}" class="action-card-vibrant shadow-sm" style="background: var(--card-bg); color: var(--text-color); border: 2px solid #a78bfa;">
+                    <i class="bi bi-arrow-right-circle arrow-icon" style="color: #a78bfa;"></i>
                     <div class="text-center">
-                        <div class="stat-icon-vibrant mx-auto mb-3">
+                        <div class="stat-icon-vibrant mx-auto mb-3" style="background: rgba(167, 139, 250, 0.1); color: #a78bfa;">
                             <i class="bi bi-folder"></i>
                         </div>
-                        <h5 class="mb-2">Manage Projects</h5>
-                        <p class="small mb-0" style="color: rgba(255,255,255,0.95);">View and delete projects</p>
+                        <h5 class="mb-2" style="color: var(--text-color);">Manage Projects</h5>
+                        <p class="text-muted small mb-0">View and delete projects</p>
                     </div>
                 </a>
             </div>
 
             <div class="col-md-6 col-lg-4">
-                <a href="{{ route('admin.users.create') }}" class="action-card-vibrant shadow-sm" style="background: linear-gradient(135deg, #a78bfa 0%, #c4b5fd 100%); color: white;">
-                    <i class="bi bi-arrow-right-circle arrow-icon" style="color: white;"></i>
+                <a href="{{ route('admin.users.create') }}" class="action-card-vibrant shadow-sm" style="background: var(--card-bg); color: var(--text-color); border: 2px solid #a78bfa;">
+                    <i class="bi bi-arrow-right-circle arrow-icon" style="color: #a78bfa;"></i>
                     <div class="text-center">
-                        <div class="stat-icon-vibrant mx-auto mb-3">
+                        <div class="stat-icon-vibrant mx-auto mb-3" style="background: rgba(167, 139, 250, 0.1); color: #a78bfa;">
                             <i class="bi bi-person-plus"></i>
                         </div>
-                        <h5 class="mb-2">Create User</h5>
-                        <p class="small mb-0" style="color: rgba(255,255,255,0.95);">Add new user account</p>
+                        <h5 class="mb-2" style="color: var(--text-color);">Create User</h5>
+                        <p class="text-muted small mb-0">Add new user account</p>
                     </div>
                 </a>
             </div>
 
             <div class="col-md-6 col-lg-4">
-                <a href="{{ route('admin.password-reset-codes') }}" class="action-card-vibrant shadow-sm" style="background: linear-gradient(135deg, #a78bfa 0%, #c4b5fd 100%); color: white;">
-                    <i class="bi bi-arrow-right-circle arrow-icon" style="color: white;"></i>
+                <a href="{{ route('admin.password-reset-codes') }}" class="action-card-vibrant shadow-sm" style="background: var(--card-bg); color: var(--text-color); border: 2px solid #a78bfa;">
+                    <i class="bi bi-arrow-right-circle arrow-icon" style="color: #a78bfa;"></i>
                     <div class="text-center">
-                        <div class="stat-icon-vibrant mx-auto mb-3">
+                        <div class="stat-icon-vibrant mx-auto mb-3" style="background: rgba(167, 139, 250, 0.1); color: #a78bfa;">
                             <i class="bi bi-key"></i>
                         </div>
-                        <h5 class="mb-2">Password Reset Codes</h5>
-                        <p class="small mb-0" style="color: rgba(255,255,255,0.95);">Generate reset codes</p>
+                        <h5 class="mb-2" style="color: var(--text-color);">Password Reset Codes</h5>
+                        <p class="text-muted small mb-0">Generate reset codes</p>
                     </div>
                 </a>
             </div>
