@@ -158,6 +158,40 @@
     #profile_picture:hover {
         border-color: var(--primary-purple);
     }
+    
+    /* Dark mode fixes */
+    [data-theme="dark"] .btn-light {
+        background-color: var(--card-bg);
+        color: var(--text-color);
+        border: 1px solid var(--border-color);
+    }
+    
+    [data-theme="dark"] .btn-light:hover {
+        background-color: var(--border-color);
+        color: var(--text-color);
+    }
+    
+    [data-theme="dark"] .text-muted {
+        color: var(--muted-text) !important;
+    }
+    
+    [data-theme="dark"] small.text-muted {
+        background-color: transparent !important;
+        color: var(--muted-text) !important;
+    }
+    
+    [data-theme="dark"] .profile-card {
+        background-color: var(--card-bg);
+        border-color: var(--border-color);
+    }
+    
+    [data-theme="dark"] .profile-card h3 {
+        color: var(--primary-purple);
+    }
+    
+    [data-theme="dark"] .profile-card p {
+        color: var(--muted-text);
+    }
 </style>
 
 <div class="container py-4">
