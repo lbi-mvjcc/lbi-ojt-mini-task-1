@@ -513,6 +513,32 @@
                 color: var(--muted-text) !important;
             }
             
+            /* Fix nested dropdown in notifications */
+            .notification-item .dropdown {
+                position: relative;
+            }
+            
+            .notification-item .dropdown-menu {
+                position: absolute;
+                z-index: 1050;
+                min-width: 150px;
+            }
+            
+            .notification-item .btn-outline-secondary {
+                padding: 0.25rem 0.5rem;
+                font-size: 0.875rem;
+            }
+            
+            [data-theme="dark"] .notification-item .btn-outline-secondary {
+                color: var(--muted-text);
+                border-color: var(--border-color);
+            }
+            
+            [data-theme="dark"] .notification-item .btn-outline-secondary:hover {
+                background-color: rgba(102, 126, 234, 0.1);
+                color: var(--text-color);
+            }
+            
             .notification-title {
                 font-weight: 600;
                 font-size: 0.9rem;
@@ -842,10 +868,10 @@
                                     </div>
                                 </div>
                                 <div class="dropdown">
-                                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside">
+                                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
                                         <i class="bi bi-three-dots"></i>
                                     </button>
-                                    <ul class="dropdown-menu">
+                                    <ul class="dropdown-menu dropdown-menu-end">
                                         ${!notification.is_read ? `
                                             <li><button class="dropdown-item" onclick="markAsReadFromElement(this); event.stopPropagation(); return false;">
                                                 <i class="bi bi-check"></i> Mark as read
@@ -865,6 +891,14 @@
                 });
                 
                 list.innerHTML = html;
+                
+                // Reinitialize Bootstrap dropdowns for the notification items
+                setTimeout(() => {
+                    const dropdownElements = list.querySelectorAll('[data-bs-toggle="dropdown"]');
+                    dropdownElements.forEach(element => {
+                        new bootstrap.Dropdown(element);
+                    });
+                }, 100);
             }
             
             function showNotificationMessage(message, type = 'success') {
