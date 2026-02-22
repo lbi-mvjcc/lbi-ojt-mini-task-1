@@ -583,7 +583,7 @@
             $totalTasks = \App\Models\Task::count();
             $totalProjects = \App\Models\Project::count();
             $pendingTasks = \App\Models\Task::where('status', 'pending')->count();
-            $recentTasks = \App\Models\Task::with('createdBy', 'assignedTo', 'project')->latest()->take(5)->get();
+            $recentTasks = \App\Models\Task::with('createdBy', 'assignedTo', 'project')->latest()->take(5)->get(); // Limit to 5 for dashboard display
             $recentUsers = \App\Models\User::latest()->take(5)->get();
         @endphp
 
@@ -885,8 +885,8 @@
             $completedChange = $completedTasks > 0 ? 8 : 0;
             $pendingChange = $pendingTasks > 0 ? -3 : 0;
             
-            // Get recent tasks
-            $recentTasks = $user->tasksCreated()->with('project', 'assignedTo')->latest()->take(4)->get();
+            // Get recent tasks (limit to 5 for dashboard display)
+            $recentTasks = $user->tasksCreated()->with('project', 'assignedTo')->latest()->take(5)->get();
         @endphp
 
         <!-- Welcome Header -->
