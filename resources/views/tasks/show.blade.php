@@ -320,7 +320,7 @@
                         <form method="POST" action="{{ route('tasks.destroy', $task) }}" style="display: inline;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn-icon delete" onclick="return confirm('Are you sure?')" title="Delete">
+                            <button type="submit" class="btn-icon delete" onclick="return confirm('This action cannot be undone. Are you sure to you want to delete this task')" title="Delete">
                                 <i class="bi bi-trash"></i>
                             </button>
                         </form>
