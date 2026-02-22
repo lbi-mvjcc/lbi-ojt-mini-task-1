@@ -10,14 +10,18 @@
                     <p class="lead text-muted mb-0">Stay updated with your tasks and projects</p>
                 </div>
                 <div class="btn-group flex-shrink-0">
-                    <button class="btn btn-outline-primary me-2" onclick="markAllAsRead()" title="Mark all as read">
+                    <button class="btn btn-outline-primary me-2" onclick="markAllAsRead()" title="Mark all as read" {{ $notifications->count() === 0 ? 'disabled' : '' }}>
                         <i class="bi bi-check-all"></i> 
                         <span class="d-none d-sm-inline">Mark All Read</span>
                     </button>
-                    <button class="btn btn-outline-danger" onclick="deleteAllNotifications()" title="Delete all notifications">
-                        <i class="bi bi-trash"></i> 
-                        <span class="d-none d-sm-inline">Clear All</span>
-                    </button>
+                    <form method="POST" action="{{ route('notifications.destroyAll') }}" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete ALL notifications? This cannot be undone.');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-outline-danger" title="Delete all notifications" {{ $notifications->count() === 0 ? 'disabled' : '' }}>
+                            <i class="bi bi-trash"></i> 
+                            <span class="d-none d-sm-inline">Clear All</span>
+                        </button>
+                    </form>
                 </div>
             </div>
 

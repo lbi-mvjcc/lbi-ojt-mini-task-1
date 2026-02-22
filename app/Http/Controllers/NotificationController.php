@@ -163,13 +163,25 @@ class NotificationController extends Controller
         try {
             $user = Auth::user();
             
-            $user->notifications()->delete();
+            // Check how many notifications exist first
+            $notificationCount = $user->notifications()->count();
             
-            if (request()->expectsJson()) {
-                return response()->json(['success' => true, 'message' => 'All notifications deleted successfully']);
+            if ($notificationCount === 0) {
+                if (request()->expectsJson()) {
+                    return response()->json(['success' => true, 'message' => 'No notifications to delete']);
+                }
+                
+                return redirect()->back()->with('info', 'No notifications to delete.');
             }
             
-            return redirect()->back()->with('success', 'All notifications deleted successfully.');
+            // Delete notifications and get the count
+            $deletedCount = $user->notifications()->delete();
+            
+            if (request()->expectsJson()) {
+                return response()->json(['success' => true, 'message' => "Successfully deleted {$deletedCount} notification(s)"]);
+            }
+            
+            return redirect()->back()->with('success', "Successfully deleted {$deletedCount} notification(s).");
         } catch (\Exception $e) {
             if (request()->expectsJson()) {
                 return response()->json(['success' => false, 'message' => 'Failed to delete all notifications'], 500);

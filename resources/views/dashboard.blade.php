@@ -886,7 +886,7 @@
             $pendingChange = $pendingTasks > 0 ? -3 : 0;
             
             // Get recent tasks (limit to 5 for dashboard display)
-            $recentTasks = $user->tasksCreated()->with('project', 'assignedTo')->latest()->take(5)->get();
+            $recentTasks = $user->tasksCreated()->with('project', 'assignedTo')->latest()->take(4)->get();
         @endphp
 
         <!-- Welcome Header -->

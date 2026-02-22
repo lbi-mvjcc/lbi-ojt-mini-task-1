@@ -1395,7 +1395,10 @@
             
             function deleteAllNotifications() {
                 if (confirm('Are you sure you want to delete ALL notifications? This cannot be undone.')) {
-                    fetch('{{ route("notifications.destroyAll") }}', {
+                    const url = '{{ route("notifications.destroyAll") }}';
+                    console.log('DELETE URL:', url);
+                    
+                    fetch(url, {
                         method: 'DELETE',
                         headers: {
                             'X-CSRF-TOKEN': '{{ csrf_token() }}',
@@ -1404,6 +1407,7 @@
                     })
                     .then(response => {
                         console.log('Delete all response status:', response.status);
+                        console.log('Response URL:', response.url);
                         if (response.ok) {
                             // Refresh the page to show success message and updated notifications
                             location.reload();
