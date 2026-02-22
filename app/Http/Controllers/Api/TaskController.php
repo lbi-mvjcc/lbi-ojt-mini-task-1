@@ -37,17 +37,29 @@ class TaskController extends Controller
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
+            'link' => ['nullable', 'url', 'max:500'],
             'category' => ['required', 'in:frontend,backend,server'],
             'project_id' => ['required', 'exists:projects,id'],
             'attachments.*' => ['nullable', 'file', 'max:10240'], // 10MB max per file
         ]);
 
+        $user = $request->user();
+        
+        // Verify customer is assigned to this project
+        $project = Project::findOrFail($validated['project_id']);
+        if (!$project->members()->where('user_id', $user->id)->exists()) {
+            return response()->json([
+                'message' => 'You are not assigned to this project. Please contact admin.'
+            ], 403);
+        }
+
         $task = Task::create([
             'title' => $validated['title'],
             'description' => $validated['description'],
+            'link' => $validated['link'] ?? null,
             'category' => $validated['category'],
             'project_id' => $validated['project_id'],
-            'customer_id' => $request->user()->id,
+            'customer_id' => $user->id,
         ]);
 
         // Automatic assignment based on category
@@ -127,6 +139,7 @@ class TaskController extends Controller
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
+            'link' => ['nullable', 'url', 'max:500'],
             'category' => ['required', 'in:frontend,backend,server'],
             'project_id' => ['required', 'exists:projects,id'],
             'attachments.*' => ['nullable', 'file', 'max:10240'],
@@ -134,10 +147,21 @@ class TaskController extends Controller
             'remove_attachments.*' => ['integer', 'exists:task_attachments,id'],
         ]);
 
+        $user = $request->user();
+        
+        // Verify customer is assigned to this project
+        $project = Project::findOrFail($validated['project_id']);
+        if (!$project->members()->where('user_id', $user->id)->exists()) {
+            return response()->json([
+                'message' => 'You are not assigned to this project. Please contact admin.'
+            ], 403);
+        }
+
         // Update task details
         $task->update([
             'title' => $validated['title'],
             'description' => $validated['description'],
+            'link' => $validated['link'] ?? null,
             'category' => $validated['category'],
             'project_id' => $validated['project_id'],
         ]);

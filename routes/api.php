@@ -30,6 +30,10 @@ Route::middleware('auth:sanctum')->group(function () {
     
     // Tasks
     Route::get('/tasks', [TaskController::class, 'index']);
+    
+    // Recently deleted tasks (must come before {task} route)
+    Route::get('/tasks/trashed/all', [TaskController::class, 'trashed']);
+    
     Route::get('/tasks/{task}', [TaskController::class, 'show']);
     
     // Customer only
@@ -38,8 +42,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/tasks/{task}', [TaskController::class, 'update']);
         Route::delete('/tasks/{task}', [TaskController::class, 'destroy']);
         
-        // Recently deleted tasks
-        Route::get('/tasks/trashed/all', [TaskController::class, 'trashed']);
+        // Restore and force delete for trashed tasks
         Route::post('/tasks/{id}/restore', [TaskController::class, 'restore']);
         Route::delete('/tasks/{id}/force', [TaskController::class, 'forceDelete']);
     });
@@ -47,9 +50,6 @@ Route::middleware('auth:sanctum')->group(function () {
     // Developer only
     Route::middleware('role:frontend_developer,backend_developer,server_admin')->group(function () {
         Route::patch('/tasks/{task}/status', [TaskController::class, 'updateStatus']);
-        
-        // Recently deleted tasks (view only)
-        Route::get('/tasks/trashed/all', [TaskController::class, 'trashed']);
     });
     
     // Admin only

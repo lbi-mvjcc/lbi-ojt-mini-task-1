@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import Layout from '../Layout';
@@ -13,26 +13,36 @@ export default function CreateTask() {
         category: '',
         project_id: '',
     });
-    const [projects, setProjects] = useState([]);
+    const [project, setProject] = useState(null);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
     const [loading, setLoading] = useState(false);
+    const [projectLoading, setProjectLoading] = useState(true);
     const [showConfirm, setShowConfirm] = useState(false);
     const [attachments, setAttachments] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetchProjects();
+        fetchCustomerProject();
     }, []);
 
-    const fetchProjects = async () => {
+    const fetchCustomerProject = async () => {
         try {
             const response = await axios.get('/api/projects');
-            setProjects(response.data);
+            // Customer should only have one project
+            if (response.data.length > 0) {
+                const customerProject = response.data[0];
+                setProject(customerProject);
+                setFormData(prev => ({ ...prev, project_id: customerProject.id }));
+            } else {
+                setError('No project assigned. Please contact admin.');
+            }
         } catch (error) {
-            console.error('Error fetching projects:', error);
-            setError('Failed to load projects. Please refresh the page.');
+            console.error('Error fetching project:', error);
+            setError('Failed to load project. Please refresh the page.');
+        } finally {
+            setProjectLoading(false);
         }
     };
 
@@ -104,11 +114,6 @@ export default function CreateTask() {
         setShowConfirm(false);
     };
     
-    const getProjectName = () => {
-        const project = projects.find(p => p.id === parseInt(formData.project_id));
-        return project ? project.name : '';
-    };
-    
     const getCategoryLabel = () => {
         const labels = {
             frontend: 'Frontend',
@@ -128,7 +133,7 @@ export default function CreateTask() {
             <ConfirmDialog
                 isOpen={showConfirm}
                 title="Confirm Task Creation"
-                message={`Are you sure you want to create this task? Title: ${formData.title}, Project: ${getProjectName()}, Category: ${getCategoryLabel()}. The task will be automatically assigned to the appropriate developer.`}
+                message={`Are you sure you want to create this task? Title: ${formData.title}, Project: ${project?.name || ''}, Category: ${getCategoryLabel()}. The task will be automatically assigned to the appropriate developer.`}
                 onConfirm={handleConfirmCreate}
                 onCancel={handleCancelCreate}
             />
@@ -136,16 +141,7 @@ export default function CreateTask() {
             <div className="form-container">
                 <h1>Create New Task</h1>
 
-                <div className="info-box" style={{ marginBottom: '2rem' }}>
-                    <strong style={{ display: 'block', marginBottom: '0.5rem' }}>How Task Assignment Works:</strong>
-                    <p style={{ margin: 0 }}>
-                        1. Select the project this task belongs to<br/>
-                        2. Choose a category (Frontend, Backend, or Server)<br/>
-                        3. The system automatically assigns the task to the appropriate developer on that project<br/>
-                        <br/>
-                        Example: If you select "Project 3" and category "Server", the task will be automatically assigned to the Server Administrator of Project 3.
-                    </p>
-                </div>
+               <br />
 
                 {error && <div className="alert alert-error">{error}</div>}
                 {success && <div className="alert alert-success">{success}</div>}
@@ -153,21 +149,19 @@ export default function CreateTask() {
                 <div className="card">
                     <form onSubmit={handleSubmit}>
                         <div className="form-group">
-                            <label>Project</label>
-                            <select
-                                name="project_id"
-                                value={formData.project_id}
-                                onChange={handleChange}
-                                required
-                                disabled={loading}
-                            >
-                                <option value="">Select Project</option>
-                                {projects.map((project) => (
-                                    <option key={project.id} value={project.id}>
-                                        {project.name}
-                                    </option>
-                                ))}
-                            </select>
+                            <label>Assigned Project</label>
+                            {projectLoading ? (
+                                <div className="project-info-box">Loading project...</div>
+                            ) : project ? (
+                                <div className="project-info-box">
+                                    <strong>{project.name}</strong>
+                                    <small className="form-text">This is your assigned project. Contact admin to change.</small>
+                                </div>
+                            ) : (
+                                <div className="project-info-box error">
+                                    No project assigned
+                                </div>
+                            )}
                         </div>
 
                         <div className="form-group">
