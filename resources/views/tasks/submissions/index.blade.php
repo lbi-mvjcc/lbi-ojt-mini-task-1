@@ -192,7 +192,6 @@
                                                 {{ $submission->user->name }}
                                             @else
                                                 {{ ucwords(str_replace('_', ' ', $submission->user->role)) }} 
-                                                ({{ $submission->user->name }})
                                             @endif
                                         </div>
 

@@ -1260,7 +1260,7 @@
                             <div class="deadline-list">
                                 @foreach($upcomingDeadlines as $task)
                                     @php
-                                        $daysUntil = now()->diffInDays($task->deadline, false);
+                                        $daysUntil = now()->startOfDay()->diffInDays($task->deadline->startOfDay(), false);
                                         $isUrgent = $daysUntil <= 3;
                                     @endphp
                                     <div class="deadline-item" style="padding: 0.75rem; border-left: 3px solid {{ $isUrgent ? '#ef4444' : 'var(--primary-purple)' }}; background: var(--purple-light-bg); border-radius: 8px; margin-bottom: 0.75rem;">
