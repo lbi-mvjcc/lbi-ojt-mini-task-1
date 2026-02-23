@@ -1,6 +1,7 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import LandingPage from './components/LandingPage';
+import WelcomePage from './components/WelcomePage';
 import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
 import ForgotPassword from './components/Auth/ForgotPassword';
@@ -47,8 +48,11 @@ function AppRoutes() {
 
     return (
         <Routes>
-            {/* Landing Page */}
+            {/* Landing Page - redirects based on auth status */}
             <Route path="/" element={<LandingPage />} />
+            
+            {/* Welcome Page - for non-authenticated users */}
+            <Route path="/welcome" element={<WelcomePage />} />
             
             {/* Single Login Page */}
             <Route path="/login" element={<Login />} />

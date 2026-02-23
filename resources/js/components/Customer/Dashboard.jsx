@@ -17,7 +17,9 @@ export default function CustomerDashboard() {
 
     const fetchTasks = async () => {
         try {
+            setLoading(true);
             const response = await axios.get('/api/tasks');
+            console.log('Fetched tasks:', response.data); // Debug log
             // Sort tasks alphabetically by title
             const sortedTasks = response.data.sort((a, b) => a.title.localeCompare(b.title));
             setTasks(sortedTasks);
@@ -157,7 +159,7 @@ export default function CustomerDashboard() {
                                 {currentTasks.map((task) => (
                                     <tr key={task.id}>
                                         <td>{task.title}</td>
-                                        <td>{task.project?.name}</td>
+                                        <td>{task.project?.name || 'No Project'}</td>
                                         <td>
                                             <span className={`badge ${getCategoryBadge(task.category)}`}>
                                                 {task.category.charAt(0).toUpperCase() + task.category.slice(1)}
@@ -226,7 +228,7 @@ export default function CustomerDashboard() {
                                 <div className="task-card-body">
                                     <div className="task-card-row">
                                         <span className="task-card-label">Project:</span>
-                                        <span className="task-card-value">{task.project?.name}</span>
+                                        <span className="task-card-value">{task.project?.name || 'No Project'}</span>
                                     </div>
                                     <div className="task-card-row">
                                         <span className="task-card-label">Category:</span>
