@@ -10,9 +10,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Project extends Model
 {
     use SoftDeletes;
-    protected $fillable = ['name', 'description', 'is_active'];
+    protected $fillable = ['name', 'description', 'is_active', 'customer_id'];
 
     protected $casts = ['is_active' => 'boolean'];
+
+    public function customer()
+    {
+        return $this->belongsTo(User::class, 'customer_id');
+    }
 
     public function tasks(): HasMany
     {

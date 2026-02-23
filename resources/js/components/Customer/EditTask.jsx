@@ -15,7 +15,7 @@ export default function EditTask() {
         category: '',
         project_id: '',
     });
-    const [project, setProject] = useState(null);
+    const [projects, setProjects] = useState([]);
     const [existingAttachments, setExistingAttachments] = useState([]);
     const [newAttachments, setNewAttachments] = useState([]);
     const [attachmentsToRemove, setAttachmentsToRemove] = useState([]);
@@ -27,19 +27,16 @@ export default function EditTask() {
     const [showConfirm, setShowConfirm] = useState(false);
 
     useEffect(() => {
-        fetchCustomerProject();
+        fetchCustomerProjects();
         fetchTask();
     }, [id]);
 
-    const fetchCustomerProject = async () => {
+    const fetchCustomerProjects = async () => {
         try {
             const response = await axios.get('/api/projects');
-            // Customer should only have one project
-            if (response.data.length > 0) {
-                setProject(response.data[0]);
-            }
+            setProjects(response.data);
         } catch (error) {
-            console.error('Error fetching project:', error);
+            console.error('Error fetching projects:', error);
         }
     };
 
@@ -139,6 +136,11 @@ export default function EditTask() {
         setShowConfirm(false);
     };
 
+    const getProjectName = () => {
+        const project = projects.find(p => p.id === parseInt(formData.project_id));
+        return project ? project.name : '';
+    };
+
     const getCategoryLabel = () => {
         const labels = {
             frontend: 'Frontend',
@@ -162,7 +164,7 @@ export default function EditTask() {
             <ConfirmDialog
                 isOpen={showConfirm}
                 title="Confirm Task Update"
-                message={`Are you sure you want to update this task? Title: ${formData.title}, Project: ${project?.name || ''}, Category: ${getCategoryLabel()}. The task will be re-assigned if category changed.`}
+                message={`Are you sure you want to update this task? Title: ${formData.title}, Project: ${getProjectName()}, Category: ${getCategoryLabel()}. The task will be re-assigned if category changed.`}
                 onConfirm={handleConfirmUpdate}
                 onCancel={handleCancelUpdate}
             />
@@ -176,15 +178,21 @@ export default function EditTask() {
                 <div className="card">
                     <form onSubmit={handleSubmit}>
                         <div className="form-group">
-                            <label>Assigned Project</label>
-                            {project ? (
-                                <div className="project-info-box">
-                                    <strong>{project.name}</strong>
-                                    <small className="form-text">This is your assigned project. Contact admin to change.</small>
-                                </div>
-                            ) : (
-                                <div className="project-info-box">Loading project...</div>
-                            )}
+                            <label>Project</label>
+                            <select
+                                name="project_id"
+                                value={formData.project_id}
+                                onChange={handleChange}
+                                required
+                                disabled={updating}
+                            >
+                                <option value="">Select Project</option>
+                                {projects.map((project) => (
+                                    <option key={project.id} value={project.id}>
+                                        {project.name}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
 
                         <div className="form-group">

@@ -23,7 +23,6 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
-        'project_id',
         'profile_picture',
     ];
 
@@ -57,9 +56,9 @@ class User extends Authenticatable
             ->withTimestamps();
     }
 
-    public function customerProject()
+    public function customerProjects()
     {
-        return $this->belongsTo(Project::class, 'project_id');
+        return $this->hasMany(Project::class, 'customer_id');
     }
 
     public function createdTasks()
@@ -85,10 +84,5 @@ class User extends Authenticatable
     public function isAdmin(): bool
     {
         return $this->role === 'admin';
-    }
-
-    public function project()
-    {
-        return $this->belongsTo(Project::class, 'project_id');
     }
 }

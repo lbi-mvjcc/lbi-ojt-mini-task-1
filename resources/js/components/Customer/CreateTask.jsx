@@ -13,7 +13,7 @@ export default function CreateTask() {
         category: '',
         project_id: '',
     });
-    const [project, setProject] = useState(null);
+    const [projects, setProjects] = useState([]);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
@@ -24,23 +24,19 @@ export default function CreateTask() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetchCustomerProject();
+        fetchCustomerProjects();
     }, []);
 
-    const fetchCustomerProject = async () => {
+    const fetchCustomerProjects = async () => {
         try {
             const response = await axios.get('/api/projects');
-            // Customer should only have one project
-            if (response.data.length > 0) {
-                const customerProject = response.data[0];
-                setProject(customerProject);
-                setFormData(prev => ({ ...prev, project_id: customerProject.id }));
-            } else {
-                setError('No project assigned. Please contact admin.');
+            setProjects(response.data);
+            if (response.data.length === 0) {
+                setError('No projects assigned. Please contact admin.');
             }
         } catch (error) {
-            console.error('Error fetching project:', error);
-            setError('Failed to load project. Please refresh the page.');
+            console.error('Error fetching projects:', error);
+            setError('Failed to load projects. Please refresh the page.');
         } finally {
             setProjectLoading(false);
         }
@@ -114,6 +110,11 @@ export default function CreateTask() {
         setShowConfirm(false);
     };
     
+    const getProjectName = () => {
+        const project = projects.find(p => p.id === parseInt(formData.project_id));
+        return project ? project.name : '';
+    };
+    
     const getCategoryLabel = () => {
         const labels = {
             frontend: 'Frontend',
@@ -133,7 +134,7 @@ export default function CreateTask() {
             <ConfirmDialog
                 isOpen={showConfirm}
                 title="Confirm Task Creation"
-                message={`Are you sure you want to create this task? Title: ${formData.title}, Project: ${project?.name || ''}, Category: ${getCategoryLabel()}. The task will be automatically assigned to the appropriate developer.`}
+                message={`Are you sure you want to create this task? Title: ${formData.title}, Project: ${getProjectName()}, Category: ${getCategoryLabel()}. The task will be automatically assigned to the appropriate developer.`}
                 onConfirm={handleConfirmCreate}
                 onCancel={handleCancelCreate}
             />
@@ -149,17 +150,27 @@ export default function CreateTask() {
                 <div className="card">
                     <form onSubmit={handleSubmit}>
                         <div className="form-group">
-                            <label>Assigned Project</label>
+                            <label>Project</label>
                             {projectLoading ? (
-                                <div className="project-info-box">Loading project...</div>
-                            ) : project ? (
-                                <div className="project-info-box">
-                                    <strong>{project.name}</strong>
-                                    <small className="form-text">This is your assigned project. Contact admin to change.</small>
-                                </div>
+                                <div className="project-info-box">Loading projects...</div>
+                            ) : projects.length > 0 ? (
+                                <select
+                                    name="project_id"
+                                    value={formData.project_id}
+                                    onChange={handleChange}
+                                    required
+                                    disabled={loading}
+                                >
+                                    <option value="">Select Project</option>
+                                    {projects.map((project) => (
+                                        <option key={project.id} value={project.id}>
+                                            {project.name}
+                                        </option>
+                                    ))}
+                                </select>
                             ) : (
                                 <div className="project-info-box error">
-                                    No project assigned
+                                    No projects assigned
                                 </div>
                             )}
                         </div>

@@ -38,7 +38,7 @@ export default function UsersManagement() {
         password: '',
         password_confirmation: '',
         role: '',
-        project_id: '',
+        projects: [], // Changed from project_id to projects array
     });
 
     useEffect(() => {
@@ -84,7 +84,15 @@ export default function UsersManagement() {
     };
 
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        const { name, value } = e.target;
+        
+        // Handle multi-select for projects
+        if (name === 'projects') {
+            const selectedOptions = Array.from(e.target.selectedOptions, option => parseInt(option.value));
+            setFormData({ ...formData, projects: selectedOptions });
+        } else {
+            setFormData({ ...formData, [name]: value });
+        }
     };
 
     const handleSubmit = async (e) => {
@@ -119,12 +127,18 @@ export default function UsersManagement() {
 
     const handleEdit = (user) => {
         setEditingUser(user);
+        
+        // Fetch user's projects
+        const userProjects = projects
+            .filter(p => p.customer_id === user.id)
+            .map(p => p.id);
+        
         setFormData({
             name: user.name,
             email: user.email,
             password: '',
             role: user.role,
-            project_id: user.project_id || '',
+            projects: userProjects,
         });
         setShowEditModal(true);
     };
@@ -170,7 +184,7 @@ export default function UsersManagement() {
             password: '',
             password_confirmation: '',
             role: '',
-            project_id: '',
+            projects: [],
         });
         setEditingUser(null);
         setShowForm(false);
@@ -203,13 +217,14 @@ export default function UsersManagement() {
     };
 
     const getProjectCustomer = (projectId) => {
-        return users.find(u => u.role === 'customer' && u.project_id === projectId);
+        const project = projects.find(p => p.id === projectId);
+        return project?.customer_id ? users.find(u => u.id === project.customer_id) : null;
     };
 
     const isProjectAvailable = (projectId) => {
-        const customer = getProjectCustomer(projectId);
-        // Project is available if no customer or if the customer is the one being edited
-        return !customer || (editingUser && customer.id === editingUser.id);
+        const project = projects.find(p => p.id === projectId);
+        // Project is available if it has no customer or if it's assigned to the user being edited
+        return !project?.customer_id || (editingUser && project.customer_id === editingUser.id);
     };
 
     // Pagination logic
@@ -382,13 +397,17 @@ export default function UsersManagement() {
 
                                 {formData.role === 'customer' && (
                                     <div className="form-group">
-                                        <label>Project (for customers)</label>
+                                        <label>Projects (for customers)</label>
                                         <select
-                                            name="project_id"
-                                            value={formData.project_id}
+                                            name="projects"
+                                            value={formData.projects}
                                             onChange={handleChange}
+                                            multiple
+                                            size="5"
+                                            style={{
+                                                minHeight: '120px'
+                                            }}
                                         >
-                                            <option value="">No Project</option>
                                             {projects.map(project => {
                                                 const customer = getProjectCustomer(project.id);
                                                 const available = isProjectAvailable(project.id);
@@ -398,11 +417,14 @@ export default function UsersManagement() {
                                                         value={project.id}
                                                         disabled={!available}
                                                     >
-                                                        {project.name} {!available ? `(Assigned to ${customer.name})` : ''}
+                                                        {project.name} {!available ? `(Assigned to ${customer?.name})` : ''}
                                                     </option>
                                                 );
                                             })}
                                         </select>
+                                        <small className="form-text" style={{ color: '#64748b', marginTop: '0.5rem', display: 'block' }}>
+                                            Hold Ctrl (Cmd on Mac) to select multiple projects
+                                        </small>
                                     </div>
                                 )}
                             </form>
@@ -644,13 +666,17 @@ export default function UsersManagement() {
 
                                 {formData.role === 'customer' && (
                                     <div className="form-group">
-                                        <label>Project (for customers)</label>
+                                        <label>Projects (for customers)</label>
                                         <select
-                                            name="project_id"
-                                            value={formData.project_id}
+                                            name="projects"
+                                            value={formData.projects}
                                             onChange={handleChange}
+                                            multiple
+                                            size="5"
+                                            style={{
+                                                minHeight: '120px'
+                                            }}
                                         >
-                                            <option value="">No Project</option>
                                             {projects.map(project => {
                                                 const customer = getProjectCustomer(project.id);
                                                 const available = isProjectAvailable(project.id);
@@ -660,11 +686,14 @@ export default function UsersManagement() {
                                                         value={project.id}
                                                         disabled={!available}
                                                     >
-                                                        {project.name} {!available ? `(Assigned to ${customer.name})` : ''}
+                                                        {project.name} {!available ? `(Assigned to ${customer?.name})` : ''}
                                                     </option>
                                                 );
                                             })}
                                         </select>
+                                        <small className="form-text" style={{ color: '#64748b', marginTop: '0.5rem', display: 'block' }}>
+                                            Hold Ctrl (Cmd on Mac) to select multiple projects
+                                        </small>
                                     </div>
                                 )}
                             </form>
@@ -757,13 +786,17 @@ export default function UsersManagement() {
 
                         {formData.role === 'customer' && (
                             <div className="form-group">
-                                <label>Project (for customers)</label>
+                                <label>Projects (for customers)</label>
                                 <select
-                                    name="project_id"
-                                    value={formData.project_id}
+                                    name="projects"
+                                    value={formData.projects}
                                     onChange={handleChange}
+                                    multiple
+                                    size="5"
+                                    style={{
+                                        minHeight: '120px'
+                                    }}
                                 >
-                                    <option value="">No Project</option>
                                     {projects
                                         .filter(project => {
                                             const available = isProjectAvailable(project.id);
@@ -780,13 +813,13 @@ export default function UsersManagement() {
                                                     value={project.id}
                                                     disabled={!available}
                                                 >
-                                                    {project.name} {!available ? `(Assigned to ${customer.name})` : ''}
+                                                    {project.name} {!available ? `(Assigned to ${customer?.name})` : ''}
                                                 </option>
                                             );
                                         })}
                                 </select>
                                 <small style={{ display: 'block', marginTop: '0.5rem', color: '#64748b' }}>
-                                    Only unassigned projects are shown
+                                    Hold Ctrl (Cmd on Mac) to select multiple projects
                                 </small>
                             </div>
                         )}

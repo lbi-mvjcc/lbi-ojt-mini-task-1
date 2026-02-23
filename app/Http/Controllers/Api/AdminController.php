@@ -33,8 +33,7 @@ class AdminController extends Controller
         $currentAdminId = $request->user()->id;
         
         // Get all users and sort them so current admin is first
-        $users = User::with('project')
-            ->orderByRaw("CASE WHEN id = ? THEN 0 ELSE 1 END", [$currentAdminId])
+        $users = User::orderByRaw("CASE WHEN id = ? THEN 0 ELSE 1 END", [$currentAdminId])
             ->orderBy('created_at', 'desc')
             ->get();
             
@@ -48,18 +47,20 @@ class AdminController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8'],
             'role' => ['required', 'in:customer,frontend_developer,backend_developer,server_admin,admin'],
-            'project_id' => ['nullable', 'exists:projects,id'],
+            'projects' => ['nullable', 'array'], // For customers: array of project IDs
+            'projects.*' => ['exists:projects,id'],
         ]);
 
-        // Check if assigning a customer to a project that already has a customer
-        if ($validated['role'] === 'customer' && !empty($validated['project_id'])) {
-            $existingCustomer = User::where('role', 'customer')
-                ->where('project_id', $validated['project_id'])
-                ->first();
+        // Check if assigning projects that already have customers
+        if ($validated['role'] === 'customer' && !empty($validated['projects'])) {
+            $projectsWithCustomers = Project::whereIn('id', $validated['projects'])
+                ->whereNotNull('customer_id')
+                ->pluck('name')
+                ->toArray();
             
-            if ($existingCustomer) {
+            if (!empty($projectsWithCustomers)) {
                 return response()->json([
-                    'message' => 'This project already has a customer assigned. Only one customer per project is allowed.'
+                    'message' => 'The following projects already have customers assigned: ' . implode(', ', $projectsWithCustomers) . '. Only one customer per project is allowed.'
                 ], 422);
             }
         }
@@ -69,8 +70,12 @@ class AdminController extends Controller
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
             'role' => $validated['role'],
-            'project_id' => $validated['project_id'] ?? null,
         ]);
+
+        // Assign projects to customer
+        if ($validated['role'] === 'customer' && !empty($validated['projects'])) {
+            Project::whereIn('id', $validated['projects'])->update(['customer_id' => $user->id]);
+        }
 
         return response()->json($user, 201);
     }
@@ -81,21 +86,23 @@ class AdminController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'role' => ['required', 'in:customer,frontend_developer,backend_developer,server_admin,admin'],
-            'project_id' => ['nullable', 'exists:projects,id'],
+            'projects' => ['nullable', 'array'], // For customers: array of project IDs
+            'projects.*' => ['exists:projects,id'],
             'password' => ['nullable', 'string', 'min:8'],
             'profile_picture' => ['nullable', 'image', 'mimes:jpeg,jpg,png,gif', 'max:2048'],
         ]);
 
-        // Check if assigning a customer to a project that already has a customer
-        if ($validated['role'] === 'customer' && !empty($validated['project_id'])) {
-            $existingCustomer = User::where('role', 'customer')
-                ->where('project_id', $validated['project_id'])
-                ->where('id', '!=', $user->id) // Exclude current user
-                ->first();
+        // Check if assigning projects that already have other customers
+        if ($validated['role'] === 'customer' && !empty($validated['projects'])) {
+            $projectsWithOtherCustomers = Project::whereIn('id', $validated['projects'])
+                ->whereNotNull('customer_id')
+                ->where('customer_id', '!=', $user->id)
+                ->pluck('name')
+                ->toArray();
             
-            if ($existingCustomer) {
+            if (!empty($projectsWithOtherCustomers)) {
                 return response()->json([
-                    'message' => 'This project already has a customer assigned. Only one customer per project is allowed.'
+                    'message' => 'The following projects already have customers assigned: ' . implode(', ', $projectsWithOtherCustomers) . '. Only one customer per project is allowed.'
                 ], 422);
             }
         }
@@ -104,7 +111,6 @@ class AdminController extends Controller
             'name' => $validated['name'],
             'email' => $validated['email'],
             'role' => $validated['role'],
-            'project_id' => $validated['project_id'] ?? null,
         ];
 
         if (!empty($validated['password'])) {
@@ -128,6 +134,17 @@ class AdminController extends Controller
         }
 
         $user->update($updateData);
+
+        // Update project assignments for customers
+        if ($validated['role'] === 'customer') {
+            // Remove this customer from all projects first
+            Project::where('customer_id', $user->id)->update(['customer_id' => null]);
+            
+            // Assign new projects
+            if (!empty($validated['projects'])) {
+                Project::whereIn('id', $validated['projects'])->update(['customer_id' => $user->id]);
+            }
+        }
 
         return response()->json($user);
     }
@@ -239,7 +256,6 @@ class AdminController extends Controller
     public function getTrashedUsers()
     {
         $users = User::onlyTrashed()
-            ->with('project')
             ->latest('deleted_at')
             ->get();
             

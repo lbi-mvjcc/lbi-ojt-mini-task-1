@@ -12,16 +12,11 @@ class ProjectController extends Controller
     {
         $user = $request->user();
         
-        // If customer, return their assigned project (via project_id column)
+        // If customer, return their assigned projects (via customer_id in projects table)
         if ($user->isCustomer()) {
-            if ($user->project_id) {
-                $project = Project::where('id', $user->project_id)
-                    ->where('is_active', true)
-                    ->first();
-                $projects = $project ? [$project] : [];
-            } else {
-                $projects = [];
-            }
+            $projects = Project::where('customer_id', $user->id)
+                ->where('is_active', true)
+                ->get();
         } else {
             // For developers, return projects they're members of
             if ($user->isDeveloper()) {

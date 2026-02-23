@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Layout from '../Layout';
+import ConfirmDialog from '../ConfirmDialog';
+import Toast from '../Toast';
+import SuccessModal from '../SuccessModal';
 
 export default function CustomerDashboard() {
     const [tasks, setTasks] = useState([]);
@@ -10,6 +13,11 @@ export default function CustomerDashboard() {
     const [currentPage, setCurrentPage] = useState(1);
     const [tasksPerPage] = useState(10);
     const [statusFilter, setStatusFilter] = useState('all');
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+    const [taskToDelete, setTaskToDelete] = useState(null);
+    const [toastMessage, setToastMessage] = useState('');
+    const [toastType, setToastType] = useState('success');
+    const [successMessage, setSuccessMessage] = useState('');
 
     useEffect(() => {
         fetchTasks();
@@ -59,6 +67,24 @@ export default function CustomerDashboard() {
         if (currentPage > 1) setCurrentPage(currentPage - 1);
     };
 
+    const handleDeleteClick = (task) => {
+        setTaskToDelete(task);
+        setShowDeleteConfirm(true);
+    };
+
+    const handleConfirmDelete = async () => {
+        try {
+            await axios.delete(`/api/tasks/${taskToDelete.id}`);
+            setSuccessMessage('Task deleted successfully');
+            fetchTasks();
+        } catch (error) {
+            setToastMessage('Failed to delete task');
+            setToastType('error');
+        }
+        setShowDeleteConfirm(false);
+        setTaskToDelete(null);
+    };
+
     const getCategoryBadge = (category) => {
         const colors = {
             frontend: 'badge-frontend',
@@ -83,6 +109,25 @@ export default function CustomerDashboard() {
 
     return (
         <Layout>
+            <Toast 
+                message={toastMessage} 
+                type={toastType} 
+                onClose={() => setToastMessage('')}
+            />
+            
+            <SuccessModal 
+                message={successMessage}
+                onClose={() => setSuccessMessage('')}
+            />
+
+            <ConfirmDialog
+                isOpen={showDeleteConfirm}
+                title="Confirm Delete"
+                message={`Are you sure you want to delete "${taskToDelete?.title}"? This will move it to Recently Deleted.`}
+                onConfirm={handleConfirmDelete}
+                onCancel={() => setShowDeleteConfirm(false)}
+            />
+
             <div className="dashboard-header">
                 <h1>My Tasks</h1>
                 <div style={{ display: 'flex', gap: '1rem' }}>
@@ -177,6 +222,12 @@ export default function CustomerDashboard() {
                                                 <Link to={`/customer/tasks/${task.id}/edit`} className="btn btn-sm btn-secondary">
                                                     Edit
                                                 </Link>
+                                                <button
+                                                    onClick={() => handleDeleteClick(task)}
+                                                    className="btn btn-sm btn-danger"
+                                                >
+                                                    Delete
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
@@ -221,6 +272,12 @@ export default function CustomerDashboard() {
                                         <Link to={`/customer/tasks/${task.id}/edit`} className="btn btn-sm btn-secondary">
                                             Edit
                                         </Link>
+                                        <button
+                                            onClick={() => handleDeleteClick(task)}
+                                            className="btn btn-sm btn-danger"
+                                        >
+                                            Delete
+                                        </button>
                                     </div>
                                 </div>
                                 <div className="task-card-body">
