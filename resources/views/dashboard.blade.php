@@ -64,6 +64,63 @@
         color: var(--primary-purple);
     }
     
+    /* Colored stat cards */
+    .stat-card.stat-users {
+        border-left: 4px solid #3b82f6;
+    }
+    .stat-card.stat-users .stat-icon {
+        background: rgba(59, 130, 246, 0.1);
+        color: #3b82f6;
+    }
+    
+    .stat-card.stat-tasks {
+        border-left: 4px solid #8b5cf6;
+    }
+    .stat-card.stat-tasks .stat-icon {
+        background: rgba(139, 92, 246, 0.1);
+        color: #8b5cf6;
+    }
+    
+    .stat-card.stat-projects {
+        border-left: 4px solid #10b981;
+    }
+    .stat-card.stat-projects .stat-icon {
+        background: rgba(16, 185, 129, 0.1);
+        color: #10b981;
+    }
+    
+    .stat-card.stat-total {
+        border-left: 4px solid #667eea;
+    }
+    .stat-card.stat-total .stat-icon {
+        background: rgba(102, 126, 234, 0.1);
+        color: #667eea;
+    }
+    
+    .stat-card.stat-progress {
+        border-left: 4px solid #f59e0b;
+    }
+    .stat-card.stat-progress .stat-icon {
+        background: rgba(245, 158, 11, 0.1);
+        color: #f59e0b;
+    }
+    
+    .stat-card.stat-completed {
+        border-left: 4px solid #10b981;
+    }
+    .stat-card.stat-completed .stat-icon {
+        background: rgba(16, 185, 129, 0.1);
+        color: #10b981;
+    }
+    
+    .stat-card.stat-pending {
+        border-left: 4px solid #ef4444;
+    }
+    .stat-card.stat-pending .stat-icon {
+        background: rgba(239, 68, 68, 0.1);
+        color: #ef4444;
+    }
+    
     /* Make stat cards blend in dark mode */
     [data-theme="dark"] .stat-card {
         border: 1px solid rgba(30, 41, 59, 0.5);
@@ -607,7 +664,7 @@
         <!-- Statistics Cards -->
         <div class="row g-3 mb-5">
             <div class="col-md-4">
-                <div class="stat-card shadow-sm">
+                <div class="stat-card stat-users shadow-sm">
                     <div class="d-flex justify-content-between align-items-start mb-3">
                         <div class="stat-icon">
                             <i class="bi bi-people"></i>
@@ -615,13 +672,13 @@
                     </div>
                     <div>
                         <p class="text-muted mb-1 small">Total Users</p>
-                        <h2 class="mb-0 fw-bold" style="color: var(--primary-purple);">{{ $totalUsers }}</h2>
+                        <h2 class="mb-0 fw-bold" style="color: #3b82f6;">{{ $totalUsers }}</h2>
                     </div>
                 </div>
             </div>
 
             <div class="col-md-4">
-                <div class="stat-card shadow-sm">
+                <div class="stat-card stat-tasks shadow-sm">
                     <div class="d-flex justify-content-between align-items-start mb-3">
                         <div class="stat-icon">
                             <i class="bi bi-list-task"></i>
@@ -629,13 +686,13 @@
                     </div>
                     <div>
                         <p class="text-muted mb-1 small">Total Tasks</p>
-                        <h2 class="mb-0 fw-bold" style="color: var(--primary-purple);">{{ $totalTasks }}</h2>
+                        <h2 class="mb-0 fw-bold" style="color: #8b5cf6;">{{ $totalTasks }}</h2>
                     </div>
                 </div>
             </div>
 
             <div class="col-md-4">
-                <div class="stat-card shadow-sm">
+                <div class="stat-card stat-projects shadow-sm">
                     <div class="d-flex justify-content-between align-items-start mb-3">
                         <div class="stat-icon">
                             <i class="bi bi-folder"></i>
@@ -643,7 +700,7 @@
                     </div>
                     <div>
                         <p class="text-muted mb-1 small">Total Projects</p>
-                        <h2 class="mb-0 fw-bold" style="color: var(--primary-purple);">{{ $totalProjects }}</h2>
+                        <h2 class="mb-0 fw-bold" style="color: #10b981;">{{ $totalProjects }}</h2>
                     </div>
                 </div>
             </div>
@@ -674,9 +731,9 @@
                             <table class="table table-hover mb-0" id="tasksTable" style="border: none;">
                                 <thead style="background: linear-gradient(135deg, rgba(167, 139, 250, 0.1) 0%, rgba(196, 181, 253, 0.1) 100%); border-bottom: 2px solid rgba(167, 139, 250, 0.2);">
                                     <tr>
-                                        <th style="padding: 1rem; font-weight: 600; color: var(--text-color); border: none;">Task</th>
-                                        <th style="padding: 1rem; font-weight: 600; color: var(--text-color); border: none;">User</th>
-                                        <th style="padding: 1rem; font-weight: 600; color: var(--text-color); border: none;">Project</th>
+                                        <th style="padding: 1rem; font-weight: 600; color: var(--text-color); border: none; text-align: center;">Task</th>
+                                        <th style="padding: 1rem; font-weight: 600; color: var(--text-color); border: none; text-align: center;">User</th>
+                                        <th style="padding: 1rem; font-weight: 600; color: var(--text-color); border: none; text-align: center;">Project</th>
                                         <th style="padding: 1rem; font-weight: 600; color: var(--text-color); border: none; text-align: center;">Status</th>
                                         <th style="padding: 1rem; font-weight: 600; color: var(--text-color); border: none; text-align: center;">Priority</th>
                                         <th style="padding: 1rem; font-weight: 600; color: var(--text-color); border: none; text-align: center;">Actions</th>
@@ -685,21 +742,18 @@
                                 <tbody>
                                     @forelse($recentTasks as $task)
                                         <tr class="task-row" data-status="{{ $task->status }}" style="border-bottom: 1px solid rgba(167, 139, 250, 0.05);">
-                                            <td style="padding: 1.25rem 1rem; border: none;">
-                                                <div>
-                                                    <h6 class="mb-1" style="font-weight: 600; font-size: 0.95rem;">{{ $task->title }}</h6>
-                                                    <small class="text-muted" style="font-size: 0.8rem;">{{ $task->created_at->format('Y-m-d') }}</small>
-                                                </div>
+                                            <td style="padding: 1.25rem 1rem; border: none; text-align: center;">
+                                                <h6 class="mb-0" style="font-weight: 600; font-size: 0.95rem;">{{ $task->title }}</h6>
                                             </td>
-                                            <td style="padding: 1.25rem 1rem; border: none;">
-                                                <div class="d-flex align-items-center">
+                                            <td style="padding: 1.25rem 1rem; border: none; text-align: center;">
+                                                <div class="d-flex align-items-center justify-content-center">
                                                     <div style="width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; margin-right: 0.75rem;">
                                                         {{ strtoupper(substr($task->assignedTo->name ?? 'U', 0, 1)) }}
                                                     </div>
                                                     <span style="font-weight: 500;">{{ $task->assignedTo->name ?? 'Unassigned' }}</span>
                                                 </div>
                                             </td>
-                                            <td style="padding: 1.25rem 1rem; border: none;">
+                                            <td style="padding: 1.25rem 1rem; border: none; text-align: center;">
                                                 <span class="text-muted">{{ $task->project->name ?? 'General' }}</span>
                                             </td>
                                             <td style="padding: 1.25rem 1rem; border: none; text-align: center;">
@@ -715,7 +769,7 @@
                                                 <span class="badge priority-badge high">high</span>
                                             </td>
                                             <td style="padding: 1.25rem 1rem; border: none; text-align: center;">
-                                                <a href="{{ route('tasks.show', $task->id) }}" class="text-decoration-none" style="color: var(--text-color); font-weight: 500;">View</a>
+                                                <a href="{{ route('tasks.show', $task->id) }}" class="text-decoration-none" style="color: #3b82f6; font-weight: 600; transition: all 0.2s ease;" onmouseover="this.style.color='#1d4ed8'; this.style.textDecoration='underline';" onmouseout="this.style.color='#3b82f6'; this.style.textDecoration='none';">View</a>
                                             </td>
                                         </tr>
                                     @empty
@@ -864,6 +918,17 @@
                                 </div>
                                 <i class="bi bi-arrow-right" style="color: #a78bfa; font-size: 1.2rem;"></i>
                             </a>
+
+                            <a href="{{ route('admin.trash') }}" class="d-flex align-items-center p-3 text-decoration-none" style="background: transparent; color: var(--text-color); border: 1px solid rgba(167, 139, 250, 0.15); border-radius: 12px; transition: all 0.2s;" onmouseover="this.style.borderColor='rgba(167, 139, 250, 0.5)'; this.style.transform='translateX(4px)';" onmouseout="this.style.borderColor='rgba(167, 139, 250, 0.15)'; this.style.transform='translateX(0)';">
+                                <div class="me-3" style="background: rgba(239, 68, 68, 0.1); color: #ef4444; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0;">
+                                    <i class="bi bi-trash" style="font-size: 1.3rem;"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-0" style="color: var(--text-color); font-weight: 600; font-size: 0.95rem;">Trash / Deleted Items</h6>
+                                    <small class="text-muted" style="font-size: 0.8rem;">Restore deleted items</small>
+                                </div>
+                                <i class="bi bi-arrow-right" style="color: #a78bfa; font-size: 1.2rem;"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -910,7 +975,7 @@
         <div class="row g-3 mb-4">
             <!-- Total Tasks -->
             <div class="col-md-6 col-lg-3">
-                <div class="stat-card shadow-sm">
+                <div class="stat-card stat-total shadow-sm">
                     <div class="d-flex justify-content-between align-items-start mb-3">
                         <div class="stat-icon">
                             <i class="bi bi-list-check"></i>
@@ -923,14 +988,14 @@
                     </div>
                     <div>
                         <p class="text-muted mb-1 small">Total Tasks</p>
-                        <h2 class="mb-0 fw-bold" style="color: var(--primary-purple);">{{ $totalTasks }}</h2>
+                        <h2 class="mb-0 fw-bold" style="color: #667eea;">{{ $totalTasks }}</h2>
                     </div>
                 </div>
             </div>
 
             <!-- In Progress -->
             <div class="col-md-6 col-lg-3">
-                <div class="stat-card shadow-sm">
+                <div class="stat-card stat-progress shadow-sm">
                     <div class="d-flex justify-content-between align-items-start mb-3">
                         <div class="stat-icon">
                             <i class="bi bi-arrow-repeat"></i>
@@ -943,14 +1008,14 @@
                     </div>
                     <div>
                         <p class="text-muted mb-1 small">In Progress</p>
-                        <h2 class="mb-0 fw-bold" style="color: var(--primary-purple);">{{ $inProgressTasks }}</h2>
+                        <h2 class="mb-0 fw-bold" style="color: #f59e0b;">{{ $inProgressTasks }}</h2>
                     </div>
                 </div>
             </div>
 
             <!-- Completed -->
             <div class="col-md-6 col-lg-3">
-                <div class="stat-card shadow-sm">
+                <div class="stat-card stat-completed shadow-sm">
                     <div class="d-flex justify-content-between align-items-start mb-3">
                         <div class="stat-icon">
                             <i class="bi bi-check-circle"></i>
@@ -963,14 +1028,14 @@
                     </div>
                     <div>
                         <p class="text-muted mb-1 small">Completed</p>
-                        <h2 class="mb-0 fw-bold" style="color: var(--primary-purple);">{{ $completedTasks }}</h2>
+                        <h2 class="mb-0 fw-bold" style="color: #10b981;">{{ $completedTasks }}</h2>
                     </div>
                 </div>
             </div>
 
             <!-- Pending -->
             <div class="col-md-6 col-lg-3">
-                <div class="stat-card shadow-sm">
+                <div class="stat-card stat-pending shadow-sm">
                     <div class="d-flex justify-content-between align-items-start mb-3">
                         <div class="stat-icon">
                             <i class="bi bi-clock"></i>
@@ -983,7 +1048,7 @@
                     </div>
                     <div>
                         <p class="text-muted mb-1 small">Pending</p>
-                        <h2 class="mb-0 fw-bold" style="color: var(--primary-purple);">{{ $pendingTasks }}</h2>
+                        <h2 class="mb-0 fw-bold" style="color: #ef4444;">{{ $pendingTasks }}</h2>
                     </div>
                 </div>
             </div>
@@ -1117,7 +1182,7 @@
         <!-- Stats Cards -->
         <div class="row g-3 mb-4">
             <div class="col-md-6 col-lg-3">
-                <div class="stat-card shadow-sm">
+                <div class="stat-card stat-total shadow-sm">
                     <div class="d-flex justify-content-between align-items-start mb-3">
                         <div class="stat-icon">
                             <i class="bi bi-list-check"></i>
@@ -1125,13 +1190,13 @@
                     </div>
                     <div>
                         <p class="text-muted mb-1 small">Total Tasks</p>
-                        <h2 class="mb-0 fw-bold" style="color: var(--primary-purple);">{{ $assignedTasks->count() }}</h2>
+                        <h2 class="mb-0 fw-bold" style="color: #667eea;">{{ $assignedTasks->count() }}</h2>
                     </div>
                 </div>
             </div>
 
             <div class="col-md-6 col-lg-3">
-                <div class="stat-card shadow-sm">
+                <div class="stat-card stat-progress shadow-sm">
                     <div class="d-flex justify-content-between align-items-start mb-3">
                         <div class="stat-icon">
                             <i class="bi bi-arrow-repeat"></i>
@@ -1139,13 +1204,13 @@
                     </div>
                     <div>
                         <p class="text-muted mb-1 small">In Progress</p>
-                        <h2 class="mb-0 fw-bold" style="color: var(--primary-purple);">{{ $assignedTasks->where('status', 'in_progress')->count() }}</h2>
+                        <h2 class="mb-0 fw-bold" style="color: #f59e0b;">{{ $assignedTasks->where('status', 'in_progress')->count() }}</h2>
                     </div>
                 </div>
             </div>
 
             <div class="col-md-6 col-lg-3">
-                <div class="stat-card shadow-sm">
+                <div class="stat-card stat-completed shadow-sm">
                     <div class="d-flex justify-content-between align-items-start mb-3">
                         <div class="stat-icon">
                             <i class="bi bi-check-circle"></i>
@@ -1153,13 +1218,13 @@
                     </div>
                     <div>
                         <p class="text-muted mb-1 small">Completed</p>
-                        <h2 class="mb-0 fw-bold" style="color: var(--primary-purple);">{{ $assignedTasks->where('status', 'done')->count() }}</h2>
+                        <h2 class="mb-0 fw-bold" style="color: #10b981;">{{ $assignedTasks->where('status', 'done')->count() }}</h2>
                     </div>
                 </div>
             </div>
 
             <div class="col-md-6 col-lg-3">
-                <div class="stat-card shadow-sm">
+                <div class="stat-card stat-pending shadow-sm">
                     <div class="d-flex justify-content-between align-items-start mb-3">
                         <div class="stat-icon">
                             <i class="bi bi-exclamation-triangle"></i>
@@ -1167,7 +1232,7 @@
                     </div>
                     <div>
                         <p class="text-muted mb-1 small">Overdue</p>
-                        <h2 class="mb-0 fw-bold" style="color: var(--primary-purple);">{{ $overdueTasksCount }}</h2>
+                        <h2 class="mb-0 fw-bold" style="color: #ef4444;">{{ $overdueTasksCount }}</h2>
                     </div>
                 </div>
             </div>

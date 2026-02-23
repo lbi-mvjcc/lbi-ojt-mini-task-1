@@ -95,6 +95,13 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // Password reset code management
     Route::get('/password-reset-codes', [AdminController::class, 'passwordResetCodes'])->name('password-reset-codes');
     Route::post('/generate-reset-code', [AdminController::class, 'generateResetCode'])->name('generate-reset-code');
+    
+    // Trash/Restore management
+    Route::get('/trash', [AdminController::class, 'trash'])->name('trash');
+    Route::post('/users/{id}/restore', [AdminController::class, 'restoreUser'])->name('users.restore');
+    Route::post('/projects/{id}/restore', [AdminController::class, 'restoreProject'])->name('projects.restore');
+    Route::delete('/users/{id}/force-delete', [AdminController::class, 'forceDeleteUser'])->name('users.force-delete');
+    Route::delete('/projects/{id}/force-delete', [AdminController::class, 'forceDeleteProject'])->name('projects.force-delete');
 });
 
 require __DIR__.'/auth.php';

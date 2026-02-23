@@ -260,4 +260,79 @@ class AdminController extends Controller
 
         return redirect()->back()->with('success', "Reset code generated for {$user->name}: {$code}");
     }
+
+    /**
+     * Show deleted (trashed) items
+     */
+    public function trash()
+    {
+        if (!auth()->user()->isAdmin()) {
+            abort(403, 'Unauthorized');
+        }
+
+        $deletedUsers = User::onlyTrashed()->get();
+        $deletedProjects = Project::onlyTrashed()->with('customer')->get();
+
+        return view('admin.trash', compact('deletedUsers', 'deletedProjects'));
+    }
+
+    /**
+     * Restore deleted user
+     */
+    public function restoreUser($id)
+    {
+        if (!auth()->user()->isAdmin()) {
+            abort(403, 'Unauthorized');
+        }
+
+        $user = User::onlyTrashed()->findOrFail($id);
+        $user->restore();
+
+        return redirect()->back()->with('success', 'User restored successfully!');
+    }
+
+    /**
+     * Restore deleted project
+     */
+    public function restoreProject($id)
+    {
+        if (!auth()->user()->isAdmin()) {
+            abort(403, 'Unauthorized');
+        }
+
+        $project = Project::onlyTrashed()->findOrFail($id);
+        $project->restore();
+
+        return redirect()->back()->with('success', 'Project restored successfully!');
+    }
+
+    /**
+     * Permanently delete user
+     */
+    public function forceDeleteUser($id)
+    {
+        if (!auth()->user()->isAdmin()) {
+            abort(403, 'Unauthorized');
+        }
+
+        $user = User::onlyTrashed()->findOrFail($id);
+        $user->forceDelete();
+
+        return redirect()->back()->with('success', 'User permanently deleted!');
+    }
+
+    /**
+     * Permanently delete project
+     */
+    public function forceDeleteProject($id)
+    {
+        if (!auth()->user()->isAdmin()) {
+            abort(403, 'Unauthorized');
+        }
+
+        $project = Project::onlyTrashed()->findOrFail($id);
+        $project->forceDelete();
+
+        return redirect()->back()->with('success', 'Project permanently deleted!');
+    }
 }

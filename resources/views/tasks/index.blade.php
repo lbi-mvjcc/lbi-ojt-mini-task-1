@@ -34,196 +34,276 @@
         --purple-border: #3d3d5c;
     }
     
-    .page-header {
-        background: var(--purple-gradient);
-        border-radius: 16px;
-        padding: 2rem;
+    .page-header-simple {
         margin-bottom: 2rem;
-        color: white;
-        box-shadow: 0 8px 24px rgba(102, 126, 234, 0.25);
     }
     
     .page-title {
         font-size: 2rem;
         font-weight: 700;
         margin-bottom: 0.5rem;
+        color: var(--text-color);
     }
     
     .page-subtitle {
-        opacity: 0.9;
+        color: var(--muted-text);
         margin: 0;
     }
     
-    .action-buttons {
-        display: flex;
-        gap: 0.75rem;
-        flex-wrap: wrap;
-    }
-    
-    .btn-purple {
-        background: white;
-        color: var(--primary-purple);
-        border: none;
-        padding: 0.75rem 1.5rem;
-        border-radius: 10px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-    
-    .btn-purple:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 16px rgba(255, 255, 255, 0.3);
-        color: var(--primary-purple);
-    }
-    
-    .btn-outline-white {
-        background: transparent;
-        color: white;
-        border: 2px solid white;
-        padding: 0.75rem 1.5rem;
-        border-radius: 10px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-    
-    .btn-outline-white:hover {
-        background: white;
-        color: var(--primary-purple);
-        transform: translateY(-2px);
-    }
-    
-    .task-card {
+    .filter-section {
         background: var(--card-bg);
         border-radius: 16px;
-        border: 1px solid var(--border-color);
         padding: 1.5rem;
-        margin-bottom: 1rem;
-        transition: all 0.3s ease;
-    }
-    
-    .task-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 16px rgba(102, 126, 234, 0.15);
-        border-color: var(--primary-purple-light);
-    }
-    
-    .task-header {
+        margin-bottom: 1.5rem;
+        border: 2px solid rgba(167, 139, 250, 0.2);
         display: flex;
-        justify-content: between;
-        align-items: start;
-        margin-bottom: 1rem;
-    }
-    
-    .task-title {
-        font-size: 1.25rem;
-        font-weight: 700;
-        color: var(--text-color);
-        margin-bottom: 0.5rem;
-    }
-    
-    .task-meta {
-        display: flex;
-        flex-wrap: wrap;
         gap: 1rem;
-        color: var(--muted-text);
-        font-size: 0.9rem;
-        margin-bottom: 1rem;
-    }
-    
-    .task-meta-item {
-        display: flex;
         align-items: center;
-        gap: 0.5rem;
+        flex-wrap: wrap;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
     }
     
-    .task-meta-item i {
-        color: var(--primary-purple);
+    [data-theme="dark"] .filter-section {
+        border-color: rgba(167, 139, 250, 0.3);
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
     }
     
-    .status-badge {
-        padding: 0.35rem 0.75rem;
-        border-radius: 20px;
-        font-weight: 600;
-        font-size: 0.8rem;
-    }
-    
-    .status-badge.pending {
-        background-color: #fef3c7;
-        color: #92400e;
-    }
-    
-    .status-badge.in-progress {
-        background-color: rgba(102, 126, 234, 0.15);
-        color: var(--primary-purple-dark);
-    }
-    
-    .status-badge.in-review {
-        background-color: rgba(118, 75, 162, 0.15);
-        color: var(--secondary-purple);
-    }
-    
-    .status-badge.completed {
-        background-color: #d1fae5;
-        color: #065f46;
-    }
-    
-    .category-badge {
-        padding: 0.35rem 0.75rem;
-        border-radius: 20px;
-        font-weight: 600;
-        font-size: 0.8rem;
-        background: var(--purple-light-bg);
-        color: var(--primary-purple);
-        border: 1px solid var(--purple-border);
-    }
-    
-    .task-actions {
-        display: flex;
-        gap: 0.5rem;
-    }
-    
-    .btn-icon {
-        width: 36px;
-        height: 36px;
-        border-radius: 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    .search-input {
+        flex: 1;
+        min-width: 250px;
+        padding: 0.75rem 1rem;
         border: 1px solid var(--border-color);
-        background: var(--card-bg);
+        border-radius: 8px;
+        background: var(--bg-color);
         color: var(--text-color);
-        transition: all 0.2s ease;
-        cursor: pointer;
+    }
+    
+    .filter-select {
+        padding: 0.75rem 1rem;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        background: var(--bg-color);
+        color: var(--text-color);
+        min-width: 150px;
+    }
+    
+    .btn-create {
+        background: var(--purple-gradient);
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
         text-decoration: none;
     }
     
-    .btn-icon:hover {
-        border-color: var(--primary-purple);
-        color: var(--primary-purple);
+    .btn-create:hover {
         transform: translateY(-2px);
-    }
-    
-    .btn-icon-edit {
-        border-color: var(--primary-purple);
-        color: var(--primary-purple);
-        background: rgba(102, 126, 234, 0.1);
-    }
-    
-    .btn-icon-edit:hover {
-        background: var(--primary-purple);
+        box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
         color: white;
     }
     
-    .btn-icon.delete:hover {
-        border-color: #ef4444;
-        color: #ef4444;
-        background: rgba(239, 68, 68, 0.1);
+    .tasks-table {
+        background: var(--card-bg);
+        border-radius: 16px;
+        overflow: hidden;
+        border: 2px solid rgba(167, 139, 250, 0.2);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+    
+    [data-theme="dark"] .tasks-table {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        border-color: rgba(167, 139, 250, 0.3);
+    }
+    
+    .tasks-table table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    
+    .tasks-table thead {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-bottom: none;
+    }
+    
+    .tasks-table th {
+        padding: 1.25rem 1rem;
+        text-align: left;
+        font-weight: 700;
+        color: white;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .tasks-table td {
+        padding: 1.5rem 1rem;
+        border-bottom: 1px solid rgba(167, 139, 250, 0.1);
+        color: var(--text-color);
+    }
+    
+    .tasks-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+    
+    .tasks-table tbody tr {
+        transition: all 0.3s ease;
+    }
+    
+    .tasks-table tbody tr:hover {
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+        transform: scale(1.01);
+        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.15);
+    }
+    
+    [data-theme="dark"] .tasks-table tbody tr:hover {
+        background: linear-gradient(90deg, rgba(139, 156, 245, 0.12) 0%, rgba(157, 110, 201, 0.12) 100%);
+    }
+    
+    .btn-view {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.6rem 1.25rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .btn-view:hover {
+        background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        color: white;
+        text-decoration: none;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+    }
+    
+    [data-theme="dark"] .btn-view {
+        background: linear-gradient(135deg, #8b9cf5 0%, #9d6ec9 100%);
+    }
+    
+    [data-theme="dark"] .btn-view:hover {
+        background: linear-gradient(135deg, #9d6ec9 0%, #8b9cf5 100%);
+        box-shadow: 0 6px 16px rgba(139, 156, 245, 0.4);
+    }
+    
+    .task-title-cell {
+        max-width: 300px;
+    }
+    
+    .task-title {
+        font-weight: 700;
+        margin-bottom: 0.25rem;
+        color: #667eea;
+        font-size: 1rem;
+    }
+    
+    [data-theme="dark"] .task-title {
+        color: #a78bfa;
+    }
+    
+    .task-description {
+        font-size: 0.85rem;
+        color: var(--muted-text);
+        margin: 0;
+        line-height: 1.5;
+    }
+    
+    .category-badge {
+        padding: 0.5rem 1rem;
+        border-radius: 25px;
+        font-weight: 700;
+        font-size: 0.75rem;
+        display: inline-block;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .category-badge.frontend {
+        background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+        color: white;
+    }
+    
+    .category-badge.backend {
+        background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+        color: white;
+    }
+    
+    .category-badge.server {
+        background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+        color: white;
+    }
+    
+    [data-theme="dark"] .category-badge.frontend {
+        background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%);
+    }
+    
+    [data-theme="dark"] .category-badge.backend {
+        background: linear-gradient(135deg, #f472b6 0%, #ec4899 100%);
+    }
+    
+    [data-theme="dark"] .category-badge.server {
+        background: linear-gradient(135deg, #2dd4bf 0%, #14b8a6 100%);
+    }
+    
+    .status-badge {
+        padding: 0.5rem 1rem;
+        border-radius: 25px;
+        font-weight: 700;
+        font-size: 0.75rem;
+        display: inline-block;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .status-badge.pending {
+        background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+        color: white;
+    }
+    
+    .status-badge.in-progress {
+        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        color: white;
+    }
+    
+    .status-badge.in-review {
+        background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+        color: white;
+    }
+    
+    .status-badge.completed {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: white;
+    }
+    
+    [data-theme="dark"] .status-badge.pending {
+        background: linear-gradient(135deg, #fcd34d 0%, #fbbf24 100%);
+    }
+    
+    [data-theme="dark"] .status-badge.in-progress {
+        background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+    }
+    
+    [data-theme="dark"] .status-badge.in-review {
+        background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
+    }
+    
+    [data-theme="dark"] .status-badge.completed {
+        background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
     }
     
     .empty-state {
@@ -240,405 +320,205 @@
         margin-bottom: 1rem;
     }
     
-    .stats-row {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1rem;
-        margin-bottom: 2rem;
-    }
-    
-    .stat-card {
-        background: var(--card-bg);
-        border-radius: 12px;
-        padding: 1.5rem;
-        border: 1px solid var(--border-color);
-        text-align: center;
-    }
-    
-    .stat-number {
-        font-size: 2rem;
-        font-weight: 700;
-        color: var(--primary-purple);
-    }
-    
-    .stat-label {
-        color: var(--muted-text);
-        font-size: 0.9rem;
-        margin-top: 0.5rem;
-    }
-    
-    [data-theme="dark"] .status-badge.pending {
-        background-color: rgba(254, 243, 199, 0.2);
-        color: #fbbf24;
-    }
-    
-    [data-theme="dark"] .status-badge.completed {
-        background-color: rgba(209, 250, 229, 0.2);
-        color: #34d399;
-    }
-    
-    /* Comprehensive dark mode support */
-    [data-theme="dark"] .task-card {
-        background-color: transparent !important;
-        border-color: rgba(51, 65, 85, 0.3) !important;
-        color: var(--text-color);
-        box-shadow: none !important;
-    }
-    
-    [data-theme="dark"] .task-card:hover {
-        border-color: var(--primary-purple) !important;
-    }
-    
-    [data-theme="dark"] .task-card h5,
-    [data-theme="dark"] .task-card h6 {
-        color: var(--text-color);
-    }
-    
-    [data-theme="dark"] .task-meta {
-        color: var(--muted-text);
-    }
-    
-    [data-theme="dark"] .empty-state {
-        background-color: var(--card-bg);
-        border-color: var(--border-color);
-        color: var(--text-color);
-    }
-    
-    [data-theme="dark"] .stat-card {
+    [data-theme="dark"] .tasks-table {
         background-color: var(--card-bg);
         border-color: var(--border-color);
     }
     
-    [data-theme="dark"] .stat-number {
-        color: var(--primary-purple);
+    [data-theme="dark"] .filter-section {
+        background-color: var(--card-bg);
+        border-color: var(--border-color);
     }
     
-    [data-theme="dark"] .stat-label {
-        color: var(--muted-text);
-    }
-    
-    .project-header-customer {
-        background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
-        color: white;
-        padding: 1.5rem;
-        border-radius: 12px;
-    }
-    
-    [data-theme="dark"] .project-header-customer {
-        background: rgba(30, 41, 59, 0.6) !important;
-        border: 1px solid rgba(139, 156, 245, 0.3) !important;
-        border-left: 4px solid var(--primary-purple) !important;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+    [data-theme="dark"] .search-input,
+    [data-theme="dark"] .filter-select {
+        background-color: var(--bg-color);
+        border-color: var(--border-color);
+        color: var(--text-color);
     }
 </style>
 
 <div class="container py-4">
-    @if(auth()->user()->isAdmin())
-        <!-- ADMIN VIEW - See all tasks -->
-        <div class="page-header">
-            <h1 class="page-title">All Tasks (Admin View)</h1>
-            <p class="page-subtitle">View all tasks in the system</p>
+    <!-- Page Header -->
+    <div class="page-header-simple">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+            <div>
+                <h1 class="page-title">
+                    @if(auth()->user()->isAdmin())
+                        All Tasks (Admin View)
+                    @elseif(auth()->user()->isCustomer())
+                        My Tasks
+                    @else
+                        My Assigned Tasks
+                    @endif
+                </h1>
+                <p class="page-subtitle">
+                    @if(auth()->user()->isAdmin())
+                        View all tasks in the system
+                    @elseif(auth()->user()->isCustomer())
+                        Manage and track all your created tasks
+                    @else
+                        {{ auth()->user()->getRoleLabel() }} - Complete your tasks
+                    @endif
+                </p>
+            </div>
+            @if(auth()->user()->isCustomer())
+                <a href="{{ route('tasks.create') }}" class="btn-create">
+                    <i class="bi bi-plus-circle"></i> Create Task
+                </a>
+            @endif
         </div>
+    </div>
 
-        @if($tasks->count() > 0)
-            <div class="task-grid">
-                @foreach($tasks as $task)
-                    <div class="task-card">
-                        <div class="d-flex justify-content-between align-items-start">
-                            <div class="flex-grow-1">
-                                <h5 class="task-title">{{ $task->title }}</h5>
-                                <p class="task-description">{{ Str::limit($task->description, 100) }}</p>
-                                
-                                <div class="task-meta">
-                                    <span class="badge bg-info">{{ $task->getCategoryLabel() }}</span>
-                                    <span class="badge bg-secondary">{{ $task->project->name ?? 'No Project' }}</span>
-                                    @if($task->status === 'pending')
-                                        <span class="badge bg-warning">Pending</span>
-                                    @elseif($task->status === 'in_progress')
-                                        <span class="badge bg-info">In Progress</span>
-                                    @elseif($task->status === 'in_review')
-                                        <span class="badge bg-primary">In Review</span>
-                                    @elseif($task->status === 'done')
-                                        <span class="badge bg-success">Done</span>
-                                    @endif
-                                </div>
-                                
-                                <div class="mt-2">
-                                    <small class="text-muted">
-                                        Created by: {{ $task->createdBy->name ?? 'Unknown' }} | 
-                                        Assigned to: {{ $task->assignedTo->name ?? 'Unassigned' }}
-                                    </small>
-                                </div>
-                            </div>
-                            
-                            <div class="task-actions">
-                                <a href="{{ route('tasks.show', $task) }}" class="btn btn-sm btn-outline-primary">
-                                    <i class="bi bi-eye"></i> View
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-        @else
-            <div class="empty-state">
-                <i class="bi bi-inbox"></i>
-                <p>No tasks found in the system</p>
-            </div>
+    <!-- Filters -->
+    <div class="filter-section">
+        <i class="bi bi-search" style="color: var(--muted-text);"></i>
+        <input type="text" class="search-input" placeholder="Search tasks..." id="searchInput">
+        <select class="filter-select" id="statusFilter">
+            <option value="">All Statuses</option>
+            <option value="pending">Pending</option>
+            <option value="in_progress">In Progress</option>
+            <option value="in_review">In Review</option>
+            <option value="done">Completed</option>
+        </select>
+        @if(!auth()->user()->isDeveloper())
+            <select class="filter-select" id="categoryFilter">
+                <option value="">All Categories</option>
+                <option value="frontend">Frontend</option>
+                <option value="backend">Backend</option>
+                <option value="server">Server</option>
+            </select>
         @endif
+    </div>
 
-    @elseif(auth()->user()->isCustomer())
-        <!-- CUSTOMER VIEW -->
-        <div class="page-header">
-            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
-                <div>
-                    <h1 class="page-title">My Tasks</h1>
-                    <p class="page-subtitle">Manage and track all your created tasks</p>
-                </div>
-                <div class="action-buttons">
-                    <form method="POST" action="{{ route('tasks.check-deadlines') }}" style="display: inline;">
-                        @csrf
-                        <button type="submit" class="btn-outline-white">
-                            <i class="bi bi-clock-history"></i> Check Deadlines
-                        </button>
-                    </form>
-                    <a href="{{ route('tasks.developer-workload') }}" class="btn-outline-white">
-                        <i class="bi bi-bar-chart"></i> Workload
-                    </a>
-                    <a href="{{ route('tasks.create') }}" class="btn-purple">
-                        <i class="bi bi-plus-circle"></i> Create Task
-                    </a>
-                </div>
-            </div>
-        </div>
+    <!-- Tasks Table -->
+    @php
+        if(auth()->user()->isAdmin()) {
+            $displayTasks = $tasks;
+        } elseif(auth()->user()->isCustomer()) {
+            $displayTasks = $tasks;
+        } else {
+            $displayTasks = $assignedTasks;
+        }
+    @endphp
 
-        @if($tasks->count() > 0)
-            @php
-                // Group tasks by project
-                $tasksByProject = $tasks->groupBy('project_id');
-            @endphp
-            
-            @foreach($tasksByProject as $projectId => $projectTasks)
-                @php
-                    $project = $projectTasks->first()->project;
-                    $totalTasks = $projectTasks->count();
-                    $completedTasks = $projectTasks->where('status', 'done')->count();
-                    $inProgressTasks = $projectTasks->where('status', 'in_progress')->count();
-                    $pendingTasks = $projectTasks->where('status', 'pending')->count();
-                @endphp
-                
-                <!-- Project Header -->
-                <div class="mb-3 project-header-customer">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h2 style="font-size: 1.5rem; font-weight: 700; margin: 0; display: flex; align-items: center; gap: 0.75rem;">
-                                <i class="bi bi-folder-fill"></i>
-                                {{ $project->name }}
-                            </h2>
-                            <div style="display: flex; gap: 1.5rem; margin-top: 0.5rem; font-size: 0.9rem; opacity: 0.9;">
-                                <span><i class="bi bi-list-check"></i> {{ $totalTasks }} Tasks</span>
-                                <span><i class="bi bi-clock"></i> {{ $pendingTasks }} Pending</span>
-                                <span><i class="bi bi-arrow-repeat"></i> {{ $inProgressTasks }} In Progress</span>
-                                <span><i class="bi bi-check-circle"></i> {{ $completedTasks }} Completed</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Tasks in this project -->
-                @foreach($projectTasks as $task)
-                    <div class="task-card">
-                        <div class="d-flex justify-content-between align-items-start mb-3">
-                            <div class="flex-grow-1">
-                                <h3 class="task-title">{{ $task->title }}</h3>
-                                <div class="task-meta">
-                                    <div class="task-meta-item">
-                                        <i class="bi bi-tag"></i>
-                                        <span class="category-badge">{{ $task->getCategoryLabel() }}</span>
-                                    </div>
-                                    <div class="task-meta-item">
-                                        <i class="bi bi-calendar3"></i>
-                                        <span>{{ $task->created_at->format('M d, Y') }}</span>
-                                    </div>
-                                    @if($task->deadline)
-                                        <div class="task-meta-item">
-                                            <i class="bi bi-clock"></i>
-                                            <span>Due: {{ $task->deadline->format('M d, Y') }}</span>
-                                        </div>
-                                    @endif
-                                </div>
-                                @if($task->description)
-                                    <p class="text-muted mb-3">{{ Str::limit($task->description, 150) }}</p>
+    @if($displayTasks->count() > 0)
+        <div class="tasks-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Task Title</th>
+                        <th style="text-align: center;">Project</th>
+                        @if(!auth()->user()->isDeveloper())
+                            <th style="text-align: center;">Category</th>
+                        @endif
+                        <th style="text-align: center;">Status</th>
+                        <th style="text-align: center;">Created Date</th>
+                        <th style="text-align: center;">Updated Date</th>
+                        <th style="text-align: center;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="tasksTableBody">
+                    @foreach($displayTasks as $task)
+                        <tr class="task-row" 
+                            data-status="{{ $task->status }}" 
+                            data-category="{{ $task->category }}"
+                            data-title="{{ strtolower($task->title) }}"
+                            data-description="{{ strtolower($task->description ?? '') }}">
+                            <td class="task-title-cell">
+                                <div class="task-title">{{ $task->title }}</div>
+                            </td>
+                            <td style="text-align: center;">
+                                <span style="color: var(--muted-text);">{{ $task->project->name ?? 'N/A' }}</span>
+                            </td>
+                            @if(!auth()->user()->isDeveloper())
+                                <td style="text-align: center;">
+                                    <span class="category-badge {{ $task->category }}">
+                                        {{ $task->getCategoryLabel() }}
+                                    </span>
+                                </td>
+                            @endif
+                            <td style="text-align: center;">
+                                @if($task->status === 'pending')
+                                    <span class="status-badge pending">Pending</span>
+                                @elseif($task->status === 'in_progress')
+                                    <span class="status-badge in-progress">In Progress</span>
+                                @elseif($task->status === 'in_review')
+                                    <span class="status-badge in-review">In Review</span>
+                                @elseif($task->status === 'done')
+                                    <span class="status-badge completed">Completed</span>
                                 @endif
-                                <div class="d-flex gap-2 flex-wrap">
-                                    @if($task->status === 'pending')
-                                        <span class="status-badge pending">Pending</span>
-                                    @elseif($task->status === 'in_progress')
-                                        <span class="status-badge in-progress">In Progress</span>
-                                    @elseif($task->status === 'in_review')
-                                        <span class="status-badge in-review">In Review</span>
-                                    @elseif($task->status === 'done')
-                                        <span class="status-badge completed">Completed</span>
-                                    @endif
-                                </div>
-                            </div>
-                            <div class="task-actions">
-                                <a href="{{ route('tasks.show', $task) }}" class="btn btn-sm btn-outline-primary">
+                            </td>
+                            <td style="text-align: center;">
+                                <span style="color: var(--muted-text);">{{ $task->created_at->format('M d, Y') }}</span>
+                            </td>
+                            <td style="text-align: center;">
+                                <span style="color: var(--muted-text);">{{ $task->updated_at->format('M d, Y') }}</span>
+                            </td>
+                            <td style="text-align: center;">
+                                <a href="{{ route('tasks.show', $task) }}" class="btn-view">
                                     <i class="bi bi-eye"></i> View
                                 </a>
-                                <a href="{{ route('tasks.edit', $task) }}" class="btn btn-sm" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none;">
-                                    <i class="bi bi-pencil"></i> Edit
-                                </a>
-                                <form action="{{ route('tasks.destroy', $task) }}" method="POST" style="display: inline;" onsubmit="return confirm('This action cannot be undone. Are you sure you want to delete this task?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-outline-danger">
-                                        <i class="bi bi-trash"></i> Delete
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
-            @endforeach
-        @else
-            <div class="empty-state">
-                <i class="bi bi-inbox"></i>
-                <h4>No Tasks Yet</h4>
-                <p class="text-muted mb-4">Create your first task to get started</p>
-                <a href="{{ route('tasks.create') }}" class="btn btn-purple" style="background: var(--purple-gradient); color: white;">
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    @else
+        <div class="empty-state">
+            <i class="bi bi-inbox"></i>
+            <h4>No Tasks Yet</h4>
+            <p class="text-muted mb-4">
+                @if(auth()->user()->isCustomer())
+                    Create your first task to get started
+                @else
+                    You don't have any tasks assigned yet
+                @endif
+            </p>
+            @if(auth()->user()->isCustomer())
+                <a href="{{ route('tasks.create') }}" class="btn-create">
                     <i class="bi bi-plus-circle"></i> Create First Task
                 </a>
-            </div>
-        @endif
-
-    @elseif(auth()->user()->isDeveloper())
-        <!-- DEVELOPER VIEW -->
-        <div class="page-header">
-            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
-                <div>
-                    <h1 class="page-title">My Assigned Tasks</h1>
-                    <p class="page-subtitle">{{ auth()->user()->getRoleLabel() }} - Complete your tasks</p>
-                </div>
-            </div>
+            @endif
         </div>
-
-        @if($assignedTasks->count() > 0)
-            <!-- Overall Stats Row -->
-            <div class="stats-row">
-                <div class="stat-card">
-                    <div class="stat-number">{{ $assignedTasks->count() }}</div>
-                    <div class="stat-label">Total Tasks</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">{{ $assignedTasks->where('status', 'pending')->count() }}</div>
-                    <div class="stat-label">Pending</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">{{ $assignedTasks->where('status', 'in_progress')->count() }}</div>
-                    <div class="stat-label">In Progress</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">{{ $assignedTasks->where('status', 'in_review')->count() }}</div>
-                    <div class="stat-label">In Review</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">{{ $assignedTasks->where('status', 'done')->count() }}</div>
-                    <div class="stat-label">Completed</div>
-                </div>
-            </div>
-
-            @php
-                // Group assigned tasks by project
-                $assignedTasksByProject = $assignedTasks->groupBy('project_id');
-            @endphp
-            
-            @foreach($assignedTasksByProject as $projectId => $projectTasks)
-                @php
-                    $project = $projectTasks->first()->project;
-                    $totalTasks = $projectTasks->count();
-                    $completedTasks = $projectTasks->where('status', 'done')->count();
-                    $inProgressTasks = $projectTasks->where('status', 'in_progress')->count();
-                    $pendingTasks = $projectTasks->where('status', 'pending')->count();
-                    $inReviewTasks = $projectTasks->where('status', 'in_review')->count();
-                @endphp
-                
-                <!-- Project Header -->
-                <div class="mb-3 project-header-customer">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h2 style="font-size: 1.5rem; font-weight: 700; margin: 0; display: flex; align-items: center; gap: 0.75rem;">
-                                <i class="bi bi-folder-fill"></i>
-                                {{ $project->name }}
-                            </h2>
-                            <div style="display: flex; gap: 1.5rem; margin-top: 0.5rem; font-size: 0.9rem; opacity: 0.9;">
-                                <span><i class="bi bi-list-check"></i> {{ $totalTasks }} Tasks</span>
-                                <span><i class="bi bi-clock"></i> {{ $pendingTasks }} Pending</span>
-                                <span><i class="bi bi-arrow-repeat"></i> {{ $inProgressTasks }} In Progress</span>
-                                <span><i class="bi bi-eye-fill"></i> {{ $inReviewTasks }} In Review</span>
-                                <span><i class="bi bi-check-circle"></i> {{ $completedTasks }} Completed</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Tasks in this project -->
-                @foreach($projectTasks as $task)
-                    <div class="task-card">
-                        <div class="d-flex justify-content-between align-items-start">
-                            <div class="flex-grow-1">
-                                <h3 class="task-title">{{ $task->title }}</h3>
-                                <div class="task-meta">
-                                    <div class="task-meta-item">
-                                        <i class="bi bi-tag"></i>
-                                        <span class="category-badge">{{ $task->getCategoryLabel() }}</span>
-                                    </div>
-                                    <div class="task-meta-item">
-                                        <i class="bi bi-person"></i>
-                                        <span>Created by: {{ $task->createdBy->name }}</span>
-                                    </div>
-                                    <div class="task-meta-item">
-                                        <i class="bi bi-calendar3"></i>
-                                        <span>{{ $task->created_at->format('M d, Y') }}</span>
-                                    </div>
-                                    @if($task->deadline)
-                                        <div class="task-meta-item">
-                                            <i class="bi bi-clock"></i>
-                                            <span>Due: {{ $task->deadline->format('M d, Y') }}</span>
-                                        </div>
-                                    @endif
-                                </div>
-                                @if($task->description)
-                                    <p class="text-muted mb-3">{{ Str::limit($task->description, 150) }}</p>
-                                @endif
-                                <div class="d-flex gap-2 flex-wrap">
-                                    @if($task->status === 'pending')
-                                        <span class="status-badge pending">Pending</span>
-                                    @elseif($task->status === 'in_progress')
-                                        <span class="status-badge in-progress">In Progress</span>
-                                    @elseif($task->status === 'in_review')
-                                        <span class="status-badge in-review">In Review</span>
-                                    @elseif($task->status === 'done')
-                                        <span class="status-badge completed">Completed</span>
-                                    @endif
-                                </div>
-                            </div>
-                            <div class="task-actions">
-                                <a href="{{ route('tasks.show', $task) }}" class="btn-icon" title="View Details">
-                                    <i class="bi bi-eye"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
-            @endforeach
-        @else
-            <div class="empty-state">
-                <i class="bi bi-inbox"></i>
-                <h4>No Assigned Tasks</h4>
-                <p class="text-muted">You don't have any tasks assigned yet</p>
-            </div>
-        @endif
     @endif
 </div>
+
+<script>
+    // Search and filter functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('searchInput');
+        const statusFilter = document.getElementById('statusFilter');
+        const categoryFilter = document.getElementById('categoryFilter');
+        const taskRows = document.querySelectorAll('.task-row');
+
+        function filterTasks() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const statusValue = statusFilter.value;
+            const categoryValue = categoryFilter.value;
+
+            taskRows.forEach(row => {
+                const title = row.getAttribute('data-title');
+                const description = row.getAttribute('data-description');
+                const status = row.getAttribute('data-status');
+                const category = row.getAttribute('data-category');
+
+                const matchesSearch = title.includes(searchTerm) || description.includes(searchTerm);
+                const matchesStatus = !statusValue || status === statusValue;
+                const matchesCategory = !categoryValue || category === categoryValue;
+
+                if (matchesSearch && matchesStatus && matchesCategory) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        searchInput.addEventListener('input', filterTasks);
+        statusFilter.addEventListener('change', filterTasks);
+        categoryFilter.addEventListener('change', filterTasks);
+    });
+</script>
 @endsection

@@ -322,7 +322,7 @@
                 <p class="page-subtitle">View and manage all your active projects</p>
             </div>
             <a href="{{ route('tasks.create') }}" class="btn-purple">
-                <i class="bi bi-plus-circle"></i> Create New Task
+                <i class="bi bi-plus-circle"></i> Create New Project
             </a>
         </div>
     </div>
@@ -417,8 +417,8 @@
             <i class="bi bi-folder-x"></i>
             <h4>No Projects Yet</h4>
             <p class="text-muted mb-4">You haven't created any projects or tasks yet</p>
-            <a href="{{ route('tasks.create') }}" class="btn btn-purple" style="background: var(--purple-gradient); color: white;">
-                <i class="bi bi-plus-circle"></i> Create Your First Task
+            <a href="{{ route('tasks.create') }}" class="btn btn-purple" style="background: var(--purple-gradient); color: white; padding: 0.5rem 1.2rem; font-size: 0.875rem;">
+                <i class="bi bi-plus-circle"></i> Create Your First Project
             </a>
         </div>
     @endif

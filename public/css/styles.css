@@ -10998,3 +10998,16 @@ body, .navbar, .nav-link, .btn, .card, .form-control, .form-label, .badge, .aler
     min-width: 320px !important;
   }
 }
+
+/* Global table text centering */
+.table th,
+.table td {
+  text-align: center !important;
+  vertical-align: middle !important;
+}
+
+/* Keep task title column left-aligned for better readability */
+.table th:first-child,
+.table td:first-child {
+  text-align: left !important;
+}
