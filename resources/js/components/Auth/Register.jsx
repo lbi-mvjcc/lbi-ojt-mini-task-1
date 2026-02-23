@@ -9,7 +9,7 @@ export default function Register() {
         email: '',
         password: '',
         password_confirmation: '',
-        role: '',
+        role: 'customer', // Default role set to customer
     });
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -75,7 +75,7 @@ export default function Register() {
             <ConfirmDialog
                 isOpen={showConfirm}
                 title="Confirm Registration"
-                message={`Please confirm your registration details: Name: ${formData.name}, Email: ${formData.email}, Role: ${getRoleLabel()}. Click Confirm to create your account.`}
+                message={`Please confirm your registration details: Name: ${formData.name}, Email: ${formData.email}. Click Confirm to create your account.`}
                 onConfirm={handleConfirmRegister}
                 onCancel={() => setShowConfirm(false)}
             />
@@ -309,44 +309,6 @@ export default function Register() {
                                 )}
                             </button>
                         </div>
-                    </div>
-
-                    <div style={{ marginBottom: '2rem' }}>
-                        <label style={{ 
-                            display: 'block',
-                            marginBottom: '0.5rem',
-                            color: '#1e293b',
-                            fontWeight: '600',
-                            fontSize: '0.875rem'
-                        }}>
-                            I am a
-                        </label>
-                        <select
-                            name="role"
-                            value={formData.role}
-                            onChange={handleChange}
-                            required
-                            disabled={loading}
-                            style={{
-                                width: '100%',
-                                padding: '0.875rem 1rem',
-                                border: '2px solid #e2e8f0',
-                                borderRadius: '12px',
-                                fontSize: '1rem',
-                                transition: 'all 0.3s ease',
-                                outline: 'none',
-                                cursor: 'pointer',
-                                background: 'white'
-                            }}
-                            onFocus={(e) => e.target.style.borderColor = '#06b6d4'}
-                            onBlur={(e) => e.target.style.borderColor = '#e2e8f0'}
-                        >
-                            <option value="">Select your role</option>
-                            <option value="customer">Customer</option>
-                            <option value="frontend_developer">Frontend Developer</option>
-                            <option value="backend_developer">Backend Developer</option>
-                            <option value="server_admin">Server Administrator</option>
-                        </select>
                     </div>
 
                     <button 
