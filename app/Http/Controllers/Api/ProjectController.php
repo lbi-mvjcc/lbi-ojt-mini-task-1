@@ -8,9 +8,30 @@ use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $projects = Project::where('is_active', true)->get();
+        $user = $request->user();
+        
+        // If customer, return their assigned project (via project_id column)
+        if ($user->isCustomer()) {
+            if ($user->project_id) {
+                $project = Project::where('id', $user->project_id)
+                    ->where('is_active', true)
+                    ->first();
+                $projects = $project ? [$project] : [];
+            } else {
+                $projects = [];
+            }
+        } else {
+            // For developers, return projects they're members of
+            if ($user->isDeveloper()) {
+                $projects = $user->projects()->where('is_active', true)->get();
+            } else {
+                // For admins, return all active projects
+                $projects = Project::where('is_active', true)->get();
+            }
+        }
+        
         return response()->json($projects);
     }
 

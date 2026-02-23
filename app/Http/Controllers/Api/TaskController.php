@@ -46,8 +46,8 @@ class TaskController extends Controller
         $user = $request->user();
         
         // Verify customer is assigned to this project
-        $project = Project::findOrFail($validated['project_id']);
-        if (!$project->members()->where('user_id', $user->id)->exists()) {
+        // Customers are assigned via project_id column, not project_members table
+        if ($user->project_id != $validated['project_id']) {
             return response()->json([
                 'message' => 'You are not assigned to this project. Please contact admin.'
             ], 403);
@@ -150,8 +150,8 @@ class TaskController extends Controller
         $user = $request->user();
         
         // Verify customer is assigned to this project
-        $project = Project::findOrFail($validated['project_id']);
-        if (!$project->members()->where('user_id', $user->id)->exists()) {
+        // Customers are assigned via project_id column, not project_members table
+        if ($user->project_id != $validated['project_id']) {
             return response()->json([
                 'message' => 'You are not assigned to this project. Please contact admin.'
             ], 403);
